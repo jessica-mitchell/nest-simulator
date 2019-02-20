@@ -1,17 +1,18 @@
 .. _good_bug_report:
 
 How do I submit a *good* bug report?
-`````````````````````````````````````
+--------------------------------------
 
 To make it easier for the developers to understand and solve the
 problem, please include the following information in your bug report, if
-applicable:
+applicable.
 
-**Prerequisites**
+Before creating a bug report, please check the `current list <https://github.com/nest/nest-simulator/issues>`_
+of issues on GitHub as you might find out that you don’t need to create one.
 
-[ ] Checked the FAQs for common questions: [nc]
+**Descriptive title**
 
-[ ] Checked that your issue isn't already filed: https://github.com/nest/nest-simulator/issues
+[Write a title that clearly and concisely states the issue]
 
 **Description**
 
@@ -45,7 +46,9 @@ applicable:
 
 * The contents of the ``reports`` directory in the build directory.]
 
+----
 
+**Submit your issue here:** https://github.com/nest/nest-simulator/issues
 
 .. note::
 
@@ -53,7 +56,8 @@ applicable:
  :doc:`mailing list <../contribute/guidelines_mailinglist>` first and ask the community.
 
 Submit other issues
-```````````````````````````
+------------------------
+
 You can also create an issue regarding errors in the code or documentation that are not bugs.
 In these cases, please ensure you follow the :ref:`prerequisites <submit_issue>` above and
 include as much information as you can regarding the location of the error (e.g. /path/to/file and line number or webpage name and section name)

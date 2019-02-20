@@ -1,7 +1,8 @@
 .. _enhancement:
 
 How do I submit a *good* enhancement idea?
-```````````````````````````````````````````
+---------------------------------------------
+
 If you have an idea for new features, models, or minor improvements to existing functionality, use this template
 to submit an issue on GitHub
 
@@ -35,4 +36,6 @@ as you might find out that you don't need to create one.
 
 [If applicable, provide any relevant publication for this feature or model]
 
+----
 
+**Submit your idea here:** https://github.com/nest/nest-simulator/issues

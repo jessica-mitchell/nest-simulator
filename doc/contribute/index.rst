@@ -6,7 +6,7 @@ Thanks for taking the time to contribute!
 The NEST simulator is a scientific tool and as such it is never ready and constantly changing to meet the needs of novel neuroscientific endeavors.
 Here you'll find all you need to know about contributiong to NEST.
 
-* :ref:`Code of Conduct <code_conduct>`
+.. * :ref:`Code of Conduct <code_conduct>`
 * :ref:`I have a question about NEST <mailing_list>`
 * :ref:`How can I contribute? <contribute>`
     * :ref:`Reporting bugs and other issues <submit_issue>`
@@ -19,26 +19,26 @@ Here you'll find all you need to know about contributiong to NEST.
 
 ----
 
-.. _code_conduct:
+..
+ .. _code_conduct:
+..
+ Code of Conduct
+ -------------------
+ -- use an adaptation of the contributor covenant code of conduct?
 
-Code of Conduct
--------------------
--- use an adaptation of the contributor covenant code of conduct?
+  * :doc:`code_of_conduct`
 
- * :doc:`code_of_conduct`
+ ----
 
-----
-
- .. _mailing_list:
+.. _mailing_list:
 
 I have a question about NEST!
 --------------------------------
 
 .. note::
 
+ We encourage everyone to use the mailing list to ask questions or get help with troubleshooting.
  Please don't file an issue on Github to ask a question.
-
-Check out our FAQ [nc]
 
 We have an official :doc:`NEST user mailing list <guidelines_mailinglist>`, which is intended to be a forum:
 
