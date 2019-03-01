@@ -1,15 +1,16 @@
 Template for pull requests
 ==============================
 
+Before creating a pull request, please check the current `list <https://github.com/nest/nest-simulator/pulls>`_ on GitHub
+as you might find out that you don't need to create one.
+
+
 **Detailed title including issue number**
 
-[Title should clearly state the topic of the pull request and include the issue number that your change relates to.]
-
-Pull requests are sometimes not associated with an issue, and in this case  . . .
+[Title should clearly state the topic of the pull request and include the issue number (if applicable)that your change relates to.]
 
 
 **Description of change**
-
 
 [Details to which files will be changed and why. We must be able to understand what the code will be doing from the description here]
 

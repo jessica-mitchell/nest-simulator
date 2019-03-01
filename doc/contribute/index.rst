@@ -63,18 +63,14 @@ How can I contribute?
 
 .. _submit_issue:
 
-Submit an issue on Github
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Submit an issue on Github
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Did you notice a bug or potential area for improvement in NEST?
 
-.. pull-quote::
+* For bug reports:  :ref:`good_bug_report`
 
-  Before submitting an issue, please use the appropriate template:
-
-   * For bug reports:  :ref:`good_bug_report`
-
-   * For enhancements and new models: :ref:`enhancement`
+* For enhancements and new models: :ref:`enhancement`
 
 
 ..   .. image:: ../img/sample_issue.png
@@ -85,27 +81,32 @@ Did you notice a bug or potential area for improvement in NEST?
 
 .. _git_workflow:
 
-Make changes to the code or documentation using the GitHub workflow
+2. Make changes to the code or documentation using the GitHub workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NEST uses git for code and documentation development and versioning.
-Before making changes, please review the following sections to ensure your request will be considered for merging into the  NEST source code.
+**Before making changes**, please review the following sections to ensure your request will be considered for merging into the  NEST source code.
 
 
-**If you are new to git or GitHub or just need a refresher**, please see the section :doc:`using the GitHub workflow <github_workflow>`
-to see how to create a fork of our Git repository and use the basic commands of git in your workflow.
+.. admonition:: Git Workflow
 
-Make  your changes
-```````````````````
+   **If you are new to git or just need a refresher**, please see the section :doc:`using the GitHub workflow <github_workflow>`
+   to see how to create a fork of our Git repository and use the basic commands of git in your workflow.
+
+a) Make your changes
+`````````````````````
 
 * Create a branch in your fork of NEST (avoid working direclty on the *master* branch)
 * Ensure your changes to code or documentation follow the relevant :ref:`styleguides <styleguides>`
-* Ensure your :doc:`git commits <git_commit_messages>` are split into logical units
+* Ensure your :doc:`git commits <git_commit_messages>` are desrciptive and split into logical units
 * Make sure NEST compiles and has no new warnings
+
+    * New features like SLI or PyNEST functions, neuron or synapse models need to be accompanied by one or more tests.
+* Don't forget! Each change to the code has to be reflected in the corresponding examples and documentation.
 
 .. _pull_requests:
 
-Prepare your pull request
+b) Prepare your pull request
 `````````````````````````
 For us to make a proper review of your pull request, we ask that you ensure
 your contribution meets the following criteria:
@@ -120,18 +121,13 @@ your contribution meets the following criteria:
     :align: center
 
 
-Code review
-````````````
+c) Code review
+````````````````
 
-In general, the rule is that each pull request needs to be approved by the CI platform and at least two reviewers.
-For changes labeled "not code" or "minor" (e.g. changes in documentation, fixes for typos, etc.), the release manager can waive the need for code review and just accept the OK from Travis in order to merge the request.
-Reviewers are requested to comply to our :doc:`code review guidelines <../developer_space/code_review_guidelines>`.
-Once the reviewers are satisfied with the pull request, a maintainer will merge it into the master branch.
-
-New features like SLI or PyNEST functions, neuron or synapse models need to be accompanied by one or more tests written either in SLI or Python. New features for the NEST kernel need a test written in SLI.
-Each change to the code has to be reflected also in the corresponding examples and documentation.
-
-**We will not review a pull request unless the naming conventions and coding guidelines have been followed!**
+* In general, each pull request needs to be approved by the CI platform and at least two reviewers.
+* Reviewers are requested to comply to our :doc:`code review guidelines <../developer_space/code_review_guidelines>`.
+* A maintainer will merge the pull request into the master branch once the reviewers are satisfied.
+* For changes labeled "not code" or "minor" (e.g. changes in documentation, fixes for typos, etc.), the need for code review can be waived.
 
 
 .. note::
@@ -147,8 +143,8 @@ Each change to the code has to be reflected also in the corresponding examples a
 
 .. _user-contributed_modules:
 
-User-contributed modules
-~~~~~~~~~~~~~~~~~~~~~~~~~
+3. User-contributed modules
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The NEST simulator can be extended by `external modules <https://github.com/nest/nest-simulator/wiki/NEST-Modules>`_
 that are loaded at runtime. Some users share their work and you can use the
@@ -166,8 +162,8 @@ and add the topic nest-module.
 
 .. _member:
 
-Become a NEST member
-~~~~~~~~~~~~~~~~~~~~
+4. Become a NEST member
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you would like to be actively involved in the NEST Initiative and support its
 goals, please see our `member page <http://www.nest-initiative.org/membership>`_.
@@ -195,10 +191,10 @@ styleguide for any change you want to make to code or documentation.
 
 * :doc:`Guidelines for creating new models using C++ <guidelines_create_model/index>`
 
-**Developer**
+**Developer section**
 
 * :doc:`Guidelines for reviewing code <../developer_space/code_review_guidelines>`
 
 * :doc:`Guidelines for C++ <../developer_space/coding_guidelines_c++>`
 
-* :doc:`Guidelines for SLI <../developer_space/coding_guidelines_sli>`
+* :doc:`Guidelines for SLI <../developer_space/coding_guidelines_sli

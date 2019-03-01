@@ -5,36 +5,38 @@ To ensure community members provide accurate and quick responses to questions on
 please follow the guidelines below on how to write good questions for the mailing list:
 
 #. Please be patient and polite; we understand that it can be frustrating when things don't work
-   the way you want them to, and we will do our best to help you find a solution as quickly as possible.
+   the way you want them to, and we will do our best to help you find a solution.
 
-#. Write a subject that describes your problem or question
+#. Write a subject that describes your problem or question, be specific.
 
-    .. admonition:: Example for subject text
+#. Keep topics separate.
 
-       **Good example:**  Subject: Which RNG is used for randomizing weights during Connect call?
+   It's better to write multiple emails each with it's own topic thread than
+   to try to ask several diverse questions in one email. Some of your questions may get overlooked if
+   there is just too much information to read through.
 
-       **Bad example:**  Subject help with nest error
+#. Include in the body of the email
 
-#. In the body of the email, write what you want to accomplish with NEST, and any relevant publications or equations
+   * what you want to accomplish and why
+   * your question
+   * the version or system you are using (if relevant)
+   * what steps you have taken so far (what lead to the problem? how far have you come
+     in accomplishing your goal?)
+   * any relevant publications, code snippets, logs, or equations
 
-    .. admonition:: Example body text
+.. admonition:: Example body text
 
-      I am simulating a type X network, based on the paper by Smith and Jones 2007 (DOI link),
-      on a computer cluster with multiple threads.
-      I would like to do Y in such a way that Z is the output.
+   I want to simulate a type X network to try to reproduce the results from the paper by Smith and Jones 2007 (DOI link),
+   on a computer cluster with multiple threads.
+   How do I do Y in such a way that Z is the output in NEST? I am using NEST 2.16.0.
+   So far I have done
 
-#. If you have run into a problem with NEST, **describe the steps** you took that lead to the problem
+   * step 1
+   * step 2
 
-#. If you want to know how to do something in NEST, describe any steps you have taken so far
-
-#. Include the NEST version you are using and the operating system and any relevant sources
-
-    .. admonition:: Example version text
-
-       I am running NEST vesion 2.14.0 on Ubuntu 16.04
-
-
-#. Copy and paste relevant code and/or error outputs.
+Feel free to contribute to the conversation! The purpose of the mailing list
+is to share ideas and solutions. We encourage all our users to provide their
+knowledge and experience to those seeking advice.
 
 Subscribe to the mailing-list here:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,5 +46,4 @@ http://mail.nest-initiative.org/cgi-bin/mailman/listinfo/nest_user
 Archive (only subscribed users)
 http://mail.nest-initiative.org/cgi-bin/mailman/listinfo/nest_user
 
-.. _report_bugs:
 
