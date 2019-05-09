@@ -39,7 +39,7 @@ import pip
 
 # import sphinx_gallery
 import subprocess
-
+import nest
 # import shlex
 # import recommonmark
 
