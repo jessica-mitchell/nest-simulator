@@ -17,5 +17,6 @@ build:
 
 python:
    version: 3.6
-   #system_packages: true
-   requirements_file: doc/requirements.txt
+   install:
+      - requirements: doc/requirements.txt
+        #system_packages: true
