@@ -1,0 +1,750 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.lib.hl_api_connections &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.lib.hl_api_connections</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># hl_api_connections.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for connection handling</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.hl_api_helper</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.hl_api_nodes</span> <span class="k">import</span> <span class="n">Create</span>
+<span class="kn">from</span> <span class="nn">.hl_api_info</span> <span class="k">import</span> <span class="n">GetStatus</span>
+<span class="kn">from</span> <span class="nn">.hl_api_simulation</span> <span class="k">import</span> <span class="n">GetKernelStatus</span><span class="p">,</span> <span class="n">SetKernelStatus</span>
+<span class="kn">from</span> <span class="nn">.hl_api_subnets</span> <span class="k">import</span> <span class="n">GetChildren</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="GetConnections"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.GetConnections">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">GetConnections</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">synapse_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">synapse_label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return an array of connection identifiers.</span>
+
+<span class="sd">    Any combination of source, target, synapse_model and</span>
+<span class="sd">    synapse_label parameters is permitted.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source : list, optional</span>
+<span class="sd">        Source GIDs, only connections from these</span>
+<span class="sd">        pre-synaptic neurons are returned</span>
+<span class="sd">    target : list, optional</span>
+<span class="sd">        Target GIDs, only connections to these</span>
+<span class="sd">        post-synaptic neurons are returned</span>
+<span class="sd">    synapse_model : str, optional</span>
+<span class="sd">        Only connections with this synapse type are returned</span>
+<span class="sd">    synapse_label : int, optional</span>
+<span class="sd">        (non-negative) only connections with this synapse label are returned</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array:</span>
+<span class="sd">        Connections as 5-tuples with entries</span>
+<span class="sd">        (source-gid, target-gid, target-thread, synapse-id, port)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only connections with targets on the MPI process executing</span>
+<span class="sd">    the command are returned.</span>
+
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_coercible_to_sli_array</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;source must be a list of GIDs&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+
+    <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_coercible_to_sli_array</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;target must be a list of GIDs&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
+
+    <span class="k">if</span> <span class="n">synapse_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;synapse_model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">SLILiteral</span><span class="p">(</span><span class="n">synapse_model</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">synapse_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">synapse_label</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;GetConnections&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">spp</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Connect"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.Connect">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Connect</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">conn_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">syn_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connect pre nodes to post nodes.</span>
+
+<span class="sd">    Nodes in pre and post are connected using the specified connectivity</span>
+<span class="sd">    (all-to-all by default) and synapse type (static_synapse by default).</span>
+<span class="sd">    Details depend on the connectivity rule.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pre : list</span>
+<span class="sd">        Presynaptic nodes, as list of GIDs</span>
+<span class="sd">    post : list</span>
+<span class="sd">        Postsynaptic nodes, as list of GIDs</span>
+<span class="sd">    conn_spec : str or dict, optional</span>
+<span class="sd">        Specifies connectivity rule, see below</span>
+<span class="sd">    syn_spec : str or dict, optional</span>
+<span class="sd">        Specifies synapse model, see below</span>
+<span class="sd">    model : str or dict, optional</span>
+<span class="sd">        alias for syn_spec for backward compatibility</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    kernel.NESTError</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Connect does not iterate over subnets, it only connects explicitly</span>
+<span class="sd">    specified nodes.</span>
+
+<span class="sd">    Connectivity specification (conn_spec)</span>
+<span class="sd">    --------------------------------------</span>
+
+<span class="sd">    Connectivity is specified either as a string containing the name of a</span>
+<span class="sd">    connectivity rule (default: &#39;all_to_all&#39;) or as a dictionary specifying</span>
+<span class="sd">    the rule and any mandatory rule-specific parameters (e.g. &#39;indegree&#39;).</span>
+
+<span class="sd">    In addition, switches setting permission for establishing</span>
+<span class="sd">    self-connections (&#39;autapses&#39;, default: True) and multiple connections</span>
+<span class="sd">    between a pair of nodes (&#39;multapses&#39;, default: True) can be contained</span>
+<span class="sd">    in the dictionary. Another switch enables the creation of symmetric</span>
+<span class="sd">    connections (&#39;symmetric&#39;, default: False) by also creating connections</span>
+<span class="sd">    in the opposite direction.</span>
+
+<span class="sd">    Available rules and associated parameters</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    - &#39;all_to_all&#39; (default)</span>
+<span class="sd">    - &#39;one_to_one&#39;</span>
+<span class="sd">    - &#39;fixed_indegree&#39;, &#39;indegree&#39;</span>
+<span class="sd">    - &#39;fixed_outdegree&#39;, &#39;outdegree&#39;</span>
+<span class="sd">    - &#39;fixed_total_number&#39;, &#39;N&#39;</span>
+<span class="sd">    - &#39;pairwise_bernoulli&#39;, &#39;p&#39;</span>
+
+<span class="sd">    Example conn-spec choices</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    - &#39;one_to_one&#39;</span>
+<span class="sd">    - {&#39;rule&#39;: &#39;fixed_indegree&#39;, &#39;indegree&#39;: 2500, &#39;autapses&#39;: False}</span>
+<span class="sd">    - {&#39;rule&#39;: &#39;pairwise_bernoulli&#39;, &#39;p&#39;: 0.1}</span>
+
+<span class="sd">    Synapse specification (syn_spec)</span>
+<span class="sd">    --------------------------------------</span>
+
+<span class="sd">    The synapse model and its properties can be given either as a string</span>
+<span class="sd">    identifying a specific synapse model (default: &#39;static_synapse&#39;) or</span>
+<span class="sd">    as a dictionary specifying the synapse model and its parameters.</span>
+
+<span class="sd">    Available keys in the synapse specification dictionary are:</span>
+<span class="sd">    - &#39;model&#39;</span>
+<span class="sd">    - &#39;weight&#39;</span>
+<span class="sd">    - &#39;delay&#39;</span>
+<span class="sd">    - &#39;receptor_type&#39;</span>
+<span class="sd">    - any parameters specific to the selected synapse model.</span>
+
+<span class="sd">    All parameters are optional and if not specified, the default values</span>
+<span class="sd">    of the synapse model will be used. The key &#39;model&#39; identifies the</span>
+<span class="sd">    synapse model, this can be one of NEST&#39;s built-in synapse models</span>
+<span class="sd">    or a user-defined model created via CopyModel().</span>
+
+<span class="sd">    If &#39;model&#39; is not specified the default model &#39;static_synapse&#39;</span>
+<span class="sd">    will be used.</span>
+
+<span class="sd">    All other parameters can be scalars, arrays or distributions.</span>
+<span class="sd">    In the case of scalar parameters, all keys must be doubles</span>
+<span class="sd">    except for &#39;receptor_type&#39; which must be initialised with an integer.</span>
+
+<span class="sd">    Parameter arrays are available for the rules &#39;one_to_one&#39;,</span>
+<span class="sd">    &#39;all_to_all&#39;, &#39;fixed_indegree&#39; and &#39;fixed_outdegree&#39;:</span>
+<span class="sd">    - For &#39;one_to_one&#39; the array has to be a one-dimensional</span>
+<span class="sd">      NumPy array with length len(pre).</span>
+<span class="sd">    - For &#39;all_to_all&#39; the array has to be a two-dimensional NumPy array</span>
+<span class="sd">      with shape (len(post), len(pre)), therefore the rows describe the</span>
+<span class="sd">      target and the columns the source neurons.</span>
+<span class="sd">    - For &#39;fixed_indegree&#39; the array has to be a two-dimensional NumPy array</span>
+<span class="sd">      with shape (len(post), indegree), where indegree is the number of</span>
+<span class="sd">      incoming connections per target neuron, therefore the rows describe the</span>
+<span class="sd">      target and the columns the connections converging to the target neuron,</span>
+<span class="sd">      regardless of the identity of the source neurons.</span>
+<span class="sd">    - For &#39;fixed_outdegree&#39; the array has to be a two-dimensional NumPy array</span>
+<span class="sd">      with shape (len(pre), outdegree), where outdegree is the number of</span>
+<span class="sd">      outgoing connections per source neuron, therefore the rows describe the</span>
+<span class="sd">      source and the columns the connections starting from the source neuron</span>
+<span class="sd">      regardless of the identity of the target neuron.</span>
+
+<span class="sd">    Any distributed parameter must be initialised with a further dictionary</span>
+<span class="sd">    specifying the distribution type (&#39;distribution&#39;, e.g. &#39;normal&#39;) and</span>
+<span class="sd">    any distribution-specific parameters (e.g. &#39;mu&#39; and &#39;sigma&#39;).</span>
+
+<span class="sd">    To see all available distributions, run:</span>
+<span class="sd">    nest.slirun(&#39;rdevdict info&#39;)</span>
+
+<span class="sd">    To get information on a particular distribution, e.g. &#39;binomial&#39;, run:</span>
+<span class="sd">    nest.help(&#39;rdevdict::binomial&#39;)</span>
+
+<span class="sd">    Most common available distributions and associated parameters</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    - &#39;normal&#39; with &#39;mu&#39;, &#39;sigma&#39;</span>
+<span class="sd">    - &#39;normal_clipped&#39; with &#39;mu&#39;, &#39;sigma&#39;, &#39;low&#39;, &#39;high&#39;</span>
+<span class="sd">    - &#39;lognormal&#39; with &#39;mu&#39;, &#39;sigma&#39;</span>
+<span class="sd">    - &#39;lognormal_clipped&#39; with &#39;mu&#39;, &#39;sigma&#39;, &#39;low&#39;, &#39;high&#39;</span>
+<span class="sd">    - &#39;uniform&#39; with &#39;low&#39;, &#39;high&#39;</span>
+<span class="sd">    - &#39;uniform_int&#39; with &#39;low&#39;, &#39;high&#39;</span>
+
+<span class="sd">    Example syn-spec choices</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    - &#39;stdp_synapse&#39;</span>
+<span class="sd">    - {&#39;weight&#39;: 2.4, &#39;receptor_type&#39;: 1}</span>
+<span class="sd">    - {&#39;model&#39;: &#39;stdp_synapse&#39;,</span>
+<span class="sd">       &#39;weight&#39;: 2.5,</span>
+<span class="sd">       &#39;delay&#39;: {&#39;distribution&#39;: &#39;uniform&#39;, &#39;low&#39;: 0.8, &#39;high&#39;: 2.5},</span>
+<span class="sd">       &#39;alpha&#39;: {</span>
+<span class="sd">           &#39;distribution&#39;: &#39;normal_clipped&#39;, &#39;low&#39;: 0.5,</span>
+<span class="sd">           &#39;mu&#39;: 5.0, &#39;sigma&#39;: 1.0}</span>
+<span class="sd">      }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">deprecation_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="s2">&quot;The argument &#39;model&#39; is there for backward compatibility with &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;the old Connect function and will be removed in a future&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version of NEST. Please change the name of the keyword argument &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;from &#39;model&#39; to &#39;syn_spec&#39;. For details, see the documentation &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;at:</span><span class="se">\n</span><span class="s2">http://www.nest-simulator.org/connection_management&quot;</span>
+        <span class="p">])</span>
+        <span class="n">show_deprecation_warning</span><span class="p">(</span><span class="s2">&quot;BackwardCompatibilityConnect&quot;</span><span class="p">,</span>
+                                 <span class="n">text</span><span class="o">=</span><span class="n">deprecation_text</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">syn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;model&#39; is an alias for &#39;syn_spec&#39; and cannot &quot;</span>
+            <span class="s2">&quot;be used together with &#39;syn_spec&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span>
+    <span class="n">sps</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+
+    <span class="c1"># default rule</span>
+    <span class="n">rule</span> <span class="o">=</span> <span class="s1">&#39;all_to_all&#39;</span>
+
+    <span class="k">if</span> <span class="n">conn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sps</span><span class="p">(</span><span class="n">conn_spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">conn_spec</span><span class="p">):</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">conn_spec</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;cvlit&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conn_spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">conn_spec</span><span class="p">[</span><span class="s1">&#39;rule&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                <span class="s2">&quot;conn_spec needs to be a string or dictionary.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;/Connect /conn_spec GetOption&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">syn_spec</span> <span class="o">=</span> <span class="n">model</span>
+
+    <span class="k">if</span> <span class="n">syn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">):</span>
+            <span class="n">sps</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">)</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;cvlit&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">syn_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="c1"># if value is a list, it is converted to a numpy array</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">generic</span><span class="p">)):</span>
+
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s1">&#39;one_to_one&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">):</span>
+                                <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                    <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has to be an array of &quot;</span>
+                                    <span class="s2">&quot;dimension &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;, a &quot;</span>
+                                    <span class="s2">&quot;scalar or a dictionary.&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">syn_spec</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has the wrong type. &quot;</span>
+                                <span class="s2">&quot;One-dimensional parameter arrays can &quot;</span>
+                                <span class="s2">&quot;only be used in conjunction with rule &quot;</span>
+                                <span class="s2">&quot;&#39;one_to_one&#39;.&quot;</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s1">&#39;all_to_all&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="ow">or</span> \
+                                    <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">):</span>
+
+                                <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                    <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has to be an array of &quot;</span>
+                                    <span class="s2">&quot;dimension &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span>
+                                    <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">))</span> <span class="o">+</span>
+                                    <span class="s2">&quot; (n_target x n_sources), &quot;</span> <span class="o">+</span>
+                                    <span class="s2">&quot;a scalar or a dictionary.&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">syn_spec</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                        <span class="k">elif</span> <span class="n">rule</span> <span class="o">==</span> <span class="s1">&#39;fixed_indegree&#39;</span><span class="p">:</span>
+                            <span class="n">indegree</span> <span class="o">=</span> <span class="n">conn_spec</span><span class="p">[</span><span class="s1">&#39;indegree&#39;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="ow">or</span> \
+                                    <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">indegree</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                    <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has to be an array of &quot;</span>
+                                    <span class="s2">&quot;dimension &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">post</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span>
+                                    <span class="nb">str</span><span class="p">(</span><span class="n">indegree</span><span class="p">)</span> <span class="o">+</span>
+                                    <span class="s2">&quot; (n_target x indegree), &quot;</span> <span class="o">+</span>
+                                    <span class="s2">&quot;a scalar or a dictionary.&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">syn_spec</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                        <span class="k">elif</span> <span class="n">rule</span> <span class="o">==</span> <span class="s1">&#39;fixed_outdegree&#39;</span><span class="p">:</span>
+                            <span class="n">outdegree</span> <span class="o">=</span> <span class="n">conn_spec</span><span class="p">[</span><span class="s1">&#39;outdegree&#39;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="ow">or</span> \
+                                    <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">outdegree</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                    <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has to be an array of &quot;</span>
+                                    <span class="s2">&quot;dimension &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pre</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span>
+                                    <span class="nb">str</span><span class="p">(</span><span class="n">outdegree</span><span class="p">)</span> <span class="o">+</span>
+                                    <span class="s2">&quot; (n_sources x outdegree), &quot;</span> <span class="o">+</span>
+                                    <span class="s2">&quot;a scalar or a dictionary.&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">syn_spec</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                                <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;&#39; has the wrong type. &quot;</span>
+                                <span class="s2">&quot;Two-dimensional parameter arrays can &quot;</span>
+                                <span class="s2">&quot;only be used in conjunction with rules &quot;</span>
+                                <span class="s2">&quot;&#39;all_to_all&#39;, &#39;fixed_indegree&#39; or &quot;</span>
+                                <span class="s2">&quot;&#39;fixed_outdegree&#39;.&quot;</span><span class="p">)</span>
+            <span class="n">sps</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+                <span class="s2">&quot;syn_spec needs to be a string or dictionary.&quot;</span><span class="p">)</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;Connect&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataConnect"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.DataConnect">[docs]</a><span class="nd">@check_stack</span>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;DataConnect is deprecated and will be removed in NEST 3.0.</span><span class="se">\</span>
+<span class="s1">Use Connect() with one_to_one rule instead.&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">DataConnect</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;static_synapse&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Connect neurons from lists of connection data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pre : list</span>
+<span class="sd">        Presynaptic nodes, given as lists of GIDs or lists</span>
+<span class="sd">        of synapse status dictionaries. See below.</span>
+<span class="sd">    params : list, optional</span>
+<span class="sd">        See below</span>
+<span class="sd">    model : str, optional</span>
+<span class="sd">        Synapse model to use, see below</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+
+<span class="sd">    Usage Variants</span>
+<span class="sd">    --------------</span>
+
+<span class="sd">    Variant 1</span>
+<span class="sd">    ~~~~~~~~~</span>
+
+<span class="sd">    Connect each neuron in pre to the targets given in params,</span>
+<span class="sd">    using synapse type model.</span>
+
+<span class="sd">    - pre: [gid_1, ... gid_n]</span>
+<span class="sd">    - params: [ {param_1}, ..., {param_n} ]</span>
+<span class="sd">    - model= &#39;synapse_model&#39;</span>
+
+<span class="sd">    The dictionaries param_1 to param_n must contain at least the</span>
+<span class="sd">    following keys:</span>
+<span class="sd">    - &#39;target&#39;</span>
+<span class="sd">    - &#39;weight&#39;</span>
+<span class="sd">    - &#39;delay&#39;</span>
+<span class="sd">    Each key must resolve to a list or numpy.ndarray of values.</span>
+
+<span class="sd">    Depending on the synapse model, other parameters can be given</span>
+<span class="sd">    in the same format. All arrays in params must have the same</span>
+<span class="sd">    length as &#39;target&#39;.</span>
+
+<span class="sd">    Variant 2</span>
+<span class="sd">    ~~~~~~~~~</span>
+
+<span class="sd">    Connect neurons according to a list of synapse status dictionaries,</span>
+<span class="sd">    as obtained from GetStatus.</span>
+
+<span class="sd">    pre = [ {synapse_state1}, ..., {synapse_state_n}]</span>
+<span class="sd">    params=None</span>
+<span class="sd">    model=None</span>
+
+<span class="sd">    During connection, status dictionary misses will not raise errors,</span>
+<span class="sd">    even if the kernel property &#39;dict_miss_is_error&#39; is True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_coercible_to_sli_array</span><span class="p">(</span><span class="n">pre</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;pre must be a list of nodes or connection dictionaries&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_coercible_to_sli_array</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;params must be a list of dictionaries&quot;</span><span class="p">)</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="si">{0}</span><span class="s1">) DataConnect_i_D_s &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+            <span class="n">sps</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">sps</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="n">sr</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Call the variant where all connections are given explicitly</span>
+        <span class="c1"># Disable dict checking, because most models can&#39;t re-use</span>
+        <span class="c1"># their own status dict</span>
+
+        <span class="n">dict_miss</span> <span class="o">=</span> <span class="n">GetKernelStatus</span><span class="p">(</span><span class="s1">&#39;dict_miss_is_error&#39;</span><span class="p">)</span>
+        <span class="n">SetKernelStatus</span><span class="p">({</span><span class="s1">&#39;dict_miss_is_error&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+        <span class="n">sps</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span>
+        <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;DataConnect_a&#39;</span><span class="p">)</span>
+
+        <span class="n">SetKernelStatus</span><span class="p">({</span><span class="s1">&#39;dict_miss_is_error&#39;</span><span class="p">:</span> <span class="n">dict_miss</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="CGConnect"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.CGConnect">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">CGConnect</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">parameter_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;static_synapse&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Connect neurons using the Connection Generator Interface.</span>
+
+<span class="sd">    Potential pre-synaptic neurons are taken from pre, potential</span>
+<span class="sd">    post-synaptic neurons are taken from post. The connection</span>
+<span class="sd">    generator cg specifies the exact connectivity to be set up. The</span>
+<span class="sd">    parameter_map can either be None or a dictionary that maps the</span>
+<span class="sd">    keys &quot;weight&quot; and &quot;delay&quot; to their integer indices in the value</span>
+<span class="sd">    set of the connection generator.</span>
+
+<span class="sd">    This function is only available if NEST was compiled with</span>
+<span class="sd">    support for libneurosim.</span>
+
+<span class="sd">    For further information, see</span>
+<span class="sd">    * The NEST documentation on using the CG Interface at</span>
+<span class="sd">      http://nest-simulator.org/connection-generator-interface</span>
+<span class="sd">    * The GitHub repository and documentation for libneurosim at</span>
+<span class="sd">      https://github.com/INCF/libneurosim/</span>
+<span class="sd">    * The publication about the Connection Generator Interface at</span>
+<span class="sd">      https://doi.org/10.3389/fninf.2014.00043</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pre : list or numpy.array</span>
+<span class="sd">        must contain a list of GIDs</span>
+<span class="sd">    post : list or numpy.array</span>
+<span class="sd">        must contain a list of GIDs</span>
+<span class="sd">    cg : connection generator</span>
+<span class="sd">        libneurosim connection generator to use</span>
+<span class="sd">    parameter_map : dict, optional</span>
+<span class="sd">        Maps names of values such as weight and delay to</span>
+<span class="sd">        value set positions</span>
+<span class="sd">    model : str, optional</span>
+<span class="sd">        Synapse model to use</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    kernel.NESTError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;statusdict/have_libneurosim ::&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spp</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+            <span class="s2">&quot;NEST was not compiled with support for libneurosim: &quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;CGConnect is not available.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">parameter_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parameter_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">sli_func</span><span class="p">(</span><span class="s1">&#39;CGConnect&#39;</span><span class="p">,</span> <span class="n">cg</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span>
+             <span class="n">parameter_map</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model</span><span class="p">,</span> <span class="n">litconv</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CGParse"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.CGParse">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">CGParse</span><span class="p">(</span><span class="n">xml_filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse an XML file and return the corresponding connection</span>
+<span class="sd">    generator cg.</span>
+
+<span class="sd">    The library to provide the parsing can be selected</span>
+<span class="sd">    by CGSelectImplementation().</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xml_filename : str</span>
+<span class="sd">        Filename of the xml file to parse.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    kernel.NESTError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;statusdict/have_libneurosim ::&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spp</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+            <span class="s2">&quot;NEST was not compiled with support for libneurosim: &quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;CGParse is not available.&quot;</span><span class="p">)</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">xml_filename</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;CGParse&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">spp</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CGSelectImplementation"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.CGSelectImplementation">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">CGSelectImplementation</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">library</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select a library to provide a parser for XML files and associate</span>
+<span class="sd">    an XML tag with the library.</span>
+
+<span class="sd">    XML files can be read by CGParse().</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tag : str</span>
+<span class="sd">        XML tag to associate with the library</span>
+<span class="sd">    library : str</span>
+<span class="sd">        Library to use to parse XML files</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    kernel.NESTError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;statusdict/have_libneurosim ::&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">spp</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span>
+            <span class="s2">&quot;NEST was not compiled with support for libneurosim: &quot;</span> <span class="o">+</span>
+            <span class="s2">&quot;CGSelectImplementation is not available.&quot;</span><span class="p">)</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+    <span class="n">sps</span><span class="p">(</span><span class="n">library</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;CGSelectImplementation&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DisconnectOneToOne"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.DisconnectOneToOne">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">DisconnectOneToOne</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">syn_spec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Disconnect a currently existing synapse.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source : int</span>
+<span class="sd">        GID of presynaptic node</span>
+<span class="sd">    target : int</span>
+<span class="sd">        GID of postsynaptic node</span>
+<span class="sd">    syn_spec : str or dict</span>
+<span class="sd">        See Connect() for definition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="n">sps</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">syn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sps</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">):</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;cvlit&quot;</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;Disconnect&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Disconnect"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_connections.Disconnect">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Disconnect</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">conn_spec</span><span class="p">,</span> <span class="n">syn_spec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Disconnect pre neurons from post neurons.</span>
+
+<span class="sd">    Neurons in pre and post are disconnected using the specified disconnection</span>
+<span class="sd">    rule (one-to-one by default) and synapse type (static_synapse by default).</span>
+<span class="sd">    Details depend on the disconnection rule.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pre : list</span>
+<span class="sd">        Presynaptic nodes, given as list of GIDs</span>
+<span class="sd">    post : list</span>
+<span class="sd">        Postsynaptic nodes, given as list of GIDs</span>
+<span class="sd">    conn_spec : str or dict</span>
+<span class="sd">        Disconnection rule, see below</span>
+<span class="sd">    syn_spec : str or dict</span>
+<span class="sd">        Synapse specifications, see below</span>
+
+<span class="sd">    conn_spec</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Apply the same rules as for connectivity specs in the Connect method</span>
+
+<span class="sd">    Possible choices of the conn_spec are</span>
+<span class="sd">    - &#39;one_to_one&#39;</span>
+<span class="sd">    - &#39;all_to_all&#39;</span>
+
+<span class="sd">    syn_spec</span>
+<span class="sd">    --------</span>
+<span class="sd">    The synapse model and its properties can be inserted either as a</span>
+<span class="sd">    string describing one synapse model (synapse models are listed in the</span>
+<span class="sd">    synapsedict) or as a dictionary as described below.</span>
+
+<span class="sd">    If no synapse model is specified the default model &#39;static_synapse&#39;</span>
+<span class="sd">    will be used.</span>
+
+<span class="sd">    Available keys in the synapse dictionary are:</span>
+<span class="sd">    - &#39;model&#39;</span>
+<span class="sd">    - &#39;weight&#39;</span>
+<span class="sd">    - &#39;delay&#39;,</span>
+<span class="sd">    - &#39;receptor_type&#39;</span>
+<span class="sd">    - parameters specific to the synapse model chosen</span>
+
+<span class="sd">    All parameters are optional and if not specified will use the default</span>
+<span class="sd">    values determined by the current synapse model.</span>
+
+<span class="sd">    &#39;model&#39; determines the synapse type, taken from pre-defined synapse</span>
+<span class="sd">    types in NEST or manually specified synapses created via CopyModel().</span>
+
+<span class="sd">    All other parameters are not currently implemented.</span>
+<span class="sd">    Note: model is alias for syn_spec for backward compatibility.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Disconnect does not iterate over subnets, it only connects explicitly</span>
+<span class="sd">    specified nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;cvgidcollection&#39;</span><span class="p">)</span>
+    <span class="n">sps</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;cvgidcollection&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">conn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sps</span><span class="p">(</span><span class="n">conn_spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">conn_spec</span><span class="p">):</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;cvlit&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">syn_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sps</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">syn_spec</span><span class="p">):</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;cvlit&quot;</span><span class="p">)</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;Disconnect_g_g_D_D&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

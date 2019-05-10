@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_mc_neuron &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_mc_neuron</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_mc_neuron.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">nest</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">HAVE_GSL</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">sli_func</span><span class="p">(</span><span class="s2">&quot;statusdict/have_gsl ::&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TestMCNeuron"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_mc_neuron.TestMCNeuron">[docs]</a><span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TestMCNeuron</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="c1"># neuron parameter</span>
+    <span class="n">V_th</span> <span class="o">=</span> <span class="o">-</span><span class="mf">60.0</span>           <span class="c1"># threshold potential</span>
+    <span class="n">V_reset</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.0</span>        <span class="c1"># reset potential</span>
+    <span class="n">t_ref</span> <span class="o">=</span> <span class="mf">10.0</span>           <span class="c1"># refractory period</span>
+    <span class="n">g_sp</span> <span class="o">=</span> <span class="mf">5.0</span>             <span class="c1"># somato-proximal coupling conductance</span>
+    <span class="n">soma</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;g_L&#39;</span><span class="p">:</span> <span class="mf">12.0</span><span class="p">}</span>  <span class="c1"># somatic leak conductance</span>
+    <span class="n">tau_syn_ex</span> <span class="o">=</span> <span class="mf">1.0</span>       <span class="c1"># proximal excitatory synaptic time constants</span>
+    <span class="n">tau_syn_in</span> <span class="o">=</span> <span class="mf">5.0</span>       <span class="c1"># proximal inhibitory synaptic time constants</span>
+    <span class="n">proximal</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tau_syn_ex&#39;</span><span class="p">:</span> <span class="n">tau_syn_ex</span><span class="p">,</span> <span class="s1">&#39;tau_syn_in&#39;</span><span class="p">:</span> <span class="n">tau_syn_in</span><span class="p">}</span>
+    <span class="n">distal</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C_m&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">}</span>  <span class="c1"># distal capacitance</span>
+    <span class="c1"># paramter for recording time of compartements</span>
+    <span class="n">rec_dic_dc_soma</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="mf">250.0</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span> <span class="mf">300.0</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span>  <span class="mf">50.0</span><span class="p">}</span>
+    <span class="n">rec_dic_dc_proximal</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="mf">150.0</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span> <span class="mf">200.0</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">}</span>
+    <span class="n">rec_dic_dc_distal</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span>  <span class="mf">50.0</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">}</span>
+    <span class="n">rec_sp_soma_ex</span> <span class="o">=</span> <span class="p">[</span><span class="mf">600.0</span><span class="p">,</span> <span class="mf">620.0</span><span class="p">]</span>  <span class="c1"># soma excitatory</span>
+    <span class="n">rec_sp_soma_in</span> <span class="o">=</span> <span class="p">[</span><span class="mf">610.0</span><span class="p">,</span> <span class="mf">630.0</span><span class="p">]</span>  <span class="c1"># soma inhibitory</span>
+    <span class="n">rec_sp_prox_ex</span> <span class="o">=</span> <span class="p">[</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">520.0</span><span class="p">]</span>  <span class="c1"># proximal excitatory</span>
+    <span class="n">rec_sp_prox_in</span> <span class="o">=</span> <span class="p">[</span><span class="mf">510.0</span><span class="p">,</span> <span class="mf">530.0</span><span class="p">]</span>  <span class="c1"># proximal inhibitory</span>
+    <span class="n">rec_sp_dist_ex</span> <span class="o">=</span> <span class="p">[</span><span class="mf">400.0</span><span class="p">,</span> <span class="mf">420.0</span><span class="p">]</span>  <span class="c1"># distal excitatory</span>
+    <span class="n">rec_sp_dist_in</span> <span class="o">=</span> <span class="p">[</span><span class="mf">410.0</span><span class="p">,</span> <span class="mf">430.0</span><span class="p">]</span>  <span class="c1"># distal inhibitory</span>
+    <span class="c1"># simulation time</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="mi">700</span>       <span class="c1"># simulation time of initial simulation</span>
+    <span class="n">t_stim</span> <span class="o">=</span> <span class="mi">300</span>   <span class="c1"># simulation time of with stimulation of soma</span>
+    <span class="c1"># strength of instrinsic current in soma</span>
+    <span class="n">I_e</span> <span class="o">=</span> <span class="mf">150.0</span>
+    <span class="c1"># test data</span>
+    <span class="n">Vm_soma_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="o">-</span><span class="mf">70.00033871</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00033626</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00033383</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00033141</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00032901</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00032662</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00032426</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00032191</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00031957</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00031725</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00030162</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00021189</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.99998874</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99958683</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99897263</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.99812256</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99702137</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99566068</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.99403779</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99215463</span><span class="p">])</span>
+    <span class="n">Vm_prox_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="o">-</span><span class="mf">70.00041394</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00041065</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00040738</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00040414</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00040093</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00039774</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00039457</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00039143</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00038832</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00038523</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.98857137</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.95638129</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.90815375</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.84758846</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.77782368</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.70150641</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.62085572</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.53771917</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.45362308</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.36981694</span><span class="p">])</span>
+    <span class="n">Vm_dist_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="o">-</span><span class="mf">70.0003797</span><span class="p">,</span>  <span class="o">-</span><span class="mf">70.00037554</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00037143</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00036737</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00036335</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00035938</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00035545</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00035157</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00034773</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00034393</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00033573</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00030289</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">70.00022565</span><span class="p">,</span> <span class="o">-</span><span class="mf">70.00008895</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99988167</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.99959601</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.99922696</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.9987718</span><span class="p">,</span>
+                               <span class="o">-</span><span class="mf">69.9982297</span><span class="p">,</span>  <span class="o">-</span><span class="mf">69.99760137</span><span class="p">])</span>
+    <span class="n">gex_soma_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">gex_prox_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span>
+                              <span class="mf">0.24596033</span><span class="p">,</span> <span class="mf">0.44510821</span><span class="p">,</span> <span class="mf">0.60412585</span><span class="p">,</span>
+                              <span class="mf">0.72884756</span><span class="p">,</span> <span class="mf">0.82436068</span><span class="p">,</span> <span class="mf">0.89509487</span><span class="p">,</span>
+                              <span class="mf">0.94490122</span><span class="p">,</span> <span class="mf">0.97712226</span><span class="p">,</span> <span class="mf">0.99465388</span><span class="p">,</span>
+                              <span class="mf">1.00000005</span><span class="p">])</span>
+    <span class="n">gex_dist_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="c1"># position of test data</span>
+    <span class="n">I0</span><span class="p">,</span> <span class="n">I1</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">5020</span>
+
+<div class="viewcode-block" id="TestMCNeuron.setUp"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_mc_neuron.TestMCNeuron.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s1">&#39;iaf_cond_alpha_mc&#39;</span><span class="p">,</span>
+                         <span class="p">{</span><span class="s1">&#39;V_th&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_th</span><span class="p">,</span>
+                          <span class="s1">&#39;V_reset&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_reset</span><span class="p">,</span>
+                          <span class="s1">&#39;t_ref&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_ref</span><span class="p">,</span>
+                          <span class="s1">&#39;g_sp&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_sp</span><span class="p">,</span>
+                          <span class="s1">&#39;soma&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">soma</span><span class="p">,</span>
+                          <span class="s1">&#39;proximal&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">proximal</span><span class="p">,</span>
+                          <span class="s1">&#39;distal&#39;</span><span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">distal</span>
+                          <span class="p">})</span></div>
+
+<div class="viewcode-block" id="TestMCNeuron.setUpNodes"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_mc_neuron.TestMCNeuron.setUpNodes">[docs]</a>    <span class="k">def</span> <span class="nf">setUpNodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;iaf_cond_alpha_mc&#39;</span><span class="p">)</span>
+        <span class="n">rqs</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="s1">&#39;iaf_cond_alpha_mc&#39;</span><span class="p">)[</span><span class="s1">&#39;recordables&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;multimeter&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;record_from&#39;</span><span class="p">:</span> <span class="n">rqs</span><span class="p">,</span>
+                                                    <span class="s1">&#39;interval&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cgs</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;dc_generator&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cgs</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rec_dic_dc_soma</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">rec_dic_dc_proximal</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">rec_dic_dc_distal</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sgs</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;spike_generator&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sgs</span><span class="p">,</span> <span class="p">[{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_soma_ex</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_soma_in</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_prox_ex</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_prox_in</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_dist_ex</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_sp_dist_in</span><span class="p">}])</span></div>
+
+<div class="viewcode-block" id="TestMCNeuron.setUpNetwork"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_mc_neuron.TestMCNeuron.setUpNetwork">[docs]</a>    <span class="k">def</span> <span class="nf">setUpNetwork</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">syns</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="s1">&#39;iaf_cond_alpha_mc&#39;</span><span class="p">)[</span><span class="s1">&#39;receptor_types&#39;</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;soma_curr&#39;</span><span class="p">,</span> <span class="s1">&#39;proximal_curr&#39;</span><span class="p">,</span> <span class="s1">&#39;distal_curr&#39;</span><span class="p">,</span> <span class="s1">&#39;soma_exc&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;soma_inh&#39;</span><span class="p">,</span> <span class="s1">&#39;proximal_exc&#39;</span><span class="p">,</span> <span class="s1">&#39;proximal_inh&#39;</span><span class="p">,</span> <span class="s1">&#39;distal_exc&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;distal_inh&#39;</span><span class="p">]</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">label</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cgs</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+                         <span class="n">syn_spec</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;receptor_type&#39;</span><span class="p">:</span> <span class="n">syns</span><span class="p">[</span><span class="n">l</span><span class="p">]})</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">3</span><span class="p">:]):</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sgs</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+                         <span class="n">syn_spec</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;receptor_type&#39;</span><span class="p">:</span> <span class="n">syns</span><span class="p">[</span><span class="n">l</span><span class="p">]})</span></div>
+
+<div class="viewcode-block" id="TestMCNeuron.testNeuron"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_mc_neuron.TestMCNeuron.testNeuron">[docs]</a>    <span class="k">def</span> <span class="nf">testNeuron</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setUpNodes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setUpNetwork</span><span class="p">()</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;soma&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;I_e&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_e</span><span class="p">}})</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_stim</span><span class="p">)</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mm</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;events&#39;</span><span class="p">]</span>
+        <span class="c1"># test membrane potential recorded in the soma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;V_m.s&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">Vm_soma_test</span><span class="p">))</span>
+        <span class="c1"># test membrane potential in the proximal compartment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;V_m.p&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">Vm_prox_test</span><span class="p">))</span>
+        <span class="c1"># test membrane potential in the distal compartment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;V_m.d&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">Vm_dist_test</span><span class="p">))</span>
+        <span class="c1"># test conductance recorded in the soma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;g_ex.s&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">gex_soma_test</span><span class="p">))</span>
+        <span class="c1"># test conductance in the proximal compartment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;g_ex.p&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">gex_prox_test</span><span class="p">))</span>
+        <span class="c1"># test conductance in the distal compartment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;g_ex.d&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">I0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">I1</span><span class="p">],</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">gex_dist_test</span><span class="p">))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestLoader</span><span class="p">()</span><span class="o">.</span><span class="n">loadTestsFromTestCase</span><span class="p">(</span><span class="n">TestMCNeuron</span><span class="p">)</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

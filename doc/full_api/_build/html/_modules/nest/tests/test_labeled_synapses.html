@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_labeled_synapses &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_labeled_synapses</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_labeled_synapses.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Test setting and getting labels on synapses.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">nest</span>
+
+<span class="n">HAVE_GSL</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">sli_func</span><span class="p">(</span><span class="s2">&quot;statusdict/have_gsl ::&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase">[docs]</a><span class="nd">@nest</span><span class="o">.</span><span class="n">check_stack</span>
+<span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">LabeledSynapsesTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test labeled synapses&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.default_network"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.default_network">[docs]</a>    <span class="k">def</span> <span class="nf">default_network</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">syn_model</span><span class="p">):</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="c1"># set volume transmitter for stdp_dopamine_synapse_lbl</span>
+        <span class="n">vol</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;volume_transmitter&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s1">&#39;stdp_dopamine_synapse&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;vt&#39;</span><span class="p">:</span> <span class="n">vol</span><span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s1">&#39;stdp_dopamine_synapse_lbl&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;vt&#39;</span><span class="p">:</span> <span class="n">vol</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s1">&#39;stdp_dopamine_synapse_hpc&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;vt&#39;</span><span class="p">:</span> <span class="n">vol</span><span class="p">[</span><span class="mi">2</span><span class="p">]})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_model_connections</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;rate_connection_instantaneous&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rate_connection_instantaneous_lbl&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rate_connection_delayed&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rate_connection_delayed_lbl&#39;</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">siegert_connections</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;diffusion_connection&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;diffusion_connection_lbl&#39;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># create neurons that accept all synapse connections (especially gap</span>
+        <span class="c1"># junctions)... hh_psc_alpha_gap is only available with GSL, hence the</span>
+        <span class="c1"># skipIf above</span>
+        <span class="n">neurons</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;hh_psc_alpha_gap&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># in case of rate model connections use the lin_rate_ipn model instead</span>
+        <span class="k">if</span> <span class="n">syn_model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_model_connections</span><span class="p">:</span>
+            <span class="n">neurons</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;lin_rate_ipn&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># in case of siegert connections use the siegert_neuron model instead</span>
+        <span class="k">if</span> <span class="n">syn_model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">siegert_connections</span><span class="p">:</span>
+            <span class="n">neurons</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;siegert_neuron&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">neurons</span></div>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.test_SetLabelToSynapseOnConnect"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.test_SetLabelToSynapseOnConnect">[docs]</a>    <span class="k">def</span> <span class="nf">test_SetLabelToSynapseOnConnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a label to a labeled synapse on connect.&quot;&quot;&quot;</span>
+
+        <span class="n">labeled_synapse_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">Models</span><span class="p">(</span>
+            <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;synapses&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_lbl&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">syn</span> <span class="ow">in</span> <span class="n">labeled_synapse_models</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_network</span><span class="p">(</span><span class="n">syn</span><span class="p">)</span>
+
+            <span class="c1"># see if symmetric connections are required</span>
+            <span class="n">symm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s1">&#39;requires_symmetric&#39;</span><span class="p">)</span>
+
+            <span class="c1"># set a label during connection</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span> <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">,</span> <span class="s2">&quot;synapse_label&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span>
+                <span class="nb">all</span><span class="p">([</span>
+                    <span class="n">status</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">123</span>
+                    <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="p">])</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.test_SetLabelToSynapseSetStatus"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.test_SetLabelToSynapseSetStatus">[docs]</a>    <span class="k">def</span> <span class="nf">test_SetLabelToSynapseSetStatus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a label to a labeled synapse on SetStatus.&quot;&quot;&quot;</span>
+
+        <span class="n">labeled_synapse_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">Models</span><span class="p">(</span>
+            <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;synapses&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_lbl&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">syn</span> <span class="ow">in</span> <span class="n">labeled_synapse_models</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_network</span><span class="p">(</span><span class="n">syn</span><span class="p">)</span>
+
+            <span class="c1"># see if symmetric connections are required</span>
+            <span class="n">symm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s1">&#39;requires_symmetric&#39;</span><span class="p">)</span>
+
+            <span class="c1"># set no label during connection</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span> <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">})</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="c1"># still unlabeled</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span>
+                <span class="nb">all</span><span class="p">([</span>
+                    <span class="n">status</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="p">])</span>
+            <span class="p">)</span>
+
+            <span class="c1"># set a label</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span>
+                <span class="nb">all</span><span class="p">([</span>
+                    <span class="n">status</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">123</span>
+                    <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="p">])</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.test_SetLabelToSynapseSetDefaults"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.test_SetLabelToSynapseSetDefaults">[docs]</a>    <span class="k">def</span> <span class="nf">test_SetLabelToSynapseSetDefaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a label to a labeled synapse on SetDefaults.&quot;&quot;&quot;</span>
+
+        <span class="n">labeled_synapse_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">Models</span><span class="p">(</span>
+            <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;synapses&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_lbl&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">syn</span> <span class="ow">in</span> <span class="n">labeled_synapse_models</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_network</span><span class="p">(</span><span class="n">syn</span><span class="p">)</span>
+
+            <span class="c1"># see if symmetric connections are required</span>
+            <span class="n">symm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s1">&#39;requires_symmetric&#39;</span><span class="p">)</span>
+
+            <span class="c1"># set a label during SetDefaults</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span> <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">})</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span>
+                <span class="nb">all</span><span class="p">([</span>
+                    <span class="n">status</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">123</span>
+                    <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="p">])</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.test_GetLabeledSynapses"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.test_GetLabeledSynapses">[docs]</a>    <span class="k">def</span> <span class="nf">test_GetLabeledSynapses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get labeled synapses with GetConnections.&quot;&quot;&quot;</span>
+
+        <span class="n">labeled_synapse_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">Models</span><span class="p">(</span>
+            <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;synapses&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_lbl&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">syn</span> <span class="ow">in</span> <span class="n">labeled_synapse_models</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_network</span><span class="p">(</span><span class="n">syn</span><span class="p">)</span>
+
+            <span class="c1"># see if symmetric connections are required</span>
+            <span class="n">symm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s1">&#39;requires_symmetric&#39;</span><span class="p">)</span>
+
+            <span class="c1"># some more connections</span>
+            <span class="n">synapse_type</span> <span class="o">=</span> <span class="s2">&quot;static_synapse&quot;</span>
+            <span class="k">if</span> <span class="n">syn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_model_connections</span><span class="p">:</span>
+                <span class="n">synapse_type</span> <span class="o">=</span> <span class="s2">&quot;rate_connection_instantaneous&quot;</span>
+            <span class="k">if</span> <span class="n">syn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">siegert_connections</span><span class="p">:</span>
+                <span class="n">synapse_type</span> <span class="o">=</span> <span class="s2">&quot;diffusion_connection&quot;</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">synapse_type</span><span class="p">})</span>
+            <span class="c1"># set a label during connection</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span> <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">,</span> <span class="s2">&quot;synapse_label&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">synapse_label</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span>
+                <span class="nb">all</span><span class="p">([</span>
+                    <span class="n">status</span><span class="p">[</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">123</span>
+                    <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="p">])</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LabeledSynapsesTestCase.test_SetLabelToNotLabeledSynapse"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.LabeledSynapsesTestCase.test_SetLabelToNotLabeledSynapse">[docs]</a>    <span class="k">def</span> <span class="nf">test_SetLabelToNotLabeledSynapse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Try set a label to an &#39;un-label-able&#39; synapse.&quot;&quot;&quot;</span>
+        <span class="n">labeled_synapse_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">Models</span><span class="p">(</span>
+            <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;synapses&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_lbl&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">syn</span> <span class="ow">in</span> <span class="n">labeled_synapse_models</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_network</span><span class="p">(</span><span class="n">syn</span><span class="p">)</span>
+
+            <span class="c1"># see if symmetric connections are required</span>
+            <span class="n">symm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="s1">&#39;requires_symmetric&#39;</span><span class="p">)</span>
+
+            <span class="c1"># try set a label during SetDefaults</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">):</span>
+                <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="n">syn</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+
+            <span class="c1"># try set on connect</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">):</span>
+                <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                             <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">,</span> <span class="s2">&quot;synapse_label&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+
+            <span class="c1"># plain connection</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;one_to_one&quot;</span><span class="p">,</span> <span class="s2">&quot;make_symmetric&quot;</span><span class="p">:</span> <span class="n">symm</span><span class="p">},</span>
+                         <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">syn</span><span class="p">})</span>
+            <span class="c1"># try set on SetStatus</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">):</span>
+                <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;synapse_label&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="suite"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.suite">[docs]</a><span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">makeSuite</span><span class="p">(</span><span class="n">LabeledSynapsesTestCase</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">suite</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_labeled_synapses.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

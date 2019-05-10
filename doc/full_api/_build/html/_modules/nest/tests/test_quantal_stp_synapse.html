@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_quantal_stp_synapse &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_quantal_stp_synapse</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_quantal_stp_synapse.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="c1"># This script compares the two variants of the Tsodyks/Markram synapse in NEST.</span>
+
+<span class="kn">import</span> <span class="nn">nest</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+
+<div class="viewcode-block" id="QuantalSTPSynapseTestCase"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_quantal_stp_synapse.QuantalSTPSynapseTestCase">[docs]</a><span class="nd">@nest</span><span class="o">.</span><span class="n">check_stack</span>
+<span class="k">class</span> <span class="nc">QuantalSTPSynapseTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compare quantal_stp_synapse with its deterministic equivalent.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="QuantalSTPSynapseTestCase.test_QuantalSTPSynapse"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_quantal_stp_synapse.QuantalSTPSynapseTestCase.test_QuantalSTPSynapse">[docs]</a>    <span class="k">def</span> <span class="nf">test_QuantalSTPSynapse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare quantal_stp_synapse with its deterministic equivalent&quot;&quot;&quot;</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">n_syn</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># number of synapses in a connection</span>
+        <span class="n">n_trials</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of measurement trials</span>
+
+        <span class="c1"># parameter set for facilitation</span>
+        <span class="n">fac_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+                      <span class="s2">&quot;tau_fac&quot;</span><span class="p">:</span> <span class="mf">500.</span><span class="p">,</span> <span class="s2">&quot;tau_rec&quot;</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}</span>
+
+        <span class="c1"># Here we assign the parameter set to the synapse models</span>
+        <span class="n">t1_params</span> <span class="o">=</span> <span class="n">fac_params</span>       <span class="c1"># for tsodyks2_synapse</span>
+        <span class="n">t2_params</span> <span class="o">=</span> <span class="n">t1_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># for furhmann_synapse</span>
+
+        <span class="n">t2_params</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_syn</span>
+        <span class="n">t2_params</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">n_syn</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s2">&quot;tsodyks2_synapse&quot;</span><span class="p">,</span> <span class="n">t1_params</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s2">&quot;quantal_stp_synapse&quot;</span><span class="p">,</span> <span class="n">t2_params</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetDefaults</span><span class="p">(</span><span class="s2">&quot;iaf_psc_exp&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;tau_syn_ex&quot;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">,</span> <span class="s1">&#39;tau_m&#39;</span><span class="p">:</span> <span class="mf">70.</span><span class="p">})</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;spike_generator&#39;</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;spike_times&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="mf">30.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="mf">120.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="mf">210.</span><span class="p">,</span> <span class="mf">240.</span><span class="p">,</span>
+                    <span class="mf">270.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">,</span> <span class="mf">330.</span><span class="p">,</span> <span class="mf">360.</span><span class="p">,</span> <span class="mf">390.</span><span class="p">,</span> <span class="mf">900.</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">parrot</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;parrot_neuron&#39;</span><span class="p">)</span>
+        <span class="n">neuron</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;iaf_psc_exp&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># We must send spikes via parrot because devices cannot</span>
+        <span class="c1"># connect through plastic synapses</span>
+        <span class="c1"># See #478.</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">parrot</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">parrot</span><span class="p">,</span> <span class="n">neuron</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">syn_spec</span><span class="o">=</span><span class="s2">&quot;tsodyks2_synapse&quot;</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">parrot</span><span class="p">,</span> <span class="n">neuron</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">syn_spec</span><span class="o">=</span><span class="s2">&quot;quantal_stp_synapse&quot;</span><span class="p">)</span>
+
+        <span class="n">voltmeter</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;voltmeter&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">voltmeter</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;withgid&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;withtime&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="n">t_tot</span> <span class="o">=</span> <span class="mf">1500.</span>
+
+        <span class="c1"># the following is a dry run trial so that the synapse dynamics is</span>
+        <span class="c1"># idential in all subsequent trials.</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">t_tot</span><span class="p">)</span>
+
+        <span class="c1"># Now we connect the voltmeters</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">([</span><span class="n">voltmeter</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">neuron</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">([</span><span class="n">voltmeter</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">neuron</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">):</span>
+            <span class="n">t_net</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetKernelStatus</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="n">t_net</span><span class="p">})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">t_tot</span><span class="p">)</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># flush the last voltmeter events from the queue</span>
+
+        <span class="n">vm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">([</span><span class="n">voltmeter</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;events&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;V_m&#39;</span><span class="p">])</span>
+        <span class="n">vm_reference</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">voltmeter</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="s1">&#39;events&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;V_m&#39;</span><span class="p">])</span>
+
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vm</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_trials</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">n_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vm</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_trials</span><span class="p">)</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_trials</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">)</span>
+        <span class="n">vm_reference</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_trials</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">)</span>
+
+        <span class="n">vm_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vm_ref_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vm_reference</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">error</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">vm_ref_mean</span> <span class="o">-</span> <span class="n">vm_mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">4.0e-4</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="suite"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_quantal_stp_synapse.suite">[docs]</a><span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">makeSuite</span><span class="p">(</span><span class="n">QuantalSTPSynapseTestCase</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">suite</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_quantal_stp_synapse.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
