@@ -4,8 +4,8 @@ build:
 conda:
   environment: doc/conda_environment.yml
 
-python:
-  version: 3.6
-  setup_py_install: false
+ #python:
+  # version: 3.6
+  #setup_py_install: false
 
   #requirements_file: doc/requirements.txt
