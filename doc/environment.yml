@@ -4,8 +4,6 @@ channels:
 - conda-forge
 - bioconda
 dependencies:
-- cmake
-- cython==0.23.4
 - nest-simulator
 - python>=3.5
 - pip:
