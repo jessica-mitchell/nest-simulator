@@ -1,5 +1,15 @@
-build:
-  image: latest
+# .readthedocs.yml
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 1
+
+# Build documentation in the docs/ directory with Sphinx
+sphinx:
+  configuration: doc/conf.py
+  #build:
+  #image: latest
 
 conda:
   environment: doc/conda_environment.yml
