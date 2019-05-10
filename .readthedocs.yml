@@ -12,10 +12,10 @@ sphinx:
 build:
   image: latest
 
-conda:
-  environment: doc/environment.yml
+#conda:
+#  environment: doc/environment.yml
 
 python:
    version: 3.6
-   system_packages: true
-  #requirements_file: doc/requirements.txt
+   #system_packages: true
+   requirements_file: doc/requirements.txt
