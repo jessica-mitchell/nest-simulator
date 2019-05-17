@@ -10,41 +10,49 @@ applicable.
 Before creating a bug report, please check the `current list <https://github.com/nest/nest-simulator/issues>`_
 of issues on GitHub as you might find out that you don’t need to create one.
 
-**Descriptive title**
+.. pull-quote::
 
-[Write a title that clearly and concisely states the issue]
+  **Descriptive title**
 
-**Description**
+  [Write a title that clearly and concisely states the issue]
 
-[Description of the issue]
+  **Description**
 
-**Steps to reproduce**
+  [Description of the issue]
 
-1. [First Step]
-2. [Second Step]
-3. [and so on...]
+  **Steps to reproduce**
 
-**Expected behavior:** [What you expect to happen]
+  1. [First Step]
+  2. [Second Step]
+  3. [and so on...]
 
-**Actual behavior:** [What actually happens]
+  **Expected behavior:** [What you expect to happen]
 
-**Reproduces how often:**
+  **Actual behavior:** [What actually happens]
 
-[What percentage of the time does it reproduce? Always/Sometimes/Unsure]
+  **Reproduces how often:**
 
-**Version**
+  [What percentage of the time does it reproduce? Always/Sometimes/Unsure]
 
-* [Specify the release version or Git commit of NEST]
+.. warning::
 
-* [Specify which platform and operating system version you use]
+  **Version**
 
-**Additional information**
+  * [Specify the release version or Git commit of NEST]
 
-[Any additional information, configuration or data that might be necessary to reproduce the issue such as
+  * [Specify which platform and operating system version you use]
 
-* The file ``config.log`` from the build directory and the output of the configure script.
+.. admonition:: something
 
-* The contents of the ``reports`` directory in the build directory.]
+  **Additional information**
+
+  [Any additional information, configuration or data that might be necessary to reproduce the issue such as
+
+.. note::
+
+  * The file ``config.log`` from the build directory and the output of the configure script.
+
+  * The contents of the ``reports`` directory in the build directory.]
 
 ----
 
