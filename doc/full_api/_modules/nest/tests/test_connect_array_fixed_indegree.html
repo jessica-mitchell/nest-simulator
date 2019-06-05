@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_connect_array_fixed_indegree &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_connect_array_fixed_indegree</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_connect_array_fixed_indegree.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tests of connection with rule fixed_indegree</span>
+<span class="sd">and parameter arrays in syn_spec</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">nest</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="ConnectArrayFixedIndegreeTestCase"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_connect_array_fixed_indegree.ConnectArrayFixedIndegreeTestCase">[docs]</a><span class="nd">@nest</span><span class="o">.</span><span class="n">check_stack</span>
+<span class="k">class</span> <span class="nc">ConnectArrayFixedIndegreeTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests of connections with fixed indegree and parameter arrays&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConnectArrayFixedIndegreeTestCase.test_Connect_Array_Fixed_Indegree"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_connect_array_fixed_indegree.ConnectArrayFixedIndegreeTestCase.test_Connect_Array_Fixed_Indegree">[docs]</a>    <span class="k">def</span> <span class="nf">test_Connect_Array_Fixed_Indegree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests of connections with fixed indegree and parameter arrays&quot;&quot;&quot;</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># number of neurons in each subnet</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># number of connections per neuron</span>
+
+        <span class="c1">############################################</span>
+        <span class="c1"># test with connection rule fixed_indegree</span>
+        <span class="c1">############################################</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+
+        <span class="n">net1</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;iaf_psc_alpha&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># creates source subnet</span>
+        <span class="n">net2</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;iaf_psc_alpha&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>  <span class="c1"># creates target subnet</span>
+
+        <span class="n">Warr</span> <span class="o">=</span> <span class="p">[[</span><span class="n">y</span><span class="o">*</span><span class="n">K</span><span class="o">+</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>  <span class="c1"># weight array</span>
+        <span class="n">Darr</span> <span class="o">=</span> <span class="p">[[</span><span class="n">y</span><span class="o">*</span><span class="n">K</span><span class="o">+</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>  <span class="c1"># delay array</span>
+
+        <span class="c1"># synapses and connection dictionaries</span>
+        <span class="n">syn_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;static_synapse&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">Warr</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="n">Darr</span><span class="p">}</span>
+        <span class="n">conn_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;fixed_indegree&#39;</span><span class="p">,</span> <span class="s1">&#39;indegree&#39;</span><span class="p">:</span> <span class="n">K</span><span class="p">}</span>
+
+        <span class="c1"># connects source to target subnet</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">net1</span><span class="p">,</span> <span class="n">net2</span><span class="p">,</span> <span class="n">conn_spec</span><span class="o">=</span><span class="n">conn_dict</span><span class="p">,</span> <span class="n">syn_spec</span><span class="o">=</span><span class="n">syn_dict</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>  <span class="c1"># loop on all neurons of target subnet</span>
+
+            <span class="c1"># gets all connections to the target neuron</span>
+            <span class="n">conns</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">net2</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">Warr1</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># creates empty weight array</span>
+
+            <span class="c1"># loop on synapses that connect to target neuron</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">conns</span><span class="p">)):</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">conns</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># gets synaptic weight</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;delay&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># gets synaptic delay</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># checks that delay = weight + 1</span>
+
+                <span class="n">Warr1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># appends w to Warr1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Warr1</span><span class="p">)</span> <span class="o">==</span> <span class="n">K</span><span class="p">)</span>  <span class="c1"># checks the size of Warr1</span>
+            <span class="n">Warr1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>                      <span class="c1"># sorts the elements of Warr1</span>
+
+            <span class="c1"># get row of original weight array, sort it</span>
+            <span class="c1"># and compare it with Warr1</span>
+            <span class="n">Warr2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Warr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Warr1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="n">Warr2</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="suite"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_connect_array_fixed_indegree.suite">[docs]</a><span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">makeSuite</span><span class="p">(</span><span class="n">ConnectArrayFixedIndegreeTestCase</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">suite</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_connect_array_fixed_indegree.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

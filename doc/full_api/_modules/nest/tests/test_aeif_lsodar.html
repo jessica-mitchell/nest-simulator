@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_aeif_lsodar &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_aeif_lsodar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_aeif_lsodar.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">nest</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Comparing the new implementations the aeif models to the reference solution</span>
+<span class="sd">obrained using the LSODAR solver (see</span>
+<span class="sd">``doc/model_details/aeif_models_implementation.ipynb``). Also asserting that</span>
+<span class="sd">the ``Delta_T == 0.`` solution works by comparing the non-adaptive aeif to the</span>
+<span class="sd">iaf model.</span>
+
+<span class="sd">The reference solution is stored in ``test_aeif_psc_lsodar.dat`` and was</span>
+<span class="sd">generated using the same dictionary of parameters, the data is then downsampled</span>
+<span class="sd">to keep one value every 0.01 ms and compare with the NEST simulation.</span>
+
+<span class="sd">The new implementation binds V_m to be smaller than 0.</span>
+
+<span class="sd">Rationale of the test:</span>
+<span class="sd">  - all models should be close to the reference LSODAR when</span>
+<span class="sd">    submitted to the same excitatory current.</span>
+<span class="sd">  - for ``Delta_T = 0.``, ``a = 0.`` and ``b = 0.``, starting from ``w = 0.``,</span>
+<span class="sd">    models should behave as the associated iaf model. This is tested both with</span>
+<span class="sd">    spike input and direct current input.</span>
+
+<span class="sd">Details:</span>
+<span class="sd">  The models are compared and we assess that the difference between the</span>
+<span class="sd">  recorded variables and the reference is smaller than a given tolerance.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">HAVE_GSL</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">sli_func</span><span class="p">(</span><span class="s2">&quot;statusdict/have_gsl ::&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1">#  Tolerances to compare LSODAR and NEST implementations</span>
+<span class="c1"># -------------------------</span>
+<span class="c1">#</span>
+
+<span class="c1"># higher for the potential because of the divergence at spike times</span>
+<span class="n">di_tolerances_lsodar</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;aeif_cond_alpha&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_exp&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_alpha&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_exp&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_delta&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_alpha_multisynapse&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_beta_multisynapse&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_alpha_RK5&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-3</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mf">2e-3</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># &quot;high&quot; difference for V_m on aeif_psc_* because of 1 gap in spike-time on</span>
+<span class="c1"># the 3rd spike</span>
+<span class="n">di_tolerances_iaf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;aeif_cond_alpha&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">2e-3</span><span class="p">,</span> <span class="s2">&quot;g_ex&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_exp&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="s2">&quot;g_ex&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_alpha&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-3</span><span class="p">,</span> <span class="s2">&quot;I_syn_ex&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_delta&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-3</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_psc_exp&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">5e-3</span><span class="p">,</span> <span class="s2">&quot;I_syn_ex&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">},</span>
+    <span class="s2">&quot;aeif_cond_alpha_RK5&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;V_m&quot;</span><span class="p">:</span> <span class="mf">2e-3</span><span class="p">,</span> <span class="s2">&quot;g_ex&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1">#  Individual dynamics</span>
+<span class="c1"># -------------------------</span>
+<span class="c1">#</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;aeif_cond_alpha&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_exp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_alpha&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_delta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_exp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_alpha_multisynapse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_beta_multisynapse&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_alpha_RK5&quot;</span>
+<span class="p">]</span>
+
+<span class="n">num_models</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
+
+<span class="c1"># parameters with which the LSODAR reference solution was generated</span>
+<span class="n">aeif_param</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;V_reset&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">58.</span><span class="p">,</span>
+    <span class="s1">&#39;V_peak&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;V_th&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.</span><span class="p">,</span>
+    <span class="s1">&#39;I_e&#39;</span><span class="p">:</span> <span class="mf">420.</span><span class="p">,</span>
+    <span class="s1">&#39;g_L&#39;</span><span class="p">:</span> <span class="mf">11.</span><span class="p">,</span>
+    <span class="s1">&#39;tau_w&#39;</span><span class="p">:</span> <span class="mf">300.</span><span class="p">,</span>
+    <span class="s1">&#39;E_L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;Delta_T&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">,</span>
+    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">,</span>
+    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="s1">&#39;C_m&#39;</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span>
+    <span class="s1">&#39;V_m&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="mf">5.</span>
+<span class="p">}</span>
+
+<span class="c1"># parameters to compare with iaf_cond_*</span>
+<span class="n">aeif_DT0</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;V_reset&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">60.</span><span class="p">,</span>
+    <span class="s1">&#39;V_peak&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;V_th&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.</span><span class="p">,</span>
+    <span class="s1">&#39;I_e&#39;</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span>
+    <span class="s1">&#39;g_L&#39;</span><span class="p">:</span> <span class="mf">16.7</span><span class="p">,</span>
+    <span class="s1">&#39;E_L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;Delta_T&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="s1">&#39;C_m&#39;</span><span class="p">:</span> <span class="mf">250.</span><span class="p">,</span>
+    <span class="s1">&#39;V_m&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="mf">0.</span><span class="p">,</span>
+    <span class="s1">&#39;t_ref&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">,</span>
+    <span class="s1">&#39;tau_syn_ex&#39;</span><span class="p">:</span> <span class="mf">0.2</span>
+<span class="p">}</span>
+
+<span class="n">aeif_DT0_delta</span> <span class="o">=</span> <span class="n">aeif_DT0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">aeif_DT0_delta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;tau_syn_ex&#39;</span><span class="p">)</span>
+
+<span class="n">DT0_params</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">aeif_DT0</span><span class="p">)</span>
+<span class="n">DT0_params</span><span class="p">[</span><span class="s2">&quot;aeif_psc_delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aeif_DT0_delta</span>
+
+<span class="n">iaf_param_base</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;V_reset&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">60.</span><span class="p">,</span>
+    <span class="s1">&#39;V_th&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">55.</span><span class="p">,</span>
+    <span class="s1">&#39;I_e&#39;</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span>
+    <span class="s1">&#39;E_L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;C_m&#39;</span><span class="p">:</span> <span class="mf">250.</span><span class="p">,</span>
+    <span class="s1">&#39;V_m&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">70.</span><span class="p">,</span>
+    <span class="s1">&#39;t_ref&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">,</span>
+    <span class="s1">&#39;tau_syn_ex&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">iaf_param_psc</span> <span class="o">=</span> <span class="n">iaf_param_base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">iaf_param_psc</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;tau_m&#39;</span><span class="p">:</span> <span class="n">aeif_DT0</span><span class="p">[</span><span class="s1">&#39;C_m&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">aeif_DT0</span><span class="p">[</span><span class="s1">&#39;g_L&#39;</span><span class="p">]})</span>
+<span class="n">iaf_param_psc_delta</span> <span class="o">=</span> <span class="n">iaf_param_psc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">iaf_param_psc_delta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;tau_syn_ex&#39;</span><span class="p">)</span>
+<span class="n">iaf_param_cond</span> <span class="o">=</span> <span class="n">iaf_param_base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">iaf_param_cond</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;g_L&#39;</span><span class="p">:</span> <span class="mf">16.7</span><span class="p">})</span>
+
+<span class="n">di_iaf_param</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;psc_alpha&quot;</span><span class="p">:</span> <span class="n">iaf_param_psc</span><span class="p">,</span>
+    <span class="s2">&quot;psc_exp&quot;</span><span class="p">:</span> <span class="n">iaf_param_psc</span><span class="p">,</span>
+    <span class="s2">&quot;psc_delta&quot;</span><span class="p">:</span> <span class="n">iaf_param_psc_delta</span><span class="p">,</span>
+    <span class="s2">&quot;cond_alpha&quot;</span><span class="p">:</span> <span class="n">iaf_param_cond</span><span class="p">,</span>
+    <span class="s2">&quot;cond_exp&quot;</span><span class="p">:</span> <span class="n">iaf_param_cond</span>
+<span class="p">}</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1">#  Synaptic types (link the models to their synapse dynamics)</span>
+<span class="c1"># -------------------------</span>
+<span class="c1">#</span>
+
+<span class="n">lst_syn_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cond_alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;cond_exp&quot;</span><span class="p">,</span> <span class="s2">&quot;psc_alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;psc_exp&quot;</span><span class="p">,</span> <span class="s2">&quot;psc_delta&quot;</span><span class="p">]</span>
+
+<span class="n">di_syn_types</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;aeif_cond_alpha&quot;</span><span class="p">:</span> <span class="s2">&quot;cond_alpha&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_exp&quot;</span><span class="p">:</span> <span class="s2">&quot;cond_exp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_alpha&quot;</span><span class="p">:</span> <span class="s2">&quot;psc_alpha&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_exp&quot;</span><span class="p">:</span> <span class="s2">&quot;psc_exp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_psc_delta&quot;</span><span class="p">:</span> <span class="s2">&quot;psc_delta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aeif_cond_alpha_RK5&quot;</span><span class="p">:</span> <span class="s2">&quot;cond_alpha&quot;</span>
+<span class="p">}</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1">#  Test class</span>
+<span class="c1"># -------------------------</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="AEIFTestCase"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase">[docs]</a><span class="k">class</span> <span class="nc">AEIFTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the coherence between reference solution and NEST implementation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AEIFTestCase.setUp"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Clean up and initialize NEST before each test.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">msd</span> <span class="o">=</span> <span class="mi">123456</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resol</span> <span class="o">=</span> <span class="mf">0.01</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="n">N_vp</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetKernelStatus</span><span class="p">([</span><span class="s1">&#39;total_num_virtual_procs&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pyrngs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">msd</span><span class="p">,</span> <span class="n">msd</span> <span class="o">+</span> <span class="n">N_vp</span><span class="p">)]</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetKernelStatus</span><span class="p">({</span>
+            <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span> <span class="s1">&#39;grng_seed&#39;</span><span class="p">:</span> <span class="n">msd</span> <span class="o">+</span> <span class="n">N_vp</span><span class="p">,</span>
+            <span class="s1">&#39;rng_seeds&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">msd</span> <span class="o">+</span> <span class="n">N_vp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">msd</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N_vp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)})</span></div>
+
+<div class="viewcode-block" id="AEIFTestCase.compute_difference"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.compute_difference">[docs]</a>    <span class="k">def</span> <span class="nf">compute_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multimeters</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">recordables</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the relative differences between the values recorded by the</span>
+<span class="sd">        multimeter and those of the reference (recorded at same times).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        multimeters : dict of tuples</span>
+<span class="sd">            Dictionary containing the model name as key and the GID of the</span>
+<span class="sd">            associated multimeter as value.</span>
+<span class="sd">        params : dict</span>
+<span class="sd">            Parameters used for the models.</span>
+<span class="sd">        reference : dict</span>
+<span class="sd">            Reference arrays (one per entry in `recordables`).</span>
+<span class="sd">        recordables : list of strings</span>
+<span class="sd">            List of recordables that will be compared.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rel_diff : dict of dict of doubles</span>
+<span class="sd">            Relative differences between recorded data and reference (one dict</span>
+<span class="sd">            per model, containing one value per entry in `recordables`).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rel_diff</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">multimeters</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+        <span class="n">V_lim</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;V_th&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;V_peak&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.</span>
+
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">multimeters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">dmm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">recordables</span><span class="p">:</span>
+                <span class="c1"># ignore places where a divide by zero would occur</span>
+                <span class="n">rds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">reference</span><span class="p">[</span><span class="n">record</span><span class="p">]</span> <span class="o">-</span> <span class="n">dmm</span><span class="p">[</span><span class="n">record</span><span class="p">])</span>
+                <span class="n">nonzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">reference</span><span class="p">[</span><span class="n">record</span><span class="p">],</span> <span class="mf">0.</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">nonzero</span><span class="p">):</span>
+                    <span class="n">rds</span> <span class="o">=</span> <span class="n">rds</span><span class="p">[</span><span class="n">nonzero</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">reference</span><span class="p">[</span><span class="n">record</span><span class="p">][</span><span class="n">nonzero</span><span class="p">])</span>
+                <span class="c1"># ignore events around spike times for V if it diverges</span>
+                <span class="k">if</span> <span class="n">record</span> <span class="o">==</span> <span class="s2">&quot;V_m&quot;</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;Delta_T&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+                    <span class="n">spiking</span> <span class="o">=</span> <span class="p">(</span><span class="n">dmm</span><span class="p">[</span><span class="n">record</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">V_lim</span><span class="p">)</span>
+                    <span class="n">rds</span> <span class="o">=</span> <span class="n">rds</span><span class="p">[</span><span class="o">~</span><span class="n">spiking</span><span class="p">]</span>
+                <span class="n">rel_diff</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">record</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">rds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rel_diff</span></div>
+
+<div class="viewcode-block" id="AEIFTestCase.assert_pass_tolerance"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.assert_pass_tolerance">[docs]</a>    <span class="k">def</span> <span class="nf">assert_pass_tolerance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rel_diff</span><span class="p">,</span> <span class="n">di_tol</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Test that relative differences are indeed smaller than the tolerance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">di_rel_diff</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">rel_diff</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">diff</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">di_rel_diff</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertLess</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">di_tol</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">var</span><span class="p">],</span>
+                                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> failed test for </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> &gt; </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                    <span class="n">model</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">di_tol</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="n">var</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="AEIFTestCase.test_closeness_nest_lsodar"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.test_closeness_nest_lsodar">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_closeness_nest_lsodar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Compare models to the LSODAR implementation.</span>
+
+        <span class="n">simtime</span> <span class="o">=</span> <span class="mf">100.</span>
+
+        <span class="c1"># get lsodar reference</span>
+        <span class="n">lsodar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;test_aeif_data_lsodar.dat&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">V_interp</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">lsodar</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">lsodar</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="n">w_interp</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">lsodar</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">lsodar</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span>
+
+        <span class="c1"># create the neurons and devices</span>
+        <span class="n">neurons</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">aeif_param</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">}</span>
+        <span class="n">multimeters</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;multimeter&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">}</span>
+        <span class="c1"># connect them and simulate</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">multimeters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span>
+                                <span class="s2">&quot;record_from&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">]})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">simtime</span><span class="p">)</span>
+
+        <span class="c1"># relative differences: interpolate LSODAR to match NEST times</span>
+        <span class="n">mm0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">multimeters</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">nest_times</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">mm0</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;times&quot;</span><span class="p">]</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;V_m&#39;</span><span class="p">:</span> <span class="n">V_interp</span><span class="p">(</span><span class="n">nest_times</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="n">w_interp</span><span class="p">(</span><span class="n">nest_times</span><span class="p">)}</span>
+
+        <span class="n">rel_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_difference</span><span class="p">(</span><span class="n">multimeters</span><span class="p">,</span> <span class="n">aeif_param</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span>
+                                           <span class="p">[</span><span class="s1">&#39;V_m&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_pass_tolerance</span><span class="p">(</span><span class="n">rel_diff</span><span class="p">,</span> <span class="n">di_tolerances_lsodar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AEIFTestCase.test_iaf_spike_input"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.test_iaf_spike_input">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_iaf_spike_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Test that the models behave as iaf_* if a == 0., b == 0. and</span>
+        <span class="c1"># Delta_T == 0 due to random spike input.</span>
+
+        <span class="n">simtime</span> <span class="o">=</span> <span class="mf">200.</span>
+        <span class="c1"># create the neurons and devices</span>
+        <span class="n">refs</span> <span class="o">=</span> <span class="p">{</span><span class="n">syn_type</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;iaf_&quot;</span> <span class="o">+</span> <span class="n">syn_type</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">di_iaf_param</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span> <span class="k">for</span> <span class="n">syn_type</span> <span class="ow">in</span> <span class="n">lst_syn_types</span><span class="p">}</span>
+        <span class="n">ref_mm</span> <span class="o">=</span> <span class="p">{</span><span class="n">syn_type</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;multimeter&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">syn_type</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">}</span>
+        <span class="n">neurons</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">DT0_params</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+                   <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="s2">&quot;multisynapse&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model</span><span class="p">}</span>
+        <span class="n">multimeters</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;multimeter&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">neurons</span><span class="p">}</span>
+        <span class="n">pg</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;poisson_generator&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rate&quot;</span><span class="p">:</span> <span class="mf">10000.</span><span class="p">})</span>
+        <span class="n">pn</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;parrot_neuron&quot;</span><span class="p">)</span>
+
+        <span class="c1"># connect them and simulate</span>
+        <span class="n">recordables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cond_alpha&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ex&quot;</span><span class="p">],</span>
+                       <span class="s2">&quot;cond_exp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">,</span> <span class="s2">&quot;g_ex&quot;</span><span class="p">],</span>
+                       <span class="s2">&quot;psc_exp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">,</span> <span class="s2">&quot;I_syn_ex&quot;</span><span class="p">],</span>
+                       <span class="s2">&quot;psc_alpha&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">,</span> <span class="s2">&quot;I_syn_ex&quot;</span><span class="p">],</span>
+                       <span class="s2">&quot;psc_delta&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">]}</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">pg</span><span class="p">,</span> <span class="n">pn</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">multimeters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">syn_type</span> <span class="o">=</span> <span class="n">di_syn_types</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">syn_type</span><span class="p">[:</span><span class="n">syn_type</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span>
+                                <span class="s2">&quot;record_from&quot;</span><span class="p">:</span> <span class="n">recordables</span><span class="p">[</span><span class="n">syn_type</span><span class="p">]})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="mf">80.</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;psc&quot;</span> <span class="k">else</span> <span class="mf">1.</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="n">model</span><span class="p">],</span> <span class="n">syn_spec</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">weight</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">syn_type</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">ref_mm</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">syn_type</span><span class="p">[:</span><span class="n">syn_type</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span>
+                                <span class="s2">&quot;record_from&quot;</span><span class="p">:</span> <span class="n">recordables</span><span class="p">[</span><span class="n">syn_type</span><span class="p">]})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">refs</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="mf">80.</span> <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;psc&quot;</span> <span class="k">else</span> <span class="mf">1.</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="n">refs</span><span class="p">[</span><span class="n">syn_type</span><span class="p">],</span> <span class="n">syn_spec</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">weight</span><span class="p">})</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">simtime</span><span class="p">)</span>
+
+        <span class="c1"># compute the relative differences and assert tolerance</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">neurons</span><span class="p">:</span>
+            <span class="n">syn_type</span> <span class="o">=</span> <span class="n">di_syn_types</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+            <span class="n">ref_data</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">ref_mm</span><span class="p">[</span><span class="n">syn_type</span><span class="p">],</span> <span class="s2">&quot;events&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">syn_type</span><span class="p">[:</span><span class="n">syn_type</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+            <span class="n">rel_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_difference</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">multimeters</span><span class="p">[</span><span class="n">model</span><span class="p">]},</span>
+                <span class="n">aeif_DT0</span><span class="p">,</span>
+                <span class="n">ref_data</span><span class="p">,</span>
+                <span class="n">recordables</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_pass_tolerance</span><span class="p">(</span><span class="n">rel_diff</span><span class="p">,</span> <span class="n">di_tolerances_iaf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AEIFTestCase.test_iaf_dc_input"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.AEIFTestCase.test_iaf_dc_input">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_iaf_dc_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Test that the models behave as iaf_* if a == 0., b == 0. and</span>
+        <span class="c1"># Delta_T == 0 due to direct current input.</span>
+
+        <span class="n">simtime</span> <span class="o">=</span> <span class="mf">200.</span>
+        <span class="c1"># create the neurons and devices</span>
+        <span class="n">refs</span> <span class="o">=</span> <span class="p">{</span><span class="n">syn_type</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;iaf_&quot;</span> <span class="o">+</span> <span class="n">syn_type</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">di_iaf_param</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span> <span class="k">for</span> <span class="n">syn_type</span> <span class="ow">in</span> <span class="n">lst_syn_types</span><span class="p">}</span>
+        <span class="n">ref_mm</span> <span class="o">=</span> <span class="p">{</span><span class="n">syn_type</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;multimeter&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">syn_type</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">}</span>
+        <span class="n">neurons</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">DT0_params</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+                   <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="s2">&quot;multisynapse&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model</span><span class="p">}</span>
+        <span class="n">multimeters</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;multimeter&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">neurons</span><span class="p">}</span>
+        <span class="n">dcg</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;dc_generator&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amplitude&quot;</span><span class="p">:</span> <span class="mf">250.0</span><span class="p">,</span>
+                                                  <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mf">50.0</span><span class="p">,</span>
+                                                  <span class="s2">&quot;stop&quot;</span><span class="p">:</span> <span class="mf">150.0</span><span class="p">})</span>
+
+        <span class="c1"># connect them and simulate</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">multimeters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">syn_type</span> <span class="o">=</span> <span class="n">di_syn_types</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span>
+                                <span class="s2">&quot;record_from&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">]})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">dcg</span><span class="p">,</span> <span class="n">neurons</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">syn_type</span><span class="p">,</span> <span class="n">mm</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">ref_mm</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">,</span>
+                                <span class="s2">&quot;record_from&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">]})</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">refs</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">dcg</span><span class="p">,</span> <span class="n">refs</span><span class="p">[</span><span class="n">syn_type</span><span class="p">])</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">simtime</span><span class="p">)</span>
+
+        <span class="c1"># compute the relative differences and assert tolerance</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">neurons</span><span class="p">:</span>
+            <span class="n">syn_type</span> <span class="o">=</span> <span class="n">di_syn_types</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+            <span class="n">ref_data</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">ref_mm</span><span class="p">[</span><span class="n">syn_type</span><span class="p">],</span> <span class="s2">&quot;events&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">rel_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_difference</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="n">multimeters</span><span class="p">[</span><span class="n">model</span><span class="p">]},</span>
+                <span class="n">aeif_DT0</span><span class="p">,</span>
+                <span class="n">ref_data</span><span class="p">,</span>
+                <span class="p">[</span><span class="s2">&quot;V_m&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assert_pass_tolerance</span><span class="p">(</span><span class="n">rel_diff</span><span class="p">,</span> <span class="n">di_tolerances_iaf</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1">#  Run the comparisons</span>
+<span class="c1"># ------------------------</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="suite"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.suite">[docs]</a><span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="ow">not</span> <span class="n">HAVE_GSL</span><span class="p">,</span> <span class="s1">&#39;GSL is not available&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">makeSuite</span><span class="p">(</span><span class="n">AEIFTestCase</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_aeif_lsodar.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

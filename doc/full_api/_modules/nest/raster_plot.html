@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.raster_plot &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.raster_plot</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># raster_plot.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot; Functions for raster plotting.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">nest</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="n">show</span><span class="p">,</span> <span class="n">savefig</span>
+
+
+<div class="viewcode-block" id="extract_events"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.extract_events">[docs]</a><span class="k">def</span> <span class="nf">extract_events</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract all events within a given time interval.</span>
+
+<span class="sd">    Both time and sel may be used at the same time such that all</span>
+<span class="sd">    events are extracted for which both conditions are true.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : list</span>
+<span class="sd">        Matrix such that</span>
+<span class="sd">        data[:,0] is a vector of all gids and</span>
+<span class="sd">        data[:,1] a vector with the corresponding time stamps.</span>
+<span class="sd">    time : list, optional</span>
+<span class="sd">        List with at most two entries such that</span>
+<span class="sd">        time=[t_max] extracts all events with t&lt; t_max</span>
+<span class="sd">        time=[t_min, t_max] extracts all events with t_min &lt;= t &lt; t_max</span>
+<span class="sd">    sel : list, optional</span>
+<span class="sd">        List of gids such that</span>
+<span class="sd">        sel=[gid1, ... , gidn] extracts all events from these gids.</span>
+<span class="sd">        All others are discarded.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.array</span>
+<span class="sd">        List of events as (gid, t) tuples</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">time</span><span class="p">:</span>
+        <span class="n">t_max</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">t_min</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_min</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">gid</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t_min</span> <span class="ow">or</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">t_max</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sel</span> <span class="ow">or</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">:</span>
+            <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_data"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.from_data">[docs]</a><span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot raster plot from data array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : list</span>
+<span class="sd">        Matrix such that</span>
+<span class="sd">        data[:,0] is a vector of all gids and</span>
+<span class="sd">        data[:,1] a vector with the corresponding time stamps.</span>
+<span class="sd">    sel : list, optional</span>
+<span class="sd">        List of gids such that</span>
+<span class="sd">        sel=[gid1, ... , gidn] extracts all events from these gids.</span>
+<span class="sd">        All others are discarded.</span>
+<span class="sd">    kwargs:</span>
+<span class="sd">        Parameters passed to _make_plot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">extract_events</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sel</span><span class="o">=</span><span class="n">sel</span><span class="p">)</span>
+    <span class="n">ts1</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">gids</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">_make_plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts1</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_file"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.from_file">[docs]</a><span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot raster from file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname : str or tuple(str) or list(str)</span>
+<span class="sd">        File name or list of file names</span>
+
+<span class="sd">        If a list of files is given, the data from them is concatenated as if</span>
+<span class="sd">        it had been stored in a single file - useful when MPI is enabled and</span>
+<span class="sd">        data is logged separately for each MPI rank, for example.</span>
+<span class="sd">    kwargs:</span>
+<span class="sd">        Parameters passed to _make_plot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="p">[</span><span class="n">fname</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">global</span> <span class="n">pandas</span>
+            <span class="n">pandas</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+            <span class="n">from_file_pandas</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">from_file_numpy</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fname should be one of str/list(str)/tuple(str).&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_file_pandas"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.from_file_pandas">[docs]</a><span class="k">def</span> <span class="nf">from_file_pandas</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use pandas.&quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fname</span><span class="p">:</span>
+        <span class="n">dataFrame</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">lineterminator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">newdata</span> <span class="o">=</span> <span class="n">dataFrame</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">newdata</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">newdata</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_file_numpy"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.from_file_numpy">[docs]</a><span class="k">def</span> <span class="nf">from_file_numpy</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Use numpy.&quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fname</span><span class="p">:</span>
+        <span class="n">newdata</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">newdata</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">data</span><span class="p">,</span> <span class="n">newdata</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_device"><a class="viewcode-back" href="../../nest.html#nest.raster_plot.from_device">[docs]</a><span class="k">def</span> <span class="nf">from_device</span><span class="p">(</span><span class="n">detec</span><span class="p">,</span> <span class="n">plot_lid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot raster from a spike detector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detec : TYPE</span>
+<span class="sd">        Description</span>
+<span class="sd">    plot_lid : bool, optional</span>
+<span class="sd">        Whether to convert from local IDs</span>
+<span class="sd">    kwargs:</span>
+<span class="sd">        Parameters passed to _make_plot</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    nest.NESTError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spike_detector&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span><span class="s2">&quot;Please provide a spike_detector.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">,</span> <span class="s2">&quot;to_memory&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+
+        <span class="n">ts</span><span class="p">,</span> <span class="n">gids</span> <span class="o">=</span> <span class="n">_from_memory</span><span class="p">(</span><span class="n">detec</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span><span class="s2">&quot;No events recorded!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">plot_lid</span><span class="p">:</span>
+            <span class="n">gids</span> <span class="o">=</span> <span class="p">[</span><span class="n">nest</span><span class="o">.</span><span class="n">GetLID</span><span class="p">([</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gids</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;title&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Raster plot from device &#39;</span><span class="si">%i</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">detec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;time_in_steps&quot;</span><span class="p">]:</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Steps&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Time (ms)&quot;</span>
+
+        <span class="k">return</span> <span class="n">_make_plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">,</span> <span class="s2">&quot;to_file&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">,</span> <span class="s2">&quot;filenames&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">from_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nest</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span><span class="s2">&quot;No data to plot. Make sure that </span><span class="se">\</span>
+<span class="s2">            either to_memory or to_file are set.&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_from_memory</span><span class="p">(</span><span class="n">detec</span><span class="p">):</span>
+    <span class="n">ev</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">detec</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ev</span><span class="p">[</span><span class="s2">&quot;times&quot;</span><span class="p">],</span> <span class="n">ev</span><span class="p">[</span><span class="s2">&quot;senders&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_make_plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts1</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">neurons</span><span class="p">,</span> <span class="n">hist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hist_binwidth</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+               <span class="n">grayscale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic plotting routine.</span>
+
+<span class="sd">    Constructs a raster plot along with an optional histogram (common part in</span>
+<span class="sd">    all routines above).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ts : list</span>
+<span class="sd">        All timestamps</span>
+<span class="sd">    ts1 : list</span>
+<span class="sd">        Timestamps corresponding to gids</span>
+<span class="sd">    gids : list</span>
+<span class="sd">        Global ids corresponding to ts1</span>
+<span class="sd">    neurons : list</span>
+<span class="sd">        GIDs of neurons to plot</span>
+<span class="sd">    hist : bool, optional</span>
+<span class="sd">        Display histogram</span>
+<span class="sd">    hist_binwidth : float, optional</span>
+<span class="sd">        Width of histogram bins</span>
+<span class="sd">    grayscale : bool, optional</span>
+<span class="sd">        Plot in grayscale</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Plot title</span>
+<span class="sd">    xlabel : str, optional</span>
+<span class="sd">        Label for x-axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">grayscale</span><span class="p">:</span>
+        <span class="n">color_marker</span> <span class="o">=</span> <span class="s2">&quot;.k&quot;</span>
+        <span class="n">color_bar</span> <span class="o">=</span> <span class="s2">&quot;gray&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color_marker</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+        <span class="n">color_bar</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span>
+
+    <span class="n">color_edge</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+
+    <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="s2">&quot;Time (ms)&quot;</span>
+
+    <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;Neuron ID&quot;</span>
+
+    <span class="k">if</span> <span class="n">hist</span><span class="p">:</span>
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">])</span>
+        <span class="n">plotid</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts1</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">color_marker</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+        <span class="n">xlim</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">xlim</span><span class="p">()</span>
+
+        <span class="n">pylab</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">])</span>
+        <span class="n">t_bins</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">hist_binwidth</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">_histogram</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">t_bins</span><span class="p">)</span>
+        <span class="n">num_neurons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">neurons</span><span class="p">))</span>
+        <span class="n">heights</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="n">hist_binwidth</span> <span class="o">*</span> <span class="n">num_neurons</span><span class="p">)</span>
+
+        <span class="n">pylab</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">t_bins</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">hist_binwidth</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_bar</span><span class="p">,</span>
+                  <span class="n">edgecolor</span><span class="o">=</span><span class="n">color_edge</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">heights</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">])</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Rate (Hz)&quot;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">ax1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plotid</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts1</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">color_marker</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Raster plot&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">plotid</span>
+
+
+<span class="k">def</span> <span class="nf">_histogram</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">bin_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate histogram for data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : list</span>
+<span class="sd">        Data to calculate histogram for</span>
+<span class="sd">    bins : int, optional</span>
+<span class="sd">        Number of bins</span>
+<span class="sd">    bin_range : TYPE, optional</span>
+<span class="sd">        Range of bins</span>
+<span class="sd">    normed : bool, optional</span>
+<span class="sd">        Whether distribution should be normalized</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asarray</span><span class="p">,</span> <span class="n">iterable</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="n">sort</span><span class="p">,</span> <span class="n">concatenate</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">bin_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span> <span class="o">=</span> <span class="n">bin_range</span>
+        <span class="k">if</span> <span class="n">mn</span> <span class="o">&gt;</span> <span class="n">mx</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max must be larger than min in range parameter&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">iterable</span><span class="p">(</span><span class="n">bins</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">bin_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bin_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">a</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span> <span class="o">=</span> <span class="p">[</span><span class="n">mi</span> <span class="o">+</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">mi</span> <span class="ow">in</span> <span class="n">bin_range</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mn</span> <span class="o">==</span> <span class="n">mx</span><span class="p">:</span>
+            <span class="n">mn</span> <span class="o">-=</span> <span class="mf">0.5</span>
+            <span class="n">mx</span> <span class="o">+=</span> <span class="mf">0.5</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;bins must increase monotonically&quot;</span><span class="p">)</span>
+
+    <span class="c1"># best block size probably depends on processor cache size</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="mi">65536</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">sort</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="n">block</span><span class="p">])</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="n">sort</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">block</span><span class="p">])</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)]])</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">n</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">normed</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">db</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">bins</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">bins</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

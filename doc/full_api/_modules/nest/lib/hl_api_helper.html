@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.lib.hl_api_helper &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.lib.hl_api_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># hl_api_helper.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">These are helper functions to ease the definition of the high-level</span>
+<span class="sd">API of the PyNEST wrapper.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">Template</span>
+
+<span class="c1"># These variables MUST be set by __init__.py right after importing.</span>
+<span class="c1"># There is no safety net, whatsoever.</span>
+<span class="n">sps</span> <span class="o">=</span> <span class="n">spp</span> <span class="o">=</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">pcd</span> <span class="o">=</span> <span class="n">kernel</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># These flags are used to print deprecation warnings only once. The</span>
+<span class="c1"># corresponding functions will be removed in the 2.6 release of NEST.</span>
+<span class="n">_deprecation_warning</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;BackwardCompatibilityConnect&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_wrapped_text"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.get_wrapped_text">[docs]</a><span class="k">def</span> <span class="nf">get_wrapped_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Formats a given multiline string to wrap at a given width, while</span>
+<span class="sd">    preserving newlines (and removing excessive whitespace).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    text : str</span>
+<span class="sd">        String to format</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str:</span>
+<span class="sd">        Wrapped string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="show_deprecation_warning"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.show_deprecation_warning">[docs]</a><span class="k">def</span> <span class="nf">show_deprecation_warning</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">alt_func_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shows a deprecation warning for a function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func_name : str</span>
+<span class="sd">        Name of the deprecated function</span>
+<span class="sd">    alt_func_name : str, optional</span>
+<span class="sd">        Name of the function to use instead</span>
+<span class="sd">    text : str, optional</span>
+<span class="sd">        Text to display instead of standard text</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func_name</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">alt_func_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">alt_func_name</span> <span class="o">=</span> <span class="s1">&#39;Connect&#39;</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is deprecated and will be removed in a future </span><span class="se">\</span>
+<span class="s2">            version of NEST.</span><span class="se">\n</span><span class="s2">Please use </span><span class="si">{1}</span><span class="s2"> instead!</span><span class="se">\n\</span>
+<span class="s2">            For details, see</span><span class="se">\</span>
+<span class="s2">            http://www.nest-simulator.org/connection_management</span><span class="se">\</span>
+<span class="s2">            &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">alt_func_name</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">get_wrapped_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span><span class="p">)</span>   <span class="c1"># add LF so text starts on new line</span>
+        <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<span class="c1"># Since we need to pass extra arguments to the decorator, we need a</span>
+<span class="c1"># decorator factory. See http://stackoverflow.com/questions/15564512</span>
+<div class="viewcode-block" id="deprecated"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.deprecated">[docs]</a><span class="k">def</span> <span class="nf">deprecated</span><span class="p">(</span><span class="n">alt_func_name</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator for deprecated functions.</span>
+
+<span class="sd">    Shows a warning and calls the original function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    alt_func_name : str, optional</span>
+<span class="sd">        Name of the function to use instead</span>
+<span class="sd">    text : str, optional</span>
+<span class="sd">        Text to display instead of standard text</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function:</span>
+<span class="sd">        Decorator function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">deprecated_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">show_deprecation_warning</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">alt_func_name</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_func</span>
+
+    <span class="k">return</span> <span class="n">deprecated_decorator</span></div>
+
+
+<div class="viewcode-block" id="get_unistring_type"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.get_unistring_type">[docs]</a><span class="k">def</span> <span class="nf">get_unistring_type</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns string type dependent on python version.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str or basestring:</span>
+<span class="sd">        Depending on Python version</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">basestring</span>
+    <span class="k">return</span> <span class="nb">str</span></div>
+
+<span class="n">uni_str</span> <span class="o">=</span> <span class="n">get_unistring_type</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="is_literal"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_literal">[docs]</a><span class="k">def</span> <span class="nf">is_literal</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check whether obj is a &quot;literal&quot;: a unicode string or SLI literal</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if obj is a &quot;literal&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">uni_str</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">SLILiteral</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="is_string"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_string">[docs]</a><span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check whether obj is a unicode string</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if obj is a unicode string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">uni_str</span><span class="p">)</span></div>
+
+<span class="n">__debug</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="get_debug"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.get_debug">[docs]</a><span class="k">def</span> <span class="nf">get_debug</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return the current value of the debug flag of the high-level API.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        current value of the debug flag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">__debug</span>
+    <span class="k">return</span> <span class="n">__debug</span></div>
+
+
+<div class="viewcode-block" id="set_debug"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.set_debug">[docs]</a><span class="k">def</span> <span class="nf">set_debug</span><span class="p">(</span><span class="n">dbg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set the debug flag of the high-level API.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dbg : bool, optional</span>
+<span class="sd">        Value to set the debug flag to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">__debug</span>
+    <span class="n">__debug</span> <span class="o">=</span> <span class="n">dbg</span></div>
+
+
+<div class="viewcode-block" id="stack_checker"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.stack_checker">[docs]</a><span class="k">def</span> <span class="nf">stack_checker</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator to add stack checks to functions using PyNEST&#39;s</span>
+<span class="sd">    low-level API.</span>
+
+<span class="sd">    This decorator works only on functions. See</span>
+<span class="sd">    check_stack() for the generic version for functions and</span>
+<span class="sd">    classes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : function</span>
+<span class="sd">        Function to decorate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function:</span>
+<span class="sd">        Decorated function</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    kernel.NESTError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">stack_checker_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">get_debug</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+            <span class="n">stackload_before</span> <span class="o">=</span> <span class="n">spp</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+            <span class="n">num_leftover_elements</span> <span class="o">=</span> <span class="n">spp</span><span class="p">()</span> <span class="o">-</span> <span class="n">stackload_before</span>
+            <span class="k">if</span> <span class="n">num_leftover_elements</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">eargs</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">num_leftover_elements</span><span class="p">)</span>
+                <span class="n">etext</span> <span class="o">=</span> <span class="s2">&quot;Function &#39;</span><span class="si">%s</span><span class="s2">&#39; left </span><span class="si">%i</span><span class="s2"> elements on the stack.&quot;</span>
+                <span class="k">raise</span> <span class="n">kernel</span><span class="o">.</span><span class="n">NESTError</span><span class="p">(</span><span class="n">etext</span> <span class="o">%</span> <span class="n">eargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">stack_checker_func</span></div>
+
+
+<div class="viewcode-block" id="check_stack"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.check_stack">[docs]</a><span class="k">def</span> <span class="nf">check_stack</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convenience wrapper for applying the stack_checker decorator to</span>
+<span class="sd">    all class methods of the given class, or to a given function.</span>
+
+<span class="sd">    If the object cannot be decorated, it is returned unchanged.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    thing : function or class</span>
+<span class="sd">        Description</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function or class</span>
+<span class="sd">        Decorated function or class</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">stack_checker</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">mtd</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;test_&quot;</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">stack_checker</span><span class="p">(</span><span class="n">mtd</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">thing</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;unable to decorate </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thing</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="is_iterable"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_iterable">[docs]</a><span class="k">def</span> <span class="nf">is_iterable</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return True if the given object is an iterable, False otherwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seq : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if object is an iterable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">iter</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="is_coercible_to_sli_array"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_coercible_to_sli_array">[docs]</a><span class="k">def</span> <span class="nf">is_coercible_to_sli_array</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether a given object is coercible to a SLI array</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seq : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if object is coercible to a SLI array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">range</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">xrange</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="is_sequence_of_connections"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_sequence_of_connections">[docs]</a><span class="k">def</span> <span class="nf">is_sequence_of_connections</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether low-level API accepts seq as a sequence of</span>
+<span class="sd">    connections.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seq : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if object is an iterable of dictionaries or</span>
+<span class="sd">        subscriptables of CONN_LEN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cnn</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cnn</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">cnn</span><span class="p">)</span> <span class="o">==</span> <span class="n">kernel</span><span class="o">.</span><span class="n">CONN_LEN</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_sequence_of_gids"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.is_sequence_of_gids">[docs]</a><span class="k">def</span> <span class="nf">is_sequence_of_gids</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether the argument is a potentially valid sequence of</span>
+<span class="sd">    GIDs (non-negative integers).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seq : object</span>
+<span class="sd">        Object to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool:</span>
+<span class="sd">        True if object is a potentially valid sequence of GIDs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="broadcast"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.broadcast">[docs]</a><span class="k">def</span> <span class="nf">broadcast</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">allowed_types</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Broadcast item to given length.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item : object</span>
+<span class="sd">        Object to broadcast</span>
+<span class="sd">    length : int</span>
+<span class="sd">        Length to broadcast to</span>
+<span class="sd">    allowed_types : list</span>
+<span class="sd">        List of allowed types</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Name of item</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    object:</span>
+<span class="sd">        The original item broadcasted to sequence form of length</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">allowed_types</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">length</span> <span class="o">*</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">length</span> <span class="o">*</span> <span class="n">item</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="n">length</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a single value, a list with &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;one element or a list with </span><span class="si">{1}</span><span class="s2"> elements.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">name</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">item</span></div>
+
+
+<span class="k">def</span> <span class="nf">__check_nb</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return true if called from a Jupyter notebook.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;ZMQ&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">__show_help_in_modal_window</span><span class="p">(</span><span class="n">objname</span><span class="p">,</span> <span class="n">hlptxt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Open modal window with help text</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    objname :   str</span>
+<span class="sd">            filename</span>
+<span class="sd">    hlptxt  :   str</span>
+<span class="sd">            Full text</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">hlptxt</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">hlptxt</span><span class="p">)</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;&lt;style&gt;.modal-body p { display: block;unicode-bidi: embed; &quot;</span> \
+            <span class="s2">&quot;font-family: monospace; white-space: pre; }&lt;/style&gt;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">       require(</span>
+<span class="s2">           [&quot;base/js/dialog&quot;],</span>
+<span class="s2">           function(dialog) {</span>
+<span class="s2">               dialog.modal({</span>
+<span class="s2">                   title: &#39;$jstitle&#39;,</span>
+<span class="s2">                   body: $jstext,</span>
+<span class="s2">                   buttons: {</span>
+<span class="s2">                       &#39;close&#39;: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">                   }</span>
+<span class="s2">               });</span>
+<span class="s2">           }</span>
+<span class="s2">       );</span>
+<span class="s2">       &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Javascript</span><span class="p">,</span> <span class="n">display</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">style</span><span class="p">))</span>
+
+    <span class="n">display</span><span class="p">(</span><span class="n">Javascript</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">jstitle</span><span class="o">=</span><span class="n">objname</span><span class="p">,</span> <span class="n">jstext</span><span class="o">=</span><span class="n">hlptxt</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="get_help_filepath"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.get_help_filepath">[docs]</a><span class="k">def</span> <span class="nf">get_help_filepath</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get file path of help object</span>
+
+<span class="sd">    Prints message if no help is available for hlpobj.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hlpobj : string</span>
+<span class="sd">        Object to display help for</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    string:</span>
+<span class="sd">        Filepath of the help object or None if no help available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">helpdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sli_func</span><span class="p">(</span><span class="s2">&quot;statusdict/prgdocdir ::&quot;</span><span class="p">),</span> <span class="s2">&quot;help&quot;</span><span class="p">)</span>
+    <span class="n">objname</span> <span class="o">=</span> <span class="n">hlpobj</span> <span class="o">+</span> <span class="s1">&#39;.hlp&#39;</span>
+    <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">helpdir</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">hlp</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hlp</span> <span class="o">==</span> <span class="n">objname</span><span class="p">:</span>
+                <span class="n">objf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">objname</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">objf</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sorry, there is no help for &#39;&quot;</span> <span class="o">+</span> <span class="n">hlpobj</span> <span class="o">+</span> <span class="s2">&quot;&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="load_help"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.load_help">[docs]</a><span class="k">def</span> <span class="nf">load_help</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns documentation of the object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hlpobj : object</span>
+<span class="sd">        Object to display help for</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    string:</span>
+<span class="sd">        The documentation of the object or None if no help available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">objf</span> <span class="o">=</span> <span class="n">get_help_filepath</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">objf</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">objf</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fhlp</span><span class="p">:</span>
+            <span class="n">hlptxt</span> <span class="o">=</span> <span class="n">fhlp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hlptxt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="k">def</span> <span class="nf">__is_executable</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns true for executable files.&quot;&quot;&quot;</span>
+
+    <span class="n">candidate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">X_OK</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="show_help_with_pager"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.show_help_with_pager">[docs]</a><span class="k">def</span> <span class="nf">show_help_with_pager</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">,</span> <span class="n">pager</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output of doc in python with pager or print</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hlpobj : object</span>
+<span class="sd">        Object to display</span>
+<span class="sd">    pager: str, optional</span>
+<span class="sd">        pager to use, False if you want to display help using print().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NEST help is only available with Python 2.7.8 or later.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="s1">&#39;NEST_INSTALL_DIR&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s1">&#39;NEST help needs to know where NEST is installed.&#39;</span>
+            <span class="s1">&#39;Please source nest_vars.sh or define NEST_INSTALL_DIR manually.&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># check that help is available</span>
+    <span class="n">objf</span> <span class="o">=</span> <span class="n">get_help_filepath</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">objf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>   <span class="c1"># message is printed by get_help_filepath()</span>
+
+    <span class="k">if</span> <span class="n">__check_nb</span><span class="p">():</span>
+        <span class="c1"># Display help in notebook</span>
+        <span class="c1"># Load the helptext, check the file exists.</span>
+        <span class="n">hlptxt</span> <span class="o">=</span> <span class="n">load_help</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hlptxt</span><span class="p">:</span>
+            <span class="c1"># Opens modal window only in notebook.</span>
+            <span class="n">objname</span> <span class="o">=</span> <span class="n">hlpobj</span> <span class="o">+</span> <span class="s1">&#39;.hlp&#39;</span>
+            <span class="n">__show_help_in_modal_window</span><span class="p">(</span><span class="n">objname</span><span class="p">,</span> <span class="n">hlptxt</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pager</span> <span class="ow">and</span> <span class="n">pager</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># pager == False: display using print()</span>
+        <span class="c1"># Note: we cannot use &quot;pager is False&quot; as Numpy has its own False</span>
+        <span class="n">hlptxt</span> <span class="o">=</span> <span class="n">load_help</span><span class="p">(</span><span class="n">hlpobj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hlptxt</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">hlptxt</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Help is to be displayed by pager</span>
+    <span class="c1"># try to find a pager if not explicitly given</span>
+    <span class="k">if</span> <span class="n">pager</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pager</span> <span class="o">=</span> <span class="n">sli_func</span><span class="p">(</span><span class="s1">&#39;/page /command GetOption&#39;</span><span class="p">)</span>
+
+        <span class="c1"># pager == false if .nestrc does not define one</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pager</span><span class="p">:</span>
+            <span class="c1"># Search for pager in path. The following is based on</span>
+            <span class="c1"># https://stackoverflow.com/questions/377017</span>
+            <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;less&#39;</span><span class="p">,</span> <span class="s1">&#39;more&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">__is_executable</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)):</span>
+                    <span class="n">pager</span> <span class="o">=</span> <span class="n">candidate</span>
+                    <span class="k">break</span>
+
+    <span class="c1"># check that we have a pager</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pager</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEST help requires a pager program. You can configure &#39;</span>
+              <span class="s1">&#39;it in the .nestrc file in your home directory.&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="n">pager</span><span class="p">,</span> <span class="n">objf</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Displaying help with pager &quot;</span><span class="si">{}</span><span class="s1">&quot; failed. &#39;</span>
+              <span class="s1">&#39;Please define a working parser in file .nestrc &#39;</span>
+              <span class="s1">&#39;in your home directory.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pager</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_verbosity"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.get_verbosity">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">get_verbosity</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return verbosity level of NEST&#39;s messages.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int:</span>
+<span class="sd">        The current verbosity level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Defined in hl_api_helper to avoid circular inclusion problem with</span>
+    <span class="c1"># hl_api_info.py</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;verbosity&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">spp</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="set_verbosity"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.set_verbosity">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">set_verbosity</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Change verbosity level for NEST&#39;s messages.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    level : str</span>
+<span class="sd">        Can be one of &#39;M_FATAL&#39;, &#39;M_ERROR&#39;, &#39;M_WARNING&#39;, &#39;M_DEPRECATED&#39;,</span>
+<span class="sd">        &#39;M_INFO&#39; or &#39;M_ALL&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Defined in hl_api_helper to avoid circular inclusion problem with</span>
+    <span class="c1"># hl_api_info.py</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> setverbosity&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">level</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="model_deprecation_warning"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.model_deprecation_warning">[docs]</a><span class="k">def</span> <span class="nf">model_deprecation_warning</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether the model is to be removed in a future verstion of NEST.</span>
+<span class="sd">    If so, a deprecation warning is issued.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model: str</span>
+<span class="sd">        Name of model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">deprecated_models</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subnet&#39;</span><span class="p">:</span> <span class="s1">&#39;GIDCollection&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;aeif_cond_alpha_RK5&#39;</span><span class="p">:</span> <span class="s1">&#39;aeif_cond_alpha&#39;</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">deprecated_models</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The </span><span class="si">{0}</span><span class="s2"> model is deprecated and will be removed in a </span><span class="se">\</span>
+<span class="s2">        future version of NEST, use </span><span class="si">{1}</span><span class="s2"> instead.</span><span class="se">\</span>
+<span class="s2">        &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">deprecated_models</span><span class="p">[</span><span class="n">model</span><span class="p">])</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">get_wrapped_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SuppressedDeprecationWarning"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_helper.SuppressedDeprecationWarning">[docs]</a><span class="k">class</span> <span class="nc">SuppressedDeprecationWarning</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Context manager turning off deprecation warnings for given methods.</span>
+
+<span class="sd">    Think thoroughly before use. This context should only be used as a way to</span>
+<span class="sd">    make sure examples do not display deprecation warnings, that is, used in</span>
+<span class="sd">    functions called from examples, and not as a way to make tedious</span>
+<span class="sd">    deprecation warnings dissapear.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_dep_funcs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        no_dep_funcs: Function name (string) or iterable of function names</span>
+<span class="sd">                      for which to suppress deprecation warnings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_no_dep_funcs</span> <span class="o">=</span> <span class="p">(</span><span class="n">no_dep_funcs</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_string</span><span class="p">(</span><span class="n">no_dep_funcs</span><span class="p">)</span>
+                              <span class="k">else</span> <span class="p">(</span><span class="n">no_dep_funcs</span><span class="p">,</span> <span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deprecation_status</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbosity_level</span> <span class="o">=</span> <span class="n">get_verbosity</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_no_dep_funcs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deprecation_status</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span>  <span class="c1"># noqa</span>
+            <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># Suppress only if verbosity level is deprecated or lower</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbosity_level</span> <span class="o">&lt;=</span> <span class="n">sli_func</span><span class="p">(</span><span class="s1">&#39;M_DEPRECATED&#39;</span><span class="p">):</span>
+                <span class="n">set_verbosity</span><span class="p">(</span><span class="n">sli_func</span><span class="p">(</span><span class="s1">&#39;M_WARNING&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+
+        <span class="c1"># Reset the verbosity level and deprecation warning status</span>
+        <span class="n">set_verbosity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_verbosity_level</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">deprec_status</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deprecation_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">_deprecation_warning</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deprec_status</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

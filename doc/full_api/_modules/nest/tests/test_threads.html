@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.tests.test_threads &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.tests.test_threads</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># test_threads.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">UnitTests for multithreaded pynest</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">nest</span>
+
+
+<div class="viewcode-block" id="ThreadTestCase"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.ThreadTestCase">[docs]</a><span class="nd">@nest</span><span class="o">.</span><span class="n">check_stack</span>
+<span class="k">class</span> <span class="nc">ThreadTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tests for multi-threading&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ThreadTestCase.nest_multithreaded"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.ThreadTestCase.nest_multithreaded">[docs]</a>    <span class="k">def</span> <span class="nf">nest_multithreaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True, if we have a thread-enabled NEST, False otherwise&quot;&quot;&quot;</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">sr</span><span class="p">(</span><span class="s2">&quot;statusdict/threading :: (no) eq not&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nest</span><span class="o">.</span><span class="n">spp</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ThreadTestCase.test_Threads"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.ThreadTestCase.test_Threads">[docs]</a>    <span class="k">def</span> <span class="nf">test_Threads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiple threads&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nest_multithreaded</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skipTest</span><span class="p">(</span><span class="s2">&quot;NEST was compiled without multi-threading&quot;</span><span class="p">)</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetKernelStatus</span><span class="p">()[</span><span class="s1">&#39;local_num_threads&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetKernelStatus</span><span class="p">({</span><span class="s1">&#39;local_num_threads&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">})</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;iaf_psc_alpha&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;vp&#39;</span><span class="p">))</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ThreadTestCase.test_ThreadsGetConnections"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.ThreadTestCase.test_ThreadsGetConnections">[docs]</a>    <span class="k">def</span> <span class="nf">test_ThreadsGetConnections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;GetConnections with threads&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nest_multithreaded</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skipTest</span><span class="p">(</span><span class="s2">&quot;NEST was compiled without multi-threading&quot;</span><span class="p">)</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+        <span class="n">nest</span><span class="o">.</span><span class="n">SetKernelStatus</span><span class="p">({</span><span class="s1">&#39;local_num_threads&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">})</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;iaf_psc_alpha&quot;</span><span class="p">)</span>
+        <span class="n">post</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">&quot;iaf_psc_alpha&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+        <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">GetConnections</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span>
+        <span class="c1"># Because of threading, targets may be in a different order than</span>
+        <span class="c1"># in post, so we sort the vector.</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">))</span>
+        <span class="n">targets</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ThreadTestCase.test_ThreadsGetEvents"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.ThreadTestCase.test_ThreadsGetEvents">[docs]</a>    <span class="k">def</span> <span class="nf">test_ThreadsGetEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gathering events across threads &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nest_multithreaded</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skipTest</span><span class="p">(</span><span class="s2">&quot;NEST was compiled without multi-threading&quot;</span><span class="p">)</span>
+
+        <span class="n">threads</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+        <span class="n">n_events_sd</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n_events_vm</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">128</span>
+        <span class="n">Simtime</span> <span class="o">=</span> <span class="mf">1000.</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+
+            <span class="n">nest</span><span class="o">.</span><span class="n">ResetKernel</span><span class="p">()</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">SetKernelStatus</span><span class="p">({</span><span class="s1">&#39;local_num_threads&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">})</span>
+
+            <span class="c1"># force a lot of spike events</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;iaf_psc_alpha&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;I_e&#39;</span><span class="p">:</span> <span class="mf">2000.</span><span class="p">})</span>
+            <span class="n">sd</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;spike_detector&#39;</span><span class="p">)</span>
+            <span class="n">vm</span> <span class="o">=</span> <span class="n">nest</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="s1">&#39;voltmeter&#39;</span><span class="p">)</span>
+
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">sd</span><span class="p">)</span>
+            <span class="n">nest</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+            <span class="n">nest</span><span class="o">.</span><span class="n">Simulate</span><span class="p">(</span><span class="n">Simtime</span><span class="p">)</span>
+
+            <span class="n">n_events_sd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="s1">&#39;n_events&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">n_events_vm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nest</span><span class="o">.</span><span class="n">GetStatus</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span> <span class="s1">&#39;n_events&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">ref_vm</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">Simtime</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ref_sd</span> <span class="o">=</span> <span class="n">n_events_sd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># could be done more elegantly with any(), ravel(),</span>
+        <span class="c1"># but we dont want to be dependent on numpy et al</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ref_vm</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">n_events_vm</span><span class="p">]</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ref_sd</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">n_events_sd</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="suite"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.suite">[docs]</a><span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">makeSuite</span><span class="p">(</span><span class="n">ThreadTestCase</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">suite</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../nest.tests.html#nest.tests.test_threads.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

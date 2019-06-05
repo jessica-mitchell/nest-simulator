@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nest.lib.hl_api_simulation &#8212; nest  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for nest.lib.hl_api_simulation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># hl_api_simulation.py</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of NEST.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2004 The NEST Initiative</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># NEST is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with NEST.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for simulation control</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.hl_api_helper</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+
+<div class="viewcode-block" id="Simulate"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.Simulate">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Simulate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simulate the network for t milliseconds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : float</span>
+<span class="sd">        Time to simulate in ms</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;ms Simulate&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.Run">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Run</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simulate the network for t milliseconds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : float</span>
+<span class="sd">        Time to simulate in ms</span>
+
+<span class="sd">    Call between Prepare and Cleanup calls, or within an</span>
+<span class="sd">    with RunManager: clause</span>
+<span class="sd">    Simulate(t): t&#39; = t/m; Prepare(); for _ in range(m): Run(t&#39;); Cleanup()</span>
+<span class="sd">    Prepare() must be called before to calibrate, etc; Cleanup() afterward to</span>
+<span class="sd">    close files, cleanup handles and so on. After Cleanup(), Prepare() can and</span>
+<span class="sd">    must be called before more Run() calls.</span>
+<span class="sd">    Any calls to set_status between Prepare() and Cleanup() have undefined</span>
+<span class="sd">    behavior.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;ms Run&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Prepare"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.Prepare">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Prepare</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Prepares network before a Run call. Not needed for Simulate.</span>
+
+<span class="sd">    See Run(t), Cleanup(). Call before any sequence of Runs(). Do all</span>
+<span class="sd">    set_status calls before Prepare().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;Prepare&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cleanup"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.Cleanup">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Cleanup</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Cleans up resources after a Run call. Not needed for Simulate.</span>
+
+<span class="sd">    See Run(t), Prepare().</span>
+<span class="sd">    Closes state for a series of runs, such as flushing and closing files.</span>
+<span class="sd">    A Prepare() is needed after a Cleanup() before any more calls to Run().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;Cleanup&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RunManager"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.RunManager">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">RunManager</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;ContextManager for Run.</span>
+
+<span class="sd">    Calls Prepare() before a series of Run() calls,</span>
+<span class="sd">    and  adds a Cleanup() at end.</span>
+
+<span class="sd">    So:</span>
+<span class="sd">    with RunManager():</span>
+<span class="sd">        for i in range(10):</span>
+<span class="sd">            Run()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Prepare</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">Cleanup</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResumeSimulation"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.ResumeSimulation">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">ResumeSimulation</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Resume an interrupted simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;ResumeSimulation&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ResetKernel"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.ResetKernel">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">ResetKernel</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Reset the simulation kernel.</span>
+
+<span class="sd">    This will destroy the network as well as all custom models created with</span>
+<span class="sd">    CopyModel(). Calling this function is equivalent to restarting NEST.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;ResetKernel&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ResetNetwork"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.ResetNetwork">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">ResetNetwork</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Reset all nodes and connections to their original state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;ResetNetwork&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SetKernelStatus"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.SetKernelStatus">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">SetKernelStatus</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set parameters for the simulation kernel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary of parameters to set.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    GetKernelStatus</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">sps</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;SetStatus&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GetKernelStatus"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.GetKernelStatus">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">GetKernelStatus</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Obtain parameters of the simulation kernel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    keys : str or list, optional</span>
+<span class="sd">        Single parameter name or list of parameter names</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict:</span>
+<span class="sd">        Parameter dictionary, if called without argument</span>
+<span class="sd">    type:</span>
+<span class="sd">        Single parameter value, if called with single parameter name</span>
+<span class="sd">    list:</span>
+<span class="sd">        List of parameter values, if called with list of parameter names</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;0 GetStatus&#39;</span><span class="p">)</span>
+    <span class="n">status_root</span> <span class="o">=</span> <span class="n">spp</span><span class="p">()</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;/subnet GetDefaults&#39;</span><span class="p">)</span>
+    <span class="n">status_subnet</span> <span class="o">=</span> <span class="n">spp</span><span class="p">()</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">status_root</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">status_subnet</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span>
+    <span class="k">elif</span> <span class="n">is_literal</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;keys should be either a string or an iterable&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Install"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.Install">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">Install</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a dynamically linked NEST module.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    module_name : str</span>
+<span class="sd">        Name of the dynamically linked module</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    NEST module identifier, required for unloading.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    nest.Install(&quot;mymodule&quot;)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Dynamically linked modules are searched in the LD_LIBRARY_PATH</span>
+<span class="sd">    (DYLD_LIBRARY_PATH under OSX).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">sr</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">) Install&quot;</span> <span class="o">%</span> <span class="n">module_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SetStructuralPlasticityStatus"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.SetStructuralPlasticityStatus">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">SetStructuralPlasticityStatus</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set structural plasticity parameters for the network simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary of structural plasticity parameters to set</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;SetStructuralPlasticityStatus&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GetStructuralPlasticityStatus"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.GetStructuralPlasticityStatus">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">GetStructuralPlasticityStatus</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the current structural plasticity parameters for the network</span>
+<span class="sd">    simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    keys : str or list, optional</span>
+<span class="sd">        Keys indicating the values of interest to be retrieved by the get call</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sps</span><span class="p">({})</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;GetStructuralPlasticityStatus&#39;</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">spp</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span>
+    <span class="k">elif</span> <span class="n">is_literal</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="n">keys</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;keys must be either empty, a string or a list&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EnableStructuralPlasticity"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.EnableStructuralPlasticity">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">EnableStructuralPlasticity</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Enable structural plasticity for the network simulation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;EnableStructuralPlasticity&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DisableStructuralPlasticity"><a class="viewcode-back" href="../../../nest.lib.html#nest.lib.hl_api_simulation.DisableStructuralPlasticity">[docs]</a><span class="nd">@check_stack</span>
+<span class="k">def</span> <span class="nf">DisableStructuralPlasticity</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Disable structural plasticity for the network simulation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sr</span><span class="p">(</span><span class="s1">&#39;DisableStructuralPlasticity&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">nest</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">nest package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../nest.html">nest</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
