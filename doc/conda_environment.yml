@@ -1,4 +1,4 @@
-name: nest_doc
+name: doc
 channels:
 - defaults
 - conda-forge
@@ -30,7 +30,7 @@ dependencies:
 - markupsafe
 - matplotlib
 - ncurses=5.9
-- nest-simulator
+- nest
 - numpy
 - numpydoc
 - openssl
@@ -42,7 +42,7 @@ dependencies:
 - pyopenssl
 - pysocks
 - pytest
-- python>=3.5
+- python==3.5
 - pytz
 - readline=6.2
 - requests
@@ -50,7 +50,7 @@ dependencies:
 - scipy
 - six
 - snowballstemmer
-- sphinx
+- sphinx==1.5.6
 - sphinxcontrib
 - sphinxcontrib-websupport
 - sphinx_rtd_theme
@@ -71,4 +71,3 @@ dependencies:
   - sphinx_gallery
   - sphinxcontrib-napoleon
   - mock
-  - breathe
