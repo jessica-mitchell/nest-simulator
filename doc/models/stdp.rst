@@ -1,3 +1,5 @@
+:orphan:
+
 Spike-timing dependent plasticity (STDP) synapse models
 ========================================================
 

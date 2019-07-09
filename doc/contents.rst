@@ -25,6 +25,7 @@ Table of Contents
    :caption: Getting Involved
 
    community
+   citing_nest
    Publications <https://www.nest-simulator.org/publications/>
    Developer Space <https://nest.github.io/nest-simulator/>
    NEST-Initiative <https://www.nest-initiative.org/>

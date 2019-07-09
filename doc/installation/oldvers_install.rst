@@ -1,13 +1,14 @@
+:orphan:
 
 Installation instructions for NEST 2.10 and earlier
 ====================================================
 
 .. note:: These instructions contain only information on points that differ from
- current versions of NEST. :doc:`See the installation page for details <installation>`.
+ current versions of NEST. :doc:`See the installation page for details <index>`.
 
 The following are the basic steps to compile and install NEST from source code:
 
-*  :doc:`Download NEST <../download.rst>`
+*  :doc:`Download NEST <../download>`
 
 * Unpack the tarball::
 
@@ -139,7 +140,7 @@ work. If you should get an error message like this::
     -Wl,-bind_at_load   ../models/.libs/libmodelmodule.a ../precise/.libs/libprecisemodule.a
     /Users/plesser/NEST/code/branches/bluegeneP/bld/topology/.lib s/libtopologymodule.dylib
     /Users/plesser/NEST/code/branches/bluegeneP/bld/developer/.libs/libdevelopermodule.dylib ../nestkernel/.libs/libnest.a
-    ../librandom/.libs /librandom.a ../libnestutil/.libs/libnestutil.a ../sli/.libs/libsli.a -lcurses -lreadline -lpthread -L/opt/local/lib  
+    ../librandom/.libs /librandom.a ../libnestutil/.libs/libnestutil.a ../sli/.libs/libsli.a -lcurses -lreadline -lpthread -L/opt/local/lib
     /opt/local/lib/libgsl.dylib /opt/local/lib/libgslcblas.dylib -lm
     Undefined symbols:
      "MPI::Comm::Set_errhandler(MPI::Errhandler const&)", referenced from:

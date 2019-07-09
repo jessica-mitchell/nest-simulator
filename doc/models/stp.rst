@@ -1,3 +1,5 @@
+:orphan:
+
 Short-term plasticity (STP) synapse models
 =======================================================
 

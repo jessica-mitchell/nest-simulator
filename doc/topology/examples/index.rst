@@ -8,6 +8,7 @@ Examples using Topology
    conncon_sources
    conncon_targets
    connex
+   connex_ew
    gaussex
    grid_iaf
    grid_iaf_irr

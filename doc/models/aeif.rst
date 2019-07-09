@@ -1,3 +1,5 @@
+:orphan:
+
 Adaptive Exponential Integrate-and-Fire (aEIF) neuron models
 ============================================================
 

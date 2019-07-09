@@ -1,3 +1,5 @@
+:orphan:
+
 Binary neuron model
 ================================
 

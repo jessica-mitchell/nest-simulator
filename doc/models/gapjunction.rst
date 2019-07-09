@@ -1,3 +1,5 @@
+:orphan:
+
 Gap junction model
 ===============================
 

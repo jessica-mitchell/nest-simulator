@@ -1,3 +1,5 @@
+:orphan:
+
 Hodgkin Huxley (HH) neuron models
 ===================================
 

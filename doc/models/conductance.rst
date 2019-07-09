@@ -1,3 +1,5 @@
+:orphan:
+
 Neuron models with conductance-based synapses
 ================================
 

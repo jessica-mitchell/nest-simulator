@@ -1,3 +1,5 @@
+:orphan:
+
 Instananeous rate synapse models
 =======================================================
 

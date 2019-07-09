@@ -1,3 +1,5 @@
+:orphan:
+
 Continuous delay synapse models
 =======================================================
 

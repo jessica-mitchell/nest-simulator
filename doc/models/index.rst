@@ -1,6 +1,16 @@
 Model Directory
 ===============
 
+.. toctree::
+  :hidden:
+
+  neurons
+  synapses
+  devices
+  create_model
+  ../topology/index
+  ../microcircuit/index
+
 Here you can find the list of all the models implemented in NEST for neurons,
 synapses, devices and topological networks.
 
@@ -43,15 +53,11 @@ on Github for you to check out.
 
 * **Network models**
 
+     * :doc:`../microcircuit/index`
      * :doc:`../topology/index`
 
 
 * :doc:`create_model`
 
 
-.. toctree::
-  :maxdepth: 1
-  :hidden:
-  :glob:
 
-   *

@@ -1,3 +1,5 @@
+:orphan:
+
 Integrate-and-Fire (IF) neuron models
 ==================================================
 

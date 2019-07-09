@@ -4,7 +4,7 @@ Citing NEST
 Please cite NEST if you use it in your work. You can :doc:`let us know <community>` about your publications that used NEST, and we
 will add them to our `publication list <https://www.nest-simulator.org/publications/>`_; this will help make them
 visible to potential readers.
-    `Download our logo  <https://github.com/nest/nest-simulator/tree/master/extras/logos>`_ for your poster or talk!
+`Download our logo  <https://github.com/nest/nest-simulator/tree/master/extras/logos>`_ for your poster or talk!
 
 If you use NEST 2.14.0, please cite it as **Peyser, Alexander et al.
 (2017). NEST 2.14.0. Zenodo. 10.5281/zenodo.882971**. The full citation

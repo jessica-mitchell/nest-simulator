@@ -1,3 +1,5 @@
+:orphan:
+
 Clopath neuron models
 ======================
 

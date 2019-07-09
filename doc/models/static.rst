@@ -1,3 +1,5 @@
+:orphan:
+
 Static synapse models
 =======================
 

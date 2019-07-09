@@ -1,3 +1,5 @@
+:orphan:
+
 Rate-based neuron models
 ================================
 

@@ -1,3 +1,5 @@
+:orphan:
+
 MUSIC related devices
 ================================
 

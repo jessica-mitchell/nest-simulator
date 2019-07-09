@@ -1,3 +1,5 @@
+:orphan:
+
 Hill-Tononi neuron model
 ==============================
 

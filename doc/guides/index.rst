@@ -7,6 +7,7 @@ Here you can find detailed look into a variety of topics in NEST.
     :maxdepth: 1
 
     connection_management
+    connection_generator_interface
     running_simulations
     parallel_computing
     random_numbers

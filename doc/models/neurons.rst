@@ -1,3 +1,5 @@
+:orphan:
+
 All neuron models
 ==============================
 

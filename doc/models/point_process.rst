@@ -1,3 +1,5 @@
+:orphan:
+
 Point process (PP) neurons
 ===============================
 

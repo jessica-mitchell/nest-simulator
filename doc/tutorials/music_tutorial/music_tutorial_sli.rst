@@ -1,3 +1,5 @@
+:orphan:
+
 MUSIC with SLI
 ==============
 
@@ -16,7 +18,7 @@ give a few pointers for how to connect things with MUSIC.
 
 ::
 
-    % create 2 neurons, get list of IDs. 
+    % create 2 neurons, get list of IDs.
     /iaf_neuron [2] LayoutNetwork /neuron_out_net Set
     /neuron_out neuron_out_net GetGlobalNodes def
 
@@ -67,9 +69,9 @@ use :math:`\texttt{put}`.
 
     % Create spike detector
     /spike_detector Create /sdetector Set
-    sdetector << /to_file true 
-                 /label (output) 
-                 /file_extension (spk) 
+    sdetector << /to_file true
+                 /label (output)
+                 /file_extension (spk)
     >> SetStatus
 
     % set port name and channel for all music input proxies.

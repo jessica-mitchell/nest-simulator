@@ -1,3 +1,5 @@
+:orphan:
+
 Neuron models with current-based synapses
 ================================
 

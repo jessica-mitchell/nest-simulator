@@ -1,3 +1,5 @@
+:orphan:
+
 Detector/Recorder devices
 ===========================
 
