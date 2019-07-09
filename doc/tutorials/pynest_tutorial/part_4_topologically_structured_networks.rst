@@ -21,7 +21,7 @@ sections of this primer:
 - :doc:`Part 3: Connecting networks with synapses <part_3_connecting_networks_with_synapses>`
 
 More advanced examples can be found at :doc:`Example
-Networks <../../auto_examples/index>`, or
+Networks <../../examples/index>`, or
 have a look at at the source directory of your NEST installation in the
 subdirectory: ``pynest/examples/``.
 
@@ -120,8 +120,6 @@ be located?".
 .. _grid:
 
 .. figure:: ../../_static/img/grid.png
-   :alt: Example of on-grid,  in which the neurons
-   are positioned as grid+jitter.
 
    Example of on-grid, in which the neurons are
    positioned as grid+jitter.
@@ -130,8 +128,6 @@ be located?".
 .. _free:
 
 .. figure:: ../../_static/img/free.png
-   :alt: Example of off-grid, in which the neurons
-   are positioned as grid+jitter .
 
    Example of off-grid, in which the neurons are
    positioned as grid+jitter .
@@ -260,8 +256,6 @@ that can be used.
 .. _cirgauss:
 
 .. figure:: ../../_static/img/sample1_circgauss.png
-   :alt: Examples of connectivity for each of the connectivity
-   dictionaries mentioned in the following Python code snippet.
 
    Examples of connectivity for each of the connectivity dictionaries
    mentioned in the following Python code snippet.
@@ -269,8 +263,6 @@ that can be used.
 .. _rectanchor:
 
 .. figure:: ../../_static/img/sample2_rectanchor.png
-   :alt: Examples of connectivity for each of the connectivity
-   dictionaries mentioned in the following Python code snippet.
 
    Examples of connectivity for each of the connectivity dictionaries
    mentioned in the following Python code snippet.
@@ -278,8 +270,6 @@ that can be used.
 .. _doughnutlinear:
 
 .. figure:: ../../_static/img/sample3_doughnutlinear.png
-   :alt: Examples of connectivity for each of the connectivity
-   dictionaries mentioned in the following Python code snippet.
 
    Examples of connectivity for each of the connectivity dictionaries
    mentioned in the following Python code snippet.
@@ -287,8 +277,6 @@ that can be used.
 .. _gaussweights:
 
 .. figure:: ../../_static/img/sample4_gaussweights.png
-   :alt: Examples of connectivity for each of the connectivity
-   dictionaries mentioned in the following Python code snippet.
 
    Examples of connectivity for each of the connectivity dictionaries
    mentioned in the following Python code snippet.

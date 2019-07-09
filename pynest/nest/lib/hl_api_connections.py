@@ -138,8 +138,7 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     Connect does not iterate over subnets, it only connects explicitly
     specified nodes.
 
-    Connectivity specification (conn_spec)
-    --------------------------------------
+    **Connectivity specification (conn_spec)**
 
     Connectivity is specified either as a string containing the name of a
     connectivity rule (default: 'all_to_all') or as a dictionary specifying
@@ -152,8 +151,8 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     connections ('symmetric', default: False) by also creating connections
     in the opposite direction.
 
-    Available rules and associated parameters
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    **Available rules and associated parameters**
+
     - 'all_to_all' (default)
     - 'one_to_one'
     - 'fixed_indegree', 'indegree'
@@ -161,20 +160,20 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     - 'fixed_total_number', 'N'
     - 'pairwise_bernoulli', 'p'
 
-    Example conn-spec choices
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    **Example conn-spec choices**
+
     - 'one_to_one'
     - {'rule': 'fixed_indegree', 'indegree': 2500, 'autapses': False}
     - {'rule': 'pairwise_bernoulli', 'p': 0.1}
 
-    Synapse specification (syn_spec)
-    --------------------------------------
+    **Synapse specification (syn_spec)**
 
     The synapse model and its properties can be given either as a string
     identifying a specific synapse model (default: 'static_synapse') or
     as a dictionary specifying the synapse model and its parameters.
 
     Available keys in the synapse specification dictionary are:
+
     - 'model'
     - 'weight'
     - 'delay'
@@ -195,6 +194,7 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
 
     Parameter arrays are available for the rules 'one_to_one',
     'all_to_all', 'fixed_indegree' and 'fixed_outdegree':
+
     - For 'one_to_one' the array has to be a one-dimensional
       NumPy array with length len(pre).
     - For 'all_to_all' the array has to be a two-dimensional NumPy array
@@ -221,8 +221,8 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     To get information on a particular distribution, e.g. 'binomial', run:
     nest.help('rdevdict::binomial')
 
-    Most common available distributions and associated parameters
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    **Most common available distributions and associated parameters**
+
     - 'normal' with 'mu', 'sigma'
     - 'normal_clipped' with 'mu', 'sigma', 'low', 'high'
     - 'lognormal' with 'mu', 'sigma'
@@ -230,17 +230,16 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     - 'uniform' with 'low', 'high'
     - 'uniform_int' with 'low', 'high'
 
-    Example syn-spec choices
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
-    - 'stdp_synapse'
-    - {'weight': 2.4, 'receptor_type': 1}
-    - {'model': 'stdp_synapse',
+    **Example syn-spec choices**
+
+    - ``{'weight': 2.4, 'receptor_type': 1}``
+    - ``{'model': 'stdp_synapse',
        'weight': 2.5,
        'delay': {'distribution': 'uniform', 'low': 0.8, 'high': 2.5},
        'alpha': {
            'distribution': 'normal_clipped', 'low': 0.5,
            'mu': 5.0, 'sigma': 1.0}
-      }
+      }``
     """
 
     if model is not None:
@@ -363,8 +362,8 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
 
 
 @check_stack
-@deprecated('', 'DataConnect is deprecated and will be removed in NEST 3.0.\
-Use Connect() with one_to_one rule instead.')
+@deprecated('', 'DataConnect is deprecated and will be removed in NEST 3.0. \
+            Use Connect with one_to_one rule instead.')
 def DataConnect(pre, params=None, model="static_synapse"):
     """Connect neurons from lists of connection data.
 
@@ -382,11 +381,10 @@ def DataConnect(pre, params=None, model="static_synapse"):
     ------
     TypeError
 
-    Usage Variants
-    --------------
+    Notes
+    --------
 
-    Variant 1
-    ~~~~~~~~~
+    **Usage Variant 1**
 
     Connect each neuron in pre to the targets given in params,
     using synapse type model.
@@ -406,8 +404,7 @@ def DataConnect(pre, params=None, model="static_synapse"):
     in the same format. All arrays in params must have the same
     length as 'target'.
 
-    Variant 2
-    ~~~~~~~~~
+    **Usage Variant 2**
 
     Connect neurons according to a list of synapse status dictionaries,
     as obtained from GetStatus.
@@ -464,6 +461,7 @@ def CGConnect(pre, post, cg, parameter_map=None, model="static_synapse"):
     support for libneurosim.
 
     For further information, see
+
     * The NEST documentation on using the CG Interface at
       https://www.nest-simulator.org/connection-generator-interface
     * The GitHub repository and documentation for libneurosim at
@@ -605,16 +603,16 @@ def Disconnect(pre, post, conn_spec='one_to_one', syn_spec='static_synapse'):
     syn_spec : str or dict
         Synapse specifications, see below
 
-    conn_spec
-    ---------
+    **conn_spec**
+
     Apply the same rules as for connectivity specs in the Connect method
 
     Possible choices of the conn_spec are
     - 'one_to_one'
     - 'all_to_all'
 
-    syn_spec
-    --------
+    **syn_spec**
+
     The synapse model and its properties can be inserted either as a
     string describing one synapse model (synapse models are listed in the
     synapsedict) or as a dictionary as described below.

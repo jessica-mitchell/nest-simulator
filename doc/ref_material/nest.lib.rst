@@ -43,7 +43,7 @@ Nodes module
    :show-inheritance:
 
 Parallel Computing module
-------------------------
+--------------------------
 
 .. automodule:: nest.lib.hl_api_parallel_computing
    :members:

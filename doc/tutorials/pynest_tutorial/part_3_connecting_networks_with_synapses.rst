@@ -18,7 +18,7 @@ sections of this primer:
 
 -  :doc:`Part 1: Neurons and simple neural
    networks <part_1_neurons_and_simple_neural_networks>`
--  :doc:`Part 2: Populations of neurons <part_2_populations_of_neurons>` 
+-  :doc:`Part 2: Populations of neurons <part_2_populations_of_neurons>`
 -  :doc:`Part 4: Topologically structured
    networks <part_4_topologically_structured_networks>`
 
@@ -108,17 +108,17 @@ parameters associated with the distribution can be set (for example
 
     alpha_min = 0.1
     alpha_max = 2.
-    w_min = 0.5 
+    w_min = 0.5
     w_max = 5.
 
-    syn_dict = {"model": "stdp_synapse", 
+    syn_dict = {"model": "stdp_synapse",
                 "alpha": {"distribution": "uniform", "low": alpha_min, "high": alpha_max},
                 "weight": {"distribution": "uniform", "low": w_min, "high": w_max},
                 "delay": 1.0}
     nest.Connect(epop1, neuron, "all_to_all", syn_dict)
 
 Available distributions and associated parameters are described in
-:doc:`Connection Management <../../guides/connection-management>`, the most common
+:doc:`Connection Management <../../guides/connection_management>`, the most common
 ones are:
 
 +-------------------+------------------------+
@@ -388,7 +388,7 @@ handout.
 Querying Synapses
 ~~~~~~~~~~~~~~~~~
 
--  ``GetConnections(neuron, synapse_model="None"))`` 
+-  ``GetConnections(neuron, synapse_model="None"))``
 
    Return an array of connection identifiers.
 

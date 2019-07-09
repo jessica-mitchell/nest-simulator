@@ -172,7 +172,7 @@ def GetDefaults(model, keys=None, output=''):
     -----
     **Example**
 
-    .. code_block:: python
+    .. code-block:: python
 
         >>> nest.GetDefaults('iaf_psc_alpha', 'V_m')
         -70.0
