@@ -115,7 +115,7 @@ end of the interval* during which the threshold was crossed.
 
 NEST also has a some models that determine the precise time of the
 threshold crossing during the interval. Please see the documentation on
-:doc:`precise spike time neurons <simulations_with_precise_spike_time>`
+:doc:`precise spike time neurons <simulations_with_precise_spike_times>`
 for details about neuron update in continuous time and the
 :doc:`documentation on connection management <connection_management>`
 for how to set the delay when creating synapses.
@@ -132,12 +132,12 @@ of doing this is to simply loop over ``Simulate()`` calls:
     for _ in range(20):
         nest.Simulate(10)
         # extract and analyse data
-        
+
 would run a simulation in 20 rounds of 10 ms. With this solution, NEST takes
-a number of preparatory and cleanup steps for each ``Simulate()`` call. 
-This makes the solution robust and entirely reliable, but comes with a 
+a number of preparatory and cleanup steps for each ``Simulate()`` call.
+This makes the solution robust and entirely reliable, but comes with a
 performance cost.
- 
+
 A more efficient solution doing exactly the same thing is
 
 ::
@@ -147,7 +147,7 @@ A more efficient solution doing exactly the same thing is
         nest.Run(10)
         # extract and analyse data
     nest.Cleanup()
-     
+
 For convenience, the ``RunManager()`` context manager can handle preparation
 and cleanup for you:
 
@@ -159,9 +159,9 @@ and cleanup for you:
             # extract and analyse data
 
 .. note::
-   - If you do not use ``RunManager()``, you must call ``Prepare()``, 
+   - If you do not use ``RunManager()``, you must call ``Prepare()``,
      ``Run()`` and ``Cleanup()`` in that order.
-   - You can call ``Run()`` any number of times inside a ``RunManager()`` 
+   - You can call ``Run()`` any number of times inside a ``RunManager()``
      context or between ``Prepare()`` and ``Cleanup()`` calls.
    - Calling ``SetStatus()`` inside a ``RunManager()`` context or
      between ``Prepare()`` and ``Cleanup()`` will **lead to unpredictable
@@ -176,9 +176,9 @@ The only reliable way to perform two simulations of a network from exactly
 the same starting point is to restart NEST or to call `ResetKernel()` and
 then to build the network anew. If your simulations are rather large and
 you are working on a computer with a job queueing system, it may be most
-efficient to submit individual jobs or a job array to smiulate network 
-instances in parallel; don't forget to use different 
-:doc:`random seeds <random_numbers>`! 
+efficient to submit individual jobs or a job array to smiulate network
+instances in parallel; don't forget to use different
+:doc:`random seeds <random_numbers>`!
 
 The following example performs simulations of a single neuron driven by
 a Poisson spike train using different seeds and output files for each run:
@@ -194,12 +194,12 @@ a Poisson spike train using different seeds and output files for each run:
         sd = nest.Create('spike_detector',
                             params={'label': 'spikes-run{:02d}'.format(n),
                                     'to_file': True})
-    
+
         nest.Connect(pg, nrn)
         nest.Connect(nrn, sd)
-    
+
         nest.Simulate(100)
-    
+
 The ``ResetNetwork()`` function available in NEST 2 is incomplete in that it
 only resets the state of neurons and devices to default values and deletes
 spikes that are in the delivery pipeline. It does does not reset plastic

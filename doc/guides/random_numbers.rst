@@ -42,7 +42,7 @@ N}. Random *deviate* generators, on the other hand, provide random
 numbers drawn from a range of distributions, such as the normal or
 binomial distributions. In most cases, you will be using random deviate
 generators. They are in particular used to initialize properties during
-network construction, as described in the sections :ref:`changes-nest>`
+network construction, as described in the sections :ref:`changes-nest`
 and :ref:`examples-rng` below.
 
 .. _changes-nest:

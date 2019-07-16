@@ -2,8 +2,8 @@ Simulations with precise spike times
 ====================================
 
 The simulation resolution *h* and the minimum synaptic transmission
-delay *dmin* define the two major time intervals of the :doc:`scheduling and
-simulation flow of NEST <scheduling_and_simulation_flow>`: neurons
+delay *dmin* define the two major time intervals of the scheduling and
+simulation flow of NEST:  neurons
 update their state variables in steps of *h*, whereas spikes are
 communicated and delivered to their targets in steps of *dmin*, where
 *dmin* is a multiple of *h*.

@@ -22,5 +22,7 @@ Here you can find detailed look into a variety of topics in NEST.
 
    aeif_models_implementation
    HillTononiModels
+   exact_integration
    IAF_neurons_singularity
    noise_generator
+   test_post_trace
