@@ -57,7 +57,7 @@ Calculate the dot product of the vectors \\([1 2 3]cdot[4 5 6]\)
    SLI ] [1 2 3]
    SLI [1] [4 5 6]
    SLI [2] Dot =
-   32                                                                              
+   32
 
 Names
 -----
@@ -125,7 +125,7 @@ Examples 5
 ::
 
    SLI ] (Hello World!) =
-   Hello World!                                                                    
+   Hello World!
 
 Procedures
 ----------
@@ -198,11 +198,21 @@ There are a number of different object types in SLI. Each type is
 represented by a literal name (i.e. a name with a prepended slash). Here
 is a list of the most important types:
 
-\|—————–|——————-\| \| ``/integertype`` \| ``/doubletype`` \| \|
-``/booltype`` \| ``/stringtype`` \| \| ``/nametype`` \| ``/literaltype``
-\| \| ``/arraytype`` \| ``/proceduretype`` \| \| ``/modeltype`` \|
-``/dictionarytype`` \| \| ``/ostreamtype`` \| ``/istreamtype`` \| \|
-``/xistreamtype`` \| ``/trietype`` \|
+
+*  ``/integertype``
+*  ``/doubletype``
+*  ``/booltype``
+*  ``/stringtype``
+*  ``/nametype``
+*  ``/literaltype``
+*  ``/arraytype``
+*  ``/proceduretype``
+*  ``/modeltype``
+*  ``/dictionarytype``
+*  ``/ostreamtype``
+*  ``/istreamtype``
+*  ``/xistreamtype``
+*  ``/trietype``
 
 Getting type information
 ~~~~~~~~~~~~~~~~~~~~~~~~

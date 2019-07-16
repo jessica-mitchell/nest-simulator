@@ -1,8 +1,3 @@
-
-
-.. _sphx_glr_auto_examples_hill_tononi_Vp.py:
-
-
 NEST Topology Module: A Case-Based Tutorial
 ===========================================
 
@@ -38,6 +33,7 @@ currently supported by NEST. Simplifications include:
    synapses (labeled "ex" and "in"), we only include AMPA and
    GABA_A synapses.
 
+
 #  We ignore the secondary pathway (Ts, Rs, Vs), since it adds just
    more of the same from a technical point of view.
 
@@ -53,37 +49,39 @@ currently supported by NEST. Simplifications include:
 
 This tutorial is divided in the following sections:
 
-Philosophy_
+:ref:`philosophy_ht`
    Discusses the philosophy applied to model implementation in this
    tutorial
 
-Preparations_
+:ref:`preparations_ht`
    Neccessary steps to use NEST and the Topology Module
 
-`Configurable Parameters`_
+:ref:`config_parameters_ht`
    Define adjustable network parameters
 
-`Neuron Models`_
+:ref:`neuron_models_ht`
    Define the neuron models needed by the network model
 
-Populations_
+:ref:`populations_ht`
    Create Populations
 
-`Synapse models`_
+:ref:`synapse_models_ht`
    Define the synapse models used in the network model
 
-Connections_
+:ref:`connections_ht`
    Create Connections
 
-`Example simulation`_
+:ref:`example_simulation_ht`
    Perform a small simulation for illustration. This
    section also discusses the setup for recording.
+
+.. _philosophy_ht:
 
 Philosophy
 ----------
 
 A network models has two essential components: *populations* and
- *projections*.  We first use NEST's ``CopyModel()`` mechanism to
+*projections*.  We first use NEST's ``CopyModel()`` mechanism to
 create specific models for all populations and subpopulations in
 the network, and then create the populations using the Topology
 modules ``CreateLayer()`` function.
@@ -110,7 +108,9 @@ as well as the following paper which will apply in PLoS
 Computational Biology shortly:
 
 - Eilen Nordlie, Marc-Oliver Gewaltig, & Hans Ekkehard Plesser.
-Towards reproducible descriptions of neuronal network models.
+  Towards reproducible descriptions of neuronal network models.
+
+.. _preparations_ht:
 
 Preparations
 ------------
@@ -143,11 +143,6 @@ functions, see documentation.
     else:
         pylab.ion()
 
-    # ! Introduction
-    # !=============
-    # ! This tutorial gives a brief introduction to the ConnPlotter
-    # ! toolbox.  It is by no means complete.
-
     # ! Load pynest
     import nest
 
@@ -161,24 +156,29 @@ functions, see documentation.
     # ! Import math, we need Pi
     import math
 
-    # ! Configurable Parameters
-    # ! =======================
-    # !
-    # ! Here we define those parameters that we take to be
-    # ! configurable. The choice of configurable parameters is obviously
-    # ! arbitrary, and in practice one would have far more configurable
-    # ! parameters. We restrict ourselves to:
-    # !
-    # ! - Network size in neurons ``N``, each layer is ``N x N``.
-    # ! - Network size in subtended visual angle ``visSize``, in degree.
-    # ! - Temporal frequency of drifting grating input ``f_dg``, in Hz.
-    # ! - Spatial wavelength and direction of drifting grating input,
-    # !   ``lambda_dg`` and ``phi_dg``, in degree/radian.
-    # ! - Background firing rate of retinal nodes and modulation amplitude,
-    # !   ``retDC`` and ``retAC``, in Hz.
-    # ! - Simulation duration ``simtime``; actual simulation is split into
-    # !   intervals of ``sim_interval`` length, so that the network state
-    # !   can be visualized in those intervals. Times are in ms.
+.. _config_parameters_ht:
+
+Configurable Parameters
+-------------------------
+
+Here we define those parameters that we take to be
+configurable. The choice of configurable parameters is obviously
+arbitrary, and in practice one would have far more configurable
+parameters. We restrict ourselves to:
+
+- Network size in neurons ``N``, each layer is ``N x N``.
+- Network size in subtended visual angle ``visSize``, in degree.
+- Temporal frequency of drifting grating input ``f_dg``, in Hz.
+- Spatial wavelength and direction of drifting grating input,
+  ``lambda_dg`` and ``phi_dg``, in degree/radian.
+- Background firing rate of retinal nodes and modulation amplitude,
+  ``retDC`` and ``retAC``, in Hz.
+- Simulation duration ``simtime``; actual simulation is split into
+  intervals of ``sim_interval`` length, so that the network state
+  can be visualized in those intervals. Times are in ms.
+
+.. code-block:: python
+
     Params = {'N': 40,
               'visSize': 8.0,
               'f_dg': 2.0,
@@ -190,61 +190,66 @@ functions, see documentation.
               'sim_interval': 5.0
               }
 
-    # ! Neuron Models
-    # ! =============
-    # !
-    # ! We declare models in two steps:
-    # !
-    # ! 1. We define a dictionary specifying the NEST neuron model to use
-    # !    as well as the parameters for that model.
-    # ! #. We create three copies of this dictionary with parameters
-    # !    adjusted to the three model variants specified in Table~2 of
-    # !    Hill & Tononi (2005) (cortical excitatory, cortical inhibitory,
-    # !    thalamic)
-    # !
-    # ! In addition, we declare the models for the stimulation and
-    # ! recording devices.
-    # !
-    # ! The general neuron model
-    # ! ------------------------
-    # !
-    # ! We use the ``iaf_cond_alpha`` neuron, which is an
-    # ! integrate-and-fire neuron with two conductance-based synapses which
-    # ! have alpha-function time course.  Any input with positive weights
-    # ! will automatically directed to the synapse labeled ``_ex``, any
-    # ! with negative weights to the synapes labeled ``_in``.  We define
-    # ! **all** parameters explicitly here, so that no information is
-    # ! hidden in the model definition in NEST. ``V_m`` is the membrane
-    # ! potential to which the model neurons will be initialized.
-    # ! The model equations and parameters for the Hill-Tononi neuron model
-    # ! are given on pp. 1677f and Tables 2 and 3 in that paper. Note some
-    # ! peculiarities and adjustments:
-    # !
-    # ! - Hill & Tononi specify their model in terms of the membrane time
-    # !   constant, while the ``iaf_cond_alpha`` model is based on the
-    # !   membrane capcitance. Interestingly, conducantces are unitless in
-    # !   the H&T model. We thus can use the time constant directly as
-    # !   membrane capacitance.
-    # ! - The model includes sodium and potassium leak conductances. We
-    # !   combine these into a single one as follows:
-    # $   \begin{equation}-g_{NaL}(V-E_{Na}) - g_{KL}(V-E_K)
-    # $      = -(g_{NaL}+g_{KL})
-    # $        \left(V-\frac{g_{NaL}E_{NaL}+g_{KL}E_K}{g_{NaL}g_{KL}}\right)
-    # $   \end{equation}
-    # ! - We write the resulting expressions for g_L and E_L explicitly
-    # !   below, to avoid errors in copying from our pocket calculator.
-    # ! - The paper gives a range of 1.0-1.85 for g_{KL}, we choose 1.5
-    # !   here.
-    # ! - The Hill-Tononi model has no explicit reset or refractory
-    # !   time. We arbitrarily set V_reset and t_ref.
-    # ! - The paper uses double exponential time courses for the synaptic
-    # !   conductances, with separate time constants for the rising and
-    # !   fallings flanks. Alpha functions have only a single time
-    # !   constant: we use twice the rising time constant given by Hill and
-    # !   Tononi.
-    # ! - In the general model below, we use the values for the cortical
-    # !   excitatory cells as defaults. Values will then be adapted below.
-    # !
+.. _neuron_models_ht:
+
+Neuron Models
+---------------
+
+We declare models in two steps:
+
+1. We define a dictionary specifying the NEST neuron model to use
+   as well as the parameters for that model.
+#. We create three copies of this dictionary with parameters
+   adjusted to the three model variants specified in Table~2 of
+   Hill & Tononi (2005) (cortical excitatory, cortical inhibitory,
+   thalamic)
+
+In addition, we declare the models for the stimulation and
+recording devices.
+
+The general neuron model
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We use the ``iaf_cond_alpha`` neuron, which is an
+integrate-and-fire neuron with two conductance-based synapses which
+have alpha-function time course.  Any input with positive weights
+will automatically directed to the synapse labeled ``_ex``, any
+with negative weights to the synapes labeled ``_in``.  We define
+**all** parameters explicitly here, so that no information is
+hidden in the model definition in NEST. ``V_m`` is the membrane
+potential to which the model neurons will be initialized.
+The model equations and parameters for the Hill-Tononi neuron model
+are given on pp. 1677f and Tables 2 and 3 in that paper. Note some
+peculiarities and adjustments:
+
+- Hill & Tononi specify their model in terms of the membrane time
+  constant, while the ``iaf_cond_alpha`` model is based on the
+  membrane capcitance. Interestingly, conducantces are unitless in
+  the H&T model. We thus can use the time constant directly as
+  membrane capacitance.
+- The model includes sodium and potassium leak conductances. We
+  combine these into a single one as follows:
+  .. math::
+
+      -g_{NaL}(V-E_{Na}) - g_{KL}(V-E_K) = -(g_{NaL}+g_{KL})
+      \left(V-\frac{g_{NaL}E_{NaL}+g_{KL}E_K}{g_{NaL}g_{KL}}\right)
+
+- We write the resulting expressions for g_L and E_L explicitly
+  below, to avoid errors in copying from our pocket calculator.
+- The paper gives a range of 1.0-1.85 for g_{KL}, we choose 1.5
+  here.
+- The Hill-Tononi model has no explicit reset or refractory
+  time. We arbitrarily set V_reset and t_ref.
+- The paper uses double exponential time courses for the synaptic
+  conductances, with separate time constants for the rising and
+  fallings flanks. Alpha functions have only a single time
+  constant: we use twice the rising time constant given by Hill and
+  Tononi.
+- In the general model below, we use the values for the cortical
+  excitatory cells as defaults. Values will then be adapted below.
+
+.. code-block:: python
+
     nest.CopyModel('iaf_cond_alpha', 'NeuronModel',
                    params={'C_m': 16.0,
                            'E_L': (0.2 * 30.0 + 1.5 * -90.0) / (0.2 + 1.5),
@@ -259,15 +264,19 @@ functions, see documentation.
                            'I_e': 0.0,
                            'V_m': -70.0})
 
-    # ! Adaptation of models for different populations
-    # ! ----------------------------------------------
+Adaptation of models for different populations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! We must copy the `NeuronModel` dictionary explicitly, otherwise
-    # ! Python would just create a reference.
+We must copy the `NeuronModel` dictionary explicitly, otherwise
+Python would just create a reference.
 
-    # ! Cortical excitatory cells
-    # ! .........................
-    # ! Parameters are the same as above, so we need not adapt anything
+Cortical excitatory cells
+.........................
+
+Parameters are the same as above, so we need not adapt anything
+
+.. code-block:: python
+
     nest.CopyModel('NeuronModel', 'CtxExNeuron')
 
     # ! Cortical inhibitory cells
@@ -286,21 +295,24 @@ functions, see documentation.
                            'E_in': -80.0})
 
 
-    # ! Input generating nodes
-    # ! ----------------------
+Input generating nodes
+^^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! Input is generated by sinusoidally modulate Poisson generators,
-    # ! organized in a square layer of retina nodes. These nodes require a
-    # ! slightly more complicated initialization than all other elements of
-    # ! the network:
-    # !
-    # ! - Average firing rate ``rate``, firing rate modulation depth ``amplitude``,
-    # !   and temporal modulation frequency ``frequency`` are the same for all
-    # !   retinal nodes and are set directly below.
-    # ! - The temporal phase ``phase`` of each node depends on its position in
-    # !   the grating and can only be assigned after the retinal layer has
-    # !   been created. We therefore specify a function for initalizing the
-    # !   ``phase``. This function will be called for each node.
+Input is generated by sinusoidally modulate Poisson generators,
+organized in a square layer of retina nodes. These nodes require a
+slightly more complicated initialization than all other elements of
+the network:
+
+- Average firing rate ``rate``, firing rate modulation depth ``amplitude``,
+  and temporal modulation frequency ``frequency`` are the same for all
+  retinal nodes and are set directly below.
+- The temporal phase ``phase`` of each node depends on its position in
+  the grating and can only be assigned after the retinal layer has
+  been created. We therefore specify a function for initalizing the
+  ``phase``. This function will be called for each node.
+
+.. code-block:: python
+
     def phaseInit(pos, lam, alpha):
         '''Initializer function for phase of drifting grating nodes.
 
@@ -320,195 +332,236 @@ functions, see documentation.
                            'phase': 0.0,
                            'individual_spike_trains': False})
 
-    # ! Recording nodes
-    # ! ---------------
+Recording nodes
+^^^^^^^^^^^^^^^^
 
-    # ! We use the new ``multimeter`` device for recording from the model
-    # ! neurons. At present, ``iaf_cond_alpha`` is one of few models
-    # ! supporting ``multimeter`` recording.  Support for more models will
-    # ! be added soon; until then, you need to use ``voltmeter`` to record
-    # ! from other models.
-    # !
-    # ! We configure multimeter to record membrane potential to membrane
-    # ! potential at certain intervals to memory only. We record the GID of
-    # ! the recorded neurons, but not the time.
+We use the new ``multimeter`` device for recording from the model
+neurons. At present, ``iaf_cond_alpha`` is one of few models
+supporting ``multimeter`` recording.  Support for more models will
+be added soon; until then, you need to use ``voltmeter`` to record
+from other models.
+
+We configure multimeter to record membrane potential to membrane
+potential at certain intervals to memory only. We record the GID of
+the recorded neurons, but not the time.
+
+.. code-block:: python
+
     nest.CopyModel('multimeter', 'RecordingNode',
                    params={'interval': Params['sim_interval'],
                            'record_from': ['V_m'],
                            'record_to': ['memory'],
                            'withgid': True,
                            'withtime': False})
+.. _populations_ht:
 
-    # ! Populations
-    # ! ===========
+Populations
+------------
 
-    # ! We now create the neuron populations in the model, again in the
-    # ! form of Python dictionaries. We define them in order from eye via
-    # ! thalamus to cortex.
-    # !
-    # ! We first define a dictionary defining common properties for all
-    # ! populations
+We now create the neuron populations in the model, again in the
+form of Python dictionaries. We define them in order from eye via
+thalamus to cortex.
+
+We first define a dictionary defining common properties for all
+populations
+
+.. code-block:: python
+
     layerProps = {'rows': Params['N'],
                   'columns': Params['N'],
                   'extent': [Params['visSize'], Params['visSize']],
                   'edge_wrap': True}
-    # ! This dictionary does not yet specify the elements to put into the
-    # ! layer, since they will differ from layer to layer. We will add them
-    # ! below by updating the ``'elements'`` dictionary entry for each
-    # ! population.
 
-    # ! Retina
-    # ! ------
+This dictionary does not yet specify the elements to put into the
+layer, since they will differ from layer to layer. We will add them
+below by updating the ``'elements'`` dictionary entry for each
+population.
+
+Retina
+^^^^^^^
+
+.. code-block:: python
+
     layerProps.update({'elements': 'RetinaNode'})
     retina = topo.CreateLayer(layerProps)
 
     # retina_leaves is a work-around until NEST 3.0 is released
     retina_leaves = nest.GetLeaves(retina)[0]
 
-    # ! Now set phases of retinal oscillators; we use a list comprehension instead
-    # ! of a loop.
+    #  Now set phases of retinal oscillators; we use a list comprehension instead
+    #  of a loop.
     [nest.SetStatus([n], {"phase": phaseInit(topo.GetPosition([n])[0],
                                              Params["lambda_dg"],
                                              Params["phi_dg"])})
      for n in retina_leaves]
 
-    # ! Thalamus
-    # ! --------
+Thalamus
+^^^^^^^^^
 
-    # ! We first introduce specific neuron models for the thalamic relay
-    # ! cells and interneurons. These have identical properties, but by
-    # ! treating them as different models, we can address them specifically
-    # ! when building connections.
-    # !
-    # ! We use a list comprehension to do the model copies.
+We first introduce specific neuron models for the thalamic relay
+cells and interneurons. These have identical properties, but by
+treating them as different models, we can address them specifically
+when building connections.
+
+We use a list comprehension to do the model copies.
+
+.. code-block:: python
+
     [nest.CopyModel('ThalamicNeuron', SpecificModel) for SpecificModel in
      ('TpRelay', 'TpInter')]
 
-    # ! Now we can create the layer, with one relay cell and one
-    # ! interneuron per location:
+    #  Now we can create the layer, with one relay cell and one
+    #  interneuron per location:
     layerProps.update({'elements': ['TpRelay', 'TpInter']})
     Tp = topo.CreateLayer(layerProps)
 
-    # ! Reticular nucleus
-    # ! -----------------
-    # ! We follow the same approach as above, even though we have only a
-    # ! single neuron in each location.
+Reticular nucleus
+^^^^^^^^^^^^^^^^^^
+
+We follow the same approach as above, even though we have only a
+single neuron in each location.
+
+.. code-block:: python
+
     [nest.CopyModel('ThalamicNeuron', SpecificModel) for SpecificModel in
      ('RpNeuron',)]
     layerProps.update({'elements': 'RpNeuron'})
     Rp = topo.CreateLayer(layerProps)
 
-    # ! Primary visual cortex
-    # ! ---------------------
+Primary visual cortex
+^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! We follow again the same approach. We differentiate neuron types
-    # ! between layers and between pyramidal cells and interneurons. At
-    # ! each location, there are two pyramidal cells and one interneuron in
-    # ! each of layers 2-3, 4, and 5-6. Finally, we need to differentiate
-    # ! between vertically and horizontally tuned populations. When creating
-    # ! the populations, we create the vertically and the horizontally
-    # ! tuned populations as separate populations.
+We follow again the same approach. We differentiate neuron types
+between layers and between pyramidal cells and interneurons. At
+each location, there are two pyramidal cells and one interneuron in
+each of layers 2-3, 4, and 5-6. Finally, we need to differentiate
+between vertically and horizontally tuned populations. When creating
+the populations, we create the vertically and the horizontally
+tuned populations as separate populations.
 
-    # ! We use list comprehesions to create all neuron types:
+We use list comprehesions to create all neuron types:
+
+.. code-block:: python
+
     [nest.CopyModel('CtxExNeuron', layer + 'pyr')
      for layer in ('L23', 'L4', 'L56')]
     [nest.CopyModel('CtxInNeuron', layer + 'in')
      for layer in ('L23', 'L4', 'L56')]
 
-    # ! Now we can create the populations, suffixes h and v indicate tuning
+    #  Now we can create the populations, suffixes h and v indicate tuning
     layerProps.update({'elements': ['L23pyr', 2, 'L23in', 1,
                                     'L4pyr', 2, 'L4in', 1,
                                     'L56pyr', 2, 'L56in', 1]})
     Vp_h = topo.CreateLayer(layerProps)
     Vp_v = topo.CreateLayer(layerProps)
 
-    # ! Collect all populations
-    # ! -----------------------
+Collect all populations
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! For reference purposes, e.g., printing, we collect all populations
-    # ! in a tuple:
+For reference purposes, e.g., printing, we collect all populations
+in a tuple:
+
+.. code-block:: python
+
     populations = (retina, Tp, Rp, Vp_h, Vp_v)
 
-    # ! Inspection
-    # ! ----------
+Inspection
+^^^^^^^^^^^
 
-    # ! We can now look at the network using `PrintNetwork`:
+We can now look at the network using `PrintNetwork`:
+
+.. code-block:: python
+
     nest.PrintNetwork()
 
-    # ! We can also try to plot a single layer in a network. For
-    # ! simplicity, we use Rp, which has only a single neuron per position.
+    #  We can also try to plot a single layer in a network. For
+    #  simplicity, we use Rp, which has only a single neuron per position.
     topo.PlotLayer(Rp)
     pylab.title('Layer Rp')
     pylab.show()
 
-    # ! Synapse models
-    # ! ==============
+.. _synapse_models_ht:
 
-    # ! Actual synapse dynamics, e.g., properties such as the synaptic time
-    # ! course, time constants, reversal potentials, are properties of
-    # ! neuron models in NEST and we set them in section `Neuron models`_
-    # ! above. When we refer to *synapse models* in NEST, we actually mean
-    # ! connectors which store information about connection weights and
-    # ! delays, as well as port numbers at the target neuron (``rport``)
-    # ! and implement synaptic plasticity. The latter two aspects are not
-    # ! relevant here.
-    # !
-    # ! We just use NEST's ``static_synapse`` connector but copy it to
-    # ! synapse models ``AMPA`` and ``GABA_A`` for the sake of
-    # ! explicitness. Weights and delays are set as needed in section
-    # ! `Connections`_ below, as they are different from projection to
-    # ! projection. De facto, the sign of the synaptic weight decides
-    # ! whether input via a connection is handle by the ``_ex`` or the
-    # ! ``_in`` synapse.
+Synapse models
+---------------
+
+Actual synapse dynamics, e.g., properties such as the synaptic time
+course, time constants, reversal potentials, are properties of
+neuron models in NEST and we set them in section `Neuron models`_
+above. When we refer to *synapse models* in NEST, we actually mean
+connectors which store information about connection weights and
+delays, as well as port numbers at the target neuron (``rport``)
+and implement synaptic plasticity. The latter two aspects are not
+relevant here.
+
+We just use NEST's ``static_synapse`` connector but copy it to
+synapse models ``AMPA`` and ``GABA_A`` for the sake of
+explicitness. Weights and delays are set as needed in section
+`Connections`_ below, as they are different from projection to
+projection. De facto, the sign of the synaptic weight decides
+whether input via a connection is handle by the ``_ex`` or the
+``_in`` synapse.
+
+.. code-block:: python
+
     nest.CopyModel('static_synapse', 'AMPA')
     nest.CopyModel('static_synapse', 'GABA_A')
 
-    # ! Connections
-    # ! ====================
+.. _connections_ht:
 
-    # ! Building connections is the most complex part of network
-    # ! construction. Connections are specified in Table 1 in the
-    # ! Hill-Tononi paper. As pointed out above, we only consider AMPA and
-    # ! GABA_A synapses here.  Adding other synapses is tedious work, but
-    # ! should pose no new principal challenges. We also use a uniform in
-    # ! stead of a Gaussian distribution for the weights.
-    # !
-    # ! The model has two identical primary visual cortex populations,
-    # ! ``Vp_v`` and ``Vp_h``, tuned to vertical and horizonal gratings,
-    # ! respectively. The *only* difference in the connection patterns
-    # ! between the two populations is the thalamocortical input to layers
-    # ! L4 and L5-6 is from a population of 8x2 and 2x8 grid locations,
-    # ! respectively. Furthermore, inhibitory connection in cortex go to
-    # ! the opposing orientation population as to the own.
-    # !
-    # ! To save us a lot of code doubling, we thus defined properties
-    # ! dictionaries for all connections first and then use this to connect
-    # ! both populations. We follow the subdivision of connections as in
-    # ! the Hill & Tononi paper.
-    # !
-    # ! **Note:** Hill & Tononi state that their model spans 8 degrees of
-    # ! visual angle and stimuli are specified according to this. On the
-    # ! other hand, all connection patterns are defined in terms of cell
-    # ! grid positions. Since the NEST Topology Module defines connection
-    # ! patterns in terms of the extent given in degrees, we need to apply
-    # ! the following scaling factor to all lengths in connections:
+Connections
+------------
+
+Building connections is the most complex part of network
+construction. Connections are specified in Table 1 in the
+Hill-Tononi paper. As pointed out above, we only consider AMPA and
+GABA_A synapses here.  Adding other synapses is tedious work, but
+should pose no new principal challenges. We also use a uniform in
+stead of a Gaussian distribution for the weights.
+
+The model has two identical primary visual cortex populations,
+``Vp_v`` and ``Vp_h``, tuned to vertical and horizonal gratings,
+respectively. The *only* difference in the connection patterns
+between the two populations is the thalamocortical input to layers
+L4 and L5-6 is from a population of 8x2 and 2x8 grid locations,
+respectively. Furthermore, inhibitory connection in cortex go to
+the opposing orientation population as to the own.
+
+To save us a lot of code doubling, we thus defined properties
+dictionaries for all connections first and then use this to connect
+both populations. We follow the subdivision of connections as in
+the Hill & Tononi paper.
+
+**Note:** Hill & Tononi state that their model spans 8 degrees of
+visual angle and stimuli are specified according to this. On the
+other hand, all connection patterns are defined in terms of cell
+grid positions. Since the NEST Topology Module defines connection
+patterns in terms of the extent given in degrees, we need to apply
+the following scaling factor to all lengths in connections:
+
+.. code-block:: python
+
     dpc = Params['visSize'] / (Params['N'] - 1)
 
-    # ! We will collect all same-orientation cortico-cortical connections in
+    #  We will collect all same-orientation cortico-cortical connections in
     ccConnections = []
-    # ! the cross-orientation cortico-cortical connections in
+    #  the cross-orientation cortico-cortical connections in
     ccxConnections = []
-    # ! and all cortico-thalamic connections in
+    #  and all cortico-thalamic connections in
     ctConnections = []
 
-    # ! Horizontal intralaminar
-    # ! -----------------------
-    # ! *Note:* "Horizontal" means "within the same cortical layer" in this
-    # ! case.
-    # !
-    # ! We first define a dictionary with the (most) common properties for
-    # ! horizontal intralaminar connection. We then create copies in which
-    # ! we adapt those values that need adapting, and
+Horizontal intralaminar
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*Note:* "Horizontal" means "within the same cortical layer" in this
+case.
+
+We first define a dictionary with the (most) common properties for
+horizontal intralaminar connection. We then create copies in which
+we adapt those values that need adapting, and
+
+.. code-block:: python
+
     horIntraBase = {"connection_type": "divergent",
                     "synapse_model": "AMPA",
                     "mask": {"circular": {"radius": 12.0 * dpc}},
@@ -516,8 +569,8 @@ functions, see documentation.
                     "weights": 1.0,
                     "delays": {"uniform": {"min": 1.75, "max": 2.25}}}
 
-    # ! We use a loop to do the for for us. The loop runs over a list of
-    # ! dictionaries with all values that need updating
+    #  We use a loop to do the for for us. The loop runs over a list of
+    #  dictionaries with all values that need updating
     for conn in [{"sources": {"model": "L23pyr"}, "targets": {"model": "L23pyr"}},
                  {"sources": {"model": "L23pyr"}, "targets": {"model": "L23in"}},
                  {"sources": {"model": "L4pyr"}, "targets": {"model": "L4pyr"},
@@ -530,12 +583,16 @@ functions, see documentation.
         ndict.update(conn)
         ccConnections.append(ndict)
 
-    # ! Vertical intralaminar
-    # ! -----------------------
-    # ! *Note:* "Vertical" means "between cortical layers" in this
-    # ! case.
-    # !
-    # ! We proceed as above.
+Vertical intralaminar
+^^^^^^^^^^^^^^^^^^^^^^
+
+*Note:* "Vertical" means "between cortical layers" in this
+case.
+
+We proceed as above.
+
+.. code-block:: python
+
     verIntraBase = {"connection_type": "divergent",
                     "synapse_model": "AMPA",
                     "mask": {"circular": {"radius": 2.0 * dpc}},
@@ -557,17 +614,20 @@ functions, see documentation.
         ndict.update(conn)
         ccConnections.append(ndict)
 
-    # ! Intracortical inhibitory
-    # ! ------------------------
-    # !
-    # ! We proceed as above, with the following difference: each connection
-    # ! is added to the same-orientation and the cross-orientation list of
-    # ! connections.
-    # !
-    # ! **Note:** Weights increased from -1.0 to -2.0, to make up for missing GabaB
-    # !
-    # ! Note that we have to specify the **weight with negative sign** to make
-    # ! the connections inhibitory.
+Intracortical inhibitory
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We proceed as above, with the following difference: each connection
+is added to the same-orientation and the cross-orientation list of
+connections.
+
+**Note:** Weights increased from -1.0 to -2.0, to make up for missing GabaB
+
+Note that we have to specify the **weight with negative sign** to make
+the connections inhibitory.
+
+.. code-block:: python
+
     intraInhBase = {"connection_type": "divergent",
                     "synapse_model": "GABA_A",
                     "mask": {"circular": {"radius": 7.0 * dpc}},
@@ -575,8 +635,8 @@ functions, see documentation.
                     "weights": -2.0,
                     "delays": {"uniform": {"min": 1.75, "max": 2.25}}}
 
-    # ! We use a loop to do the for for us. The loop runs over a list of
-    # ! dictionaries with all values that need updating
+    #  We use a loop to do the for for us. The loop runs over a list of
+    #  dictionaries with all values that need updating
     for conn in [{"sources": {"model": "L23in"}, "targets": {"model": "L23pyr"}},
                  {"sources": {"model": "L23in"}, "targets": {"model": "L23in"}},
                  {"sources": {"model": "L4in"}, "targets": {"model": "L4pyr"}},
@@ -588,8 +648,11 @@ functions, see documentation.
         ccConnections.append(ndict)
         ccxConnections.append(ndict)
 
-    # ! Corticothalamic
-    # ! ---------------
+Corticothalamic
+^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
     corThalBase = {"connection_type": "divergent",
                    "synapse_model": "AMPA",
                    "mask": {"circular": {"radius": 5.0 * dpc}},
@@ -597,8 +660,8 @@ functions, see documentation.
                    "weights": 1.0,
                    "delays": {"uniform": {"min": 7.5, "max": 8.5}}}
 
-    # ! We use a loop to do the for for us. The loop runs over a list of
-    # ! dictionaries with all values that need updating
+    #  We use a loop to do the for for us. The loop runs over a list of
+    #  dictionaries with all values that need updating
     for conn in [{"sources": {"model": "L56pyr"},
                   "targets": {"model": "TpRelay"}},
                  {"sources": {"model": "L56pyr"},
@@ -607,20 +670,26 @@ functions, see documentation.
         ndict.update(conn)
         ctConnections.append(ndict)
 
-    # ! Corticoreticular
-    # ! ----------------
+Corticoreticular
+^^^^^^^^^^^^^^^^^
 
-    # ! In this case, there is only a single connection, so we write the
-    # ! dictionary itself; it is very similar to the corThalBase, and to
-    # ! show that, we copy first, then update. We need no ``targets`` entry,
-    # ! since Rp has only one neuron per location.
+In this case, there is only a single connection, so we write the
+dictionary itself; it is very similar to the corThalBase, and to
+show that, we copy first, then update. We need no ``targets`` entry,
+since Rp has only one neuron per location.
+
+.. code-block:: python
+
     corRet = corThalBase.copy()
     corRet.update({"sources": {"model": "L56pyr"}, "weights": 2.5})
 
-    # ! Build all connections beginning in cortex
-    # ! -----------------------------------------
+Build all connections beginning in cortex
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! Cortico-cortical, same orientation
+Cortico-cortical, same orientation
+
+.. code-block:: python
+
     print("Connecting: cortico-cortical, same orientation")
     [topo.ConnectLayers(Vp_h, Vp_h, conn) for conn in ccConnections]
     [topo.ConnectLayers(Vp_v, Vp_v, conn) for conn in ccConnections]
@@ -637,15 +706,18 @@ functions, see documentation.
     topo.ConnectLayers(Vp_h, Rp, corRet)
     topo.ConnectLayers(Vp_v, Rp, corRet)
 
-    # ! Thalamo-cortical connections
-    # ! ----------------------------
+Thalamo-cortical connections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! **Note:** According to the text on p. 1674, bottom right, of
-    # ! the Hill & Tononi paper, thalamocortical connections are
-    # ! created by selecting from the thalamic population for each
-    # ! L4 pyramidal cell, ie, are *convergent* connections.
-    # !
-    # ! We first handle the rectangular thalamocortical connections.
+**Note:** According to the text on p. 1674, bottom right, of
+the Hill & Tononi paper, thalamocortical connections are
+created by selecting from the thalamic population for each
+L4 pyramidal cell, ie, are *convergent* connections.
+
+We first handle the rectangular thalamocortical connections.
+
+.. code-block:: python
+
     thalCorRect = {"connection_type": "convergent",
                    "sources": {"model": "TpRelay"},
                    "synapse_model": "AMPA",
@@ -687,21 +759,23 @@ functions, see documentation.
         topo.ConnectLayers(Tp, Vp_h, thalCorDiff)
         topo.ConnectLayers(Tp, Vp_v, thalCorDiff)
 
-    # ! Thalamic connections
-    # ! --------------------
+Thalamic connections
+^^^^^^^^^^^^^^^^^^^^^
 
-    # ! Connections inside thalamus, including Rp
-    # !
-    # ! *Note:* In Hill & Tononi, the inhibition between Rp cells is mediated by
-    # ! GABA_B receptors. We use GABA_A receptors here to provide some
-    # ! self-dampening of Rp.
-    # !
-    # ! **Note:** The following code had a serious bug in v. 0.1: During the first
-    # ! iteration of the loop, "synapse_model" and "weights" were set to "AMPA" and
-    # !  "0.1", respectively and remained unchanged, so that all connections were
-    # ! created as excitatory connections, even though they should have been
-    # ! inhibitory. We now specify synapse_model and weight explicitly for each
-    # ! connection to avoid this.
+Connections inside thalamus, including Rp
+
+*Note:* In Hill & Tononi, the inhibition between Rp cells is mediated by
+GABA_B receptors. We use GABA_A receptors here to provide some
+self-dampening of Rp.
+
+**Note:** The following code had a serious bug in v. 0.1: During the first
+iteration of the loop, "synapse_model" and "weights" were set to "AMPA" and
+"0.1", respectively and remained unchanged, so that all connections were
+created as excitatory connections, even though they should have been
+inhibitory. We now specify synapse_model and weight explicitly for each
+connection to avoid this.
+
+.. code-block:: python
 
     thalBase = {"connection_type": "divergent",
                 "delays": {"uniform": {"min": 1.75, "max": 2.25}}}
@@ -754,13 +828,16 @@ functions, see documentation.
         thalBase.update(conn)
         topo.ConnectLayers(src, tgt, thalBase)
 
-    # ! Thalamic input
-    # ! --------------
+Thalamic input
+^^^^^^^^^^^^^^
 
-    # ! Input to the thalamus from the retina.
-    # !
-    # ! **Note:** Hill & Tononi specify a delay of 0 ms for this connection.
-    # ! We use 1 ms here.
+Input to the thalamus from the retina.
+
+**Note:** Hill & Tononi specify a delay of 0 ms for this connection.
+We use 1 ms here.
+
+.. code-block:: python
+
     retThal = {"connection_type": "divergent",
                "synapse_model": "AMPA",
                "mask": {"circular": {"radius": 1.0 * dpc}},
@@ -775,13 +852,16 @@ functions, see documentation.
         retThal.update(conn)
         topo.ConnectLayers(retina, Tp, retThal)
 
-    # ! Checks on connections
-    # ! ---------------------
+Checks on connections
+^^^^^^^^^^^^^^^^^^^^^^
 
-    # ! As a very simple check on the connections created, we inspect
-    # ! the connections from the central node of various layers.
+As a very simple check on the connections created, we inspect
+the connections from the central node of various layers.
 
-    # ! Connections from Retina to TpRelay
+Connections from Retina to TpRelay
+
+.. code-block:: python
+
     topo.PlotTargets(topo.FindCenterElement(retina), Tp, 'TpRelay', 'AMPA')
     pylab.title('Connections Retina -> TpRelay')
     pylab.show()
@@ -796,13 +876,18 @@ functions, see documentation.
     pylab.title('Connections TpRelay -> Vp(v) L4pyr')
     pylab.show()
 
-    # ! Recording devices
-    # ! =================
+.. _recording_devices_ht:
 
-    # ! This recording device setup is a bit makeshift. For each population
-    # ! we want to record from, we create one ``multimeter``, then select
-    # ! all nodes of the right model from the target population and
-    # ! connect. ``loc`` is the subplot location for the layer.
+Recording devices
+------------------
+
+This recording device setup is a bit makeshift. For each population
+we want to record from, we create one ``multimeter``, then select
+all nodes of the right model from the target population and
+connect. ``loc`` is the subplot location for the layer.
+
+.. code-block:: python
+
     print("Connecting: Recording devices")
     recorders = {}
     for name, loc, population, model in [('TpRelay', 1, Tp, 'TpRelay'),
@@ -816,26 +901,31 @@ functions, see documentation.
                 if nest.GetStatus([nd], 'model')[0] == model]
         nest.Connect(recorders[name][0], tgts)  # one recorder to all targets
 
-    # ! Example simulation
-    # ! ====================
+.. _example_simulation_ht:
 
-    # ! This simulation is set up to create a step-wise visualization of
-    # ! the membrane potential. To do so, we simulate ``sim_interval``
-    # ! milliseconds at a time, then read out data from the multimeters,
-    # ! clear data from the multimeters and plot the data as pseudocolor
-    # ! plots.
+Example simulation
+---------------------
 
-    # ! show time during simulation
+This simulation is set up to create a step-wise visualization of
+the membrane potential. To do so, we simulate ``sim_interval``
+milliseconds at a time, then read out data from the multimeters,
+clear data from the multimeters and plot the data as pseudocolor
+plots.
+
+show time during simulation
+
+.. code-block:: python
+
     nest.SetStatus([0], {'print_time': True})
 
-    # ! lower and upper limits for color scale, for each of the four
-    # ! populations recorded.
+    #  lower and upper limits for color scale, for each of the four
+    #  populations recorded.
     vmn = [-80, -80, -80, -80]
     vmx = [-50, -50, -50, -50]
 
     nest.Simulate(Params['sim_interval'])
 
-    # ! loop over simulation intervals
+    #  loop over simulation intervals
     for t in pylab.arange(Params['sim_interval'], Params['simtime'],
                           Params['sim_interval']):
 
@@ -874,26 +964,3 @@ functions, see documentation.
 
 **Total running time of the script:** ( 0 minutes  0.000 seconds)
 
-
-
-.. only :: html
-
- .. container:: sphx-glr-footer
-
-
-  .. container:: sphx-glr-download
-
-     :download:`Download Python source code: hill_tononi_Vp.py <hill_tononi_Vp.py>`
-
-
-
-  .. container:: sphx-glr-download
-
-     :download:`Download Jupyter notebook: hill_tononi_Vp.ipynb <hill_tononi_Vp.ipynb>`
-
-
-.. only:: html
-
- .. rst-class:: sphx-glr-signature
-
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

@@ -11,7 +11,7 @@ deprecation warning is therefore issued. For details about deprecated
 functions, see documentation.
 
 To run the microcircuit on a local machine, adjust the variables
-``N_scaling`` and ``K_scaling`` in :doc:`network_params.py <../../Potjans_2014/network_parms.py>` \
+``N_scaling`` and ``K_scaling`` in ``network_params.py``
 to ``0.1``. ``N_scaling`` adjusts the number of neurons and ``K_scaling`` the number
 of connections to be simulated. The full network can be run by adjusting
 these values to 1. If this is done, the option to print the time
@@ -20,8 +20,8 @@ running, use ``python example.py``. The output will be saved in the
 directory ``data``.
 
 The code can be parallelized using OpenMP and MPI, if NEST has been
-built with these applications `(Parallel computing with
-NEST) <https://www.nest-simulator.org/parallel_computing/>`__. The number
+built with these applications :doc:`see Parallel computing with
+NEST <../guides/parallel_computing/>`. The number
 of threads (per MPI process) can be chosen by adjusting
 ``local_num_threads`` in ``sim_params.py``. The number of MPI process
 can be set by choosing a reasonable value for ``num_mpi_prc`` and then

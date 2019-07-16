@@ -105,6 +105,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
+    'nbsphinx',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
@@ -124,7 +125,19 @@ breathe_default_project = "EXTRACT_MODELS"
 #    'backreferences_dir': False
 # }
 
-subprocess.call('doxygen', shell=True)
+nitpick_ignore = [('py:class:', 'type'),
+                  ('cpp:identifier', 'CommonSynapseProperties'),
+                  ('cpp:identifier', 'Connection<targetidentifierT>'),
+                  ('cpp:identifier', 'Archiving_Node'),
+                  ('cpp:identifier', 'DeviceNode'),
+                  ('cpp:identifier', 'Node'),
+                  ('cpp:identifier', 'Clopath_Archiving_Node'),
+                  ('cpp:identifier', 'MessageHandler'),
+                  ('cpp:identifer', 'CommonPropertiesHomW') ]
+
+subprocess.call('doxygen Doxyfile', shell=True)
+
+nbsphinx_execute = "never"
 
 mathjax_path = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 

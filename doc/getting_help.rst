@@ -25,6 +25,8 @@ Getting help on the command line interface
        # Get docstring for function in python
        help('nest.FunctionName')
 
+    .. code-block:: ipython
+
        # or in ipython
        nest.FunctionName?
 

@@ -79,7 +79,7 @@ NEST should now be successfully installed on your system. You should now be able
 
  to set the necessary environment variables. You may want to include this line in your ``.bashrc`` file, so that the environment variables are set automatically.
 
-See the :doc:`Getting started <../getting_started>` pages to find out how to get going with NEST or check out our :doc:`example networks <../auto_examples/index>`.
+See the :doc:`Getting started <../getting_started>` pages to find out how to get going with NEST or check out our :doc:`example networks <../examples/index>`.
 
 Dependencies
 -------------

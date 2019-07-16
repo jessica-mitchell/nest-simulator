@@ -80,7 +80,7 @@ Contribute
 ###########
 
 * Have you used NEST in an article or presentation? :doc:`Let us know <community>` and we will add it to our list of `publications <https://www.nest-simulator.org/publications/>`_.
-  Find out how to :doc:`cite NEST <citing-nest>` in your work.
+  Find out how to :doc:`cite NEST <citing_nest>` in your work.
 
 * If you have any comments or suggestions, please share them on our :doc:`Mailing List <community>`.
 

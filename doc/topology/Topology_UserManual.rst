@@ -1,8 +1,8 @@
-.. _sec:intro:
+.. _sec_intro:
 
-=====================
+######################
 Topology User Manual
-=====================
+######################
 
 The Topology Module provides the NEST simulator [1]_
 with a convenient interface for creating layers of neurons placed in
@@ -24,10 +24,10 @@ user interface and behavior of the module has not changed significantly
 since NEST 2.2.
 
 In the next chapter of this manual, we introduce Topology layers, which
-place neurons in space. In Chapter \ :ref:`3 <sec:connections>` we then
+place neurons in space. In Chapter \ :ref:`3 <sec_connections>` we then
 describe how to connect layers with each other, before discussing in
-Chapter \ :ref:`4 <sec:inspection>` how you can inspect and visualize
-Topology networks. Chapter \ :ref:`5 <ch:extending>` deals with the more
+Chapter \ :ref:`4 <sec_inspection>` how you can inspect and visualize
+Topology networks. Chapter \ :ref:`5 <ch_extending>` deals with the more
 advanced topic of extending the Topology module with custom kernel
 functions and masks provided by C++ classes in an extension module.
 
@@ -35,10 +35,10 @@ You will find the Python scripts used in the examples in this manual in
 the NEST source code directory under
 ``doc/topology/user_manual_scripts``.
 
-.. _sec:limitations:
+.. _seci_limitations:
 
 Limitations and Disclaimer
---------------------------
+==========================
 
 Undocumented features
    The Topology Module provides a number of undocumented features, which
@@ -46,7 +46,7 @@ Undocumented features
    experimental and should *not be used for simulations*, as they have
    not been validated.
 
-.. _sec:layers:
+.. _sec_layers:
 
 Layers
 ======
@@ -70,15 +70,15 @@ free layers
 Grid-based layers allow for more efficient connection-generation under
 certain circumstances.
 
-.. _sec:gridbased:
+.. _sec_gridbased:
 
 Grid-based Layers
 -----------------
 
-.. _sec:verysimple:
+.. _sec_verysimple:
 
 A very simple layer
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 We create a first, grid-based simple layer with the following commands:
 
@@ -141,10 +141,10 @@ but the grid spacing may differ in x- and y-direction.
    follow matrix convention, i.e., run from top to bottom. Following
    pythonic conventions, indices run from 0.
 
-.. _sec:setextent:
+.. _sec_setextent:
 
 Setting the extent
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 Layers have a default extent of :math:`1\times 1`. You can specify a
 different extent of a layer, i.e., its size in :math:`x`- and
@@ -173,10 +173,10 @@ automatically ensured for integer values. Otherwise, under rare
 circumstances, subtle rounding errors may occur and trigger an
 assertion, thus stopping NEST.
 
-.. _sec:setcenter:
+.. _sec_setcenter:
 
 Setting the center
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 Layers are centered about the origin :math:`(0,0)` by default. This can
 be changed through the ``'center'`` entry in the dictionary specifying
@@ -203,12 +203,12 @@ different positions in the global coordinate system.
 
 The ``'center'`` coordinates should be numbers that can be expressed
 exactly as binary fractions. For more information, see
-Sec. \ :ref:`2.1.2 <sec:setextent>`.
+Sec. \ :ref:`2.1.2 <sec_setextent>`.
 
-.. _sec:fixedlayerexample:
+.. _sec_fixedlayerexample:
 
 Constructing a layer: an example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To see how to construct a layer, consider the following example:
 
@@ -221,7 +221,7 @@ To see how to construct a layer, consider the following example:
 
 -  the extent shall be centered about :math:`y=0`.
 
-From Eq. :numref:`dx_dy_extent`, we see that the extent of the layer must be
+From :ref:`Eq <dx_dy_extent>`, we see that the extent of the layer must be
 :math:`(n_c d, n_r d)`. We now need to find the coordinates
 :math:`(c_x, c_y)` of the center of the layer. To place the left edge of
 the extent at :math:`x=0`, we must place the center of the layer at
@@ -246,7 +246,7 @@ and shown in :numref:`fig_layer3a`:
    extent placed at the origin :math:`(0,0)`, the circle the center of
    the layer.
 
-.. _sec:freelayer:
+.. _sec_freelayer:
 
 Free layers
 -----------
@@ -285,14 +285,14 @@ Note the following points:
 -  All layer element positions must be *within* the layer’s extent.
    Elements may be placed on the perimeter of the extent as long as no
    periodic boundary conditions are used; see
-   Sec. \ :ref:`2.4 <sec:periodic>`.
+   Sec. \ :ref:`2.4 <sec_periodic>`.
 
 -  Element positions in free layers are *not* shifted when specifying
    the ``'center'`` of the layer. The user must make sure that the
    positions given lie within the extent when centered about the given
    center.
 
-.. _sec:3dlayer:
+.. _sec_3dlayer:
 
 3D layers
 ---------
@@ -314,7 +314,7 @@ for the positions:
    A free 3D layer with 200 elements uniformly distributed in an extent
    of size :math:`1\times 1\times 1`.
 
-.. _sec:periodic:
+.. _sec_periodic:
 
 Periodic boundary conditions
 ----------------------------
@@ -368,12 +368,12 @@ for a layer with periodic boundary conditions; :math:`x_{\text{ext}}`
 and :math:`y_{\text{ext}}` are the components of the extent size.
 
 We will discuss the consequences of periodic boundary conditions more in
-Chapter \ :ref:`3 <sec:connections>`.
+Chapter \ :ref:`3 <sec_connections>`.
 
-.. _sec:subnet:
+.. _sec_subnet:
 
 Topology layer as NEST subnet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 From the perspective of NEST, a Topology layer is a special type of
 *subnet*. From the user perspective, the following points may be of
@@ -416,7 +416,7 @@ The `5 times` 5 layer created above appears here as a
 Topology connection and visualization functions heed the spatial
 structure of the layer.
 
-.. _sec:composite_layers:
+.. _sec_composite_layers:
 
 Layers with composite elements
 ------------------------------
@@ -472,7 +472,7 @@ Note the following points:
    in groups of identical nodes.
 
 -  For grid-based layers, the function ``GetElement`` returns a list of
-   nodes at a given grid position. See Chapter \ :ref:`4 <sec:inspection>`
+   nodes at a given grid position. See Chapter \ :ref:`4 <sec_inspection>`
    for more on inspecting layers.
 
 -  In a previous version of the topology module it was possible to
@@ -481,10 +481,10 @@ Note the following points:
    no practical advantages, so this is no longer supported. See the next
    section for design recommendations for more complex layers.
 
-.. _sec:layerdesign:
+.. _sec_layerdesign:
 
 Designing layers
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 A paper on a neural network model might describe the network as
 follows [2]_:
@@ -506,10 +506,10 @@ each layer and then define the microcolumn as one composite element:
     :start-after: #{ layer10 #}
     :end-before: #{ end #}
 
-We will discuss in Chapter \ :ref:`3.1 <sec:conn_basics>` how to connect
+We will discuss in Chapter \ :ref:`3.1 <sec_conn_basics>` how to connect
 selectively to different neuron models.
 
-.. _sec:connections:
+.. _sec_connections:
 
 Connections
 ===========
@@ -519,15 +519,15 @@ create connections between layers with quite some flexibility. In this
 chapter, we will illustrate how to specify and create connections. All
 connections are created using the ``ConnectLayers`` function.
 
-.. _sec:conn_basics:
+.. _sec_conn_basics:
 
 Basic principles
 ----------------
 
-.. _sec:terminology:
+.. _sec_terminology:
 
 Terminology
-~~~~~~~~~~~
+^^^^^^^^^^^^
 
 We begin by introducing important terminology:
 
@@ -598,14 +598,14 @@ Distance
 Mask
    The *mask* defines which pool nodes are at all considered as
    potential targets for each driver node. See
-   Sec. \ :ref:`3.3 <sec:conn_masks>` for details.
+   Sec. \ :ref:`3.3 <sec_conn_masks>` for details.
 
 Kernel
    The *kernel* is a function returning a (possibly distance- or
    displacement-dependent) probability for creating a connection between
    a driver and a pool node. The default kernel is :math:`1`, i.e.,
    connections are created with certainty. See
-   Sec. \ :ref:`3.4 <sec:conn_kernels>` for details.
+   Sec. \ :ref:`3.4 <sec_conn_kernels>` for details.
 
 Autapse
    An *autapse* is a synapse (connection) from a node onto itself.
@@ -618,10 +618,10 @@ Multapse
    can be disabled by adding ``'allow_multapses': False`` to the
    connection dictionary.
 
-.. _sec:minimalcall:
+.. _sec_minimalcall:
 
 A minimal ConnectLayers call
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Connections between Topology layers are created by calling
 ``ConnectLayers`` with the following arguments [3]_:
@@ -639,7 +639,7 @@ In many cases, the connection dictionary will also contain
 
 ‘mask’
    a mask specification as described in
-   Sec. \ :ref:`3.3 <sec:conn_masks>`.
+   Sec. \ :ref:`3.3 <sec_conn_masks>`.
 
 Only neurons within the mask are considered as potential sources or
 targets. If no mask is given, all neurons in the respective layer are
@@ -677,7 +677,7 @@ mask. Note the effect of normal and periodic boundary conditions on the
 connections created for different nodes in the layer, as illustrated in
  :numref:`fig_conn1`.
 
-.. _sec:mapping:
+.. _sec_mapping:
 
 Mapping source and target layers
 --------------------------------
@@ -701,7 +701,7 @@ layers. Topology applies the following *coordinate mapping rules*:
    not matter for displacement computations whether the driver layer has
    periodic boundary conditions.
 
-.. _sec:conn_masks:
+.. _sec_conn_masks:
 
 Masks
 -----
@@ -719,12 +719,12 @@ targets.
 
 If none of the mask types provided in the topology library meet your
 need, you may add more mask types in a NEST extension module. This is
-covered in Chapter \ `5 <#ch:extending>`__.
+covered in Chapter \ `5 <ch_extending>`__.
 
-.. _sec:free_masks:
+.. _sec_free_masks:
 
 Masks for 2D layers
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 Topology currently provides four types of masks usable for 2-dimensional
 free and grid-based layers. They are illustrated in  :numref:`fig_conn2_a`.
@@ -831,10 +831,10 @@ from the x-axis to the y-axis.
    :math:`120^\circ` and the elliptical mask is rotated
    :math:`45^\circ`.
 
-.. _sec:3d_masks:
+.. _sec_3d_masks:
 
 Masks for 3D layers
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 Similarly, there are three mask types that can be used for 3D layers,
 
@@ -887,10 +887,10 @@ the (possibly rotated) x-axis is missing.
    masks by red lines. From left to right: box and spherical masks
    centered about the driver node.
 
-.. _sec:grid_masks:
+.. _sec_grid_masks:
 
 Masks for grid-based layers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Grid-based layers can be connected using rectangular *grid masks*. For
 these, you specify the size of the mask not by lower left and upper
@@ -942,12 +942,12 @@ Note the following:
 
 -  The semantics of the ``'anchor'`` property for grid-based masks
    differ significantly for general masks described in
-   Sec. \ :ref:`3.3.1 <sec:free_masks>`. For general masks, the anchor is
+   Sec. \ :ref:`3.3.1 <sec_free_masks>`. For general masks, the anchor is
    the center of the mask relative to the driver node. For grid-based
    nodes, the anchor determines which mask element is aligned with the
    driver element.
 
-.. _sec:conn_kernels:
+.. _sec_conn_kernels:
 
 Kernels
 -------
@@ -972,17 +972,17 @@ Free probabilistic connections
 
 Prescribed number of connections
    can be obtained by specifying the number of connections to create per
-   driver node. See Sec. \ :ref:`3.7 <sec:prescribed_numbers>` for
+   driver node. See Sec. \ :ref:`3.7 <sec_prescribed_numbers>` for
    details.
 
 Available kernel functions are shown in Table :ref:`tbl_kernels`. More
 kernel functions may be created in a NEST extension module. This is
-covered in Chapter \ `5 <#ch:extending>`__.
+covered in Chapter \ :ref:`5 <ch_extending>`.
 
 .. _tbl_kernels:
 
 Functions currently available in the Topology module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
    :math:`d` is the distance and :math:`(d_x,d_y)` the displacement. All
    functions can be used to specify weights and delays, but only the
@@ -1101,7 +1101,7 @@ Note that for pool layers with periodic boundary conditions, Topology
 always uses the shortest possible displacement vector from driver to
 pool neuron as argument to the kernel function.
 
-.. _sec:conn_wd:
+.. _sec_conn_wd:
 
 Weights and delays
 ------------------
@@ -1176,7 +1176,7 @@ currently only be randomized with uniform distribution.
    Distance-dependent and randomized weights and delays. See text for
    details.
 
-.. _sec:conn_pbc:
+.. _sec_conn_pbc:
 
 Periodic boundary conditions
 ----------------------------
@@ -1206,7 +1206,7 @@ sense. In general, we recommend to use periodic boundary conditions only
 when connection masks are significantly smaller than the layers they are
 applied to.
 
-.. _sec:prescribed_numbers:
+.. _sec_prescribed_numbers:
 
 Prescribed number of connections
 --------------------------------
@@ -1238,7 +1238,7 @@ Connection generation now proceeds in a different way than before:
    exponential), the connections will be distributed within the mask
    with the spatial profile given by the kernel.
 
-4. If you prohibit multapses (cf Sec. \ :ref:`3.1.1 <sec:terminology>`)
+4. If you prohibit multapses (cf Sec. \ :ref:`3.1.1 <sec_terminology>`)
    and prescribe a number of connections greater than the number of pool
    nodes in the mask, ``ConnectLayers`` may get stuck in an infinite
    loop and NEST will hang. Keep in mind that the number of nodes within
@@ -1278,13 +1278,13 @@ The resulting distribution of distances between connected nodes is shown in
    1000 randomly placed nodes, a fixed fan out of 50 connections and a
    connection probability decaying linearly from 1 to 0 at
    :math:`d=0.5`. The red line is the expected distribution from
-   Eq. :numref:`eq_ptheo`.
+   :ref:`Eq. <eq_ptheo>`.
 
 Functions determining weight and delay as function of
 distance/displacement work in just the same way as before when the
 number of connections is prescribed.
 
-.. _sec:conn_composite:
+.. _sec_conn_composite:
 
 Connecting composite layers
 ---------------------------
@@ -1315,7 +1315,7 @@ rectangular mask unit probability.
     :start-after: #{ conn7 #}
     :end-before: #{ end #}
 
-.. _sec:conn_synapse:
+.. _sec_conn_synapse:
 
 Synapse models and properties
 -----------------------------
@@ -1333,7 +1333,7 @@ You have to use synapse models if you want to set, e.g., the receptor
 type of connections or parameters for plastic synapse models. These can
 not be set in distance-dependent ways at present.
 
-.. _sec:dev_subregions:
+.. _sec_dev_subregions:
 
 Connecting devices to subregions of layers
 ------------------------------------------
@@ -1351,13 +1351,13 @@ stimulation devices require the divergent connection type
     :end-before: #{ end #}
 
 while recording devices require the convergent connection type (see also
-Sec. \ :ref:`3.11 <sec:rec_dev>`):
+Sec. \ :ref:`3.11 <sec_rec_dev>`):
 
 .. literalinclude:: user_manual_scripts/connections.py
     :start-after: #{ conn10 #}
     :end-before: #{ end #}
 
-.. _sec:rec_dev:
+.. _sec_rec_dev:
 
 Layers and recording devices
 ----------------------------
@@ -1372,12 +1372,12 @@ that spike detector using a normal connect command:
     :end-before: #{ end #}
 
 Connections to a layer of recording devices as described in
-Sec. \ :ref:`3.10 <sec:dev_subregions>`, such as spike detectors, are only
+Sec. \ :ref:`3.10 <sec_dev_subregions>`, such as spike detectors, are only
 possible using the convergent connection type without a fixed number of
 connections. Note that voltmeter and multimeter are not suffering from
 this restriction, since they are connected as sources, not as targets.
 
-.. _sec:inspection:
+.. _sec_inspection:
 
 Inspecting Layers
 =================
@@ -1388,7 +1388,7 @@ expected. In this chapter, we describe some functions that NEST and
 Topology provide to query and visualize networks, layers, and
 connectivity.
 
-.. _sec:queries:
+.. _sec_queries:
 
 Query functions
 ---------------
@@ -1454,7 +1454,7 @@ functions, please see the online Python and SLI documentation.
 |                               | NEST 2.14.                                  |
 +-------------------------------+---------------------------------------------+
 
-.. _sec:visualize:
+.. _sec_visualize:
 
 Visualization functions
 -----------------------
@@ -1496,7 +1496,7 @@ kernel.
     :start-after: #{ vislayer #}
     :end-before: #{ end #}
 
-.. _ch:extending:
+.. _ch_extending:
 
 Adding topology kernels and masks
 =================================
@@ -1656,7 +1656,7 @@ function. A subclass of ``nest::Mask<D>`` must be defined, where ``D``
 is the dimension (2 or 3). In this case we will define a 2-dimensional
 elliptic mask by creating a class called ``EllipticMask``. Note that
 elliptical masks are already part of NEST see
-Sec. \ :ref:`3.3 <sec:conn_masks>`. That elliptical mask is defined in a
+Sec. \ :ref:`3.3 <sec_conn_masks>`. That elliptical mask is defined in a
 different way than what we will do here though, so this can still be
 used as an introductory example. First, we must include another header
 file:
@@ -1743,7 +1743,7 @@ used in connections, e.g.
    tp.ConnectLayers(l,l,{'connection_type': 'convergent',
                'mask': {'elliptic': {'r_x': 0.5, 'r_y': 0.25}}})
 
-.. _sec:changes:
+.. _sec_changes:
 
 Changes between versions
 ========================
@@ -1797,7 +1797,7 @@ Module from NEST version 2.0 to 2.2.
 
 -  It is now possible to add kernel functions and masks to the Topology
    module through an extension module. Please see
-   Chapter \ `5 <#ch:extending>`__ for examples.
+   Chapter \ :ref:`5 <ch_extending>` for examples.
 
 Changes from Topology 1.9 to 2.0
 --------------------------------
@@ -1808,7 +1808,7 @@ Topology Module from the 1.9-xxxx to the 2.0 version.
 -  ConnectLayer is now called ConnectLayers
 
 -  Several other functions changed names, and there are many new
-   functions. Please see Ch. \ :ref:`4 <sec:inspection>` for an overview.
+   functions. Please see Ch. \ :ref:`4 <sec_inspection>` for an overview.
 
 -  All nest.topology functions now require lists of GIDs as input, not
    "naked" GIDs
@@ -1836,8 +1836,8 @@ Topology Module from the 1.9-xxxx to the 2.0 version.
 -  The semantics of the ``anchor`` entry for kernel functions has
    changed: the anchor now specifies the center of the probability
    distribution relative to the driver node. This is consistent with the
-   semantics for free masks, see Sec. \ :ref:`3.3 <sec:conn_masks>` and
-   :ref:`3.4 <sec:conn_kernels>`.
+   semantics for free masks, see Sec. \ :ref:`3.3 <sec_conn_masks>` and
+   :ref:`3.4 <sec_conn_kernels>`.
 
 -  Functions computing connection probabilities, weights and delays as
    functions of distance between source and target nodes now handle
@@ -1863,5 +1863,5 @@ References
    in Topology layers.
 
 .. [4]
-   See Sec. :ref:`2.1.1 <sec:verysimple>` for the distinction between
+   See Sec. :ref:`2.1.1 <sec_verysimple>` for the distinction between
    layer coordinates and grid indices

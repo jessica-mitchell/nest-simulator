@@ -7,7 +7,7 @@ NEST is available under the :doc:`GNU General Public License 2 or later <license
 -  modify and improve NEST according to your needs,
 -  distribute NEST to others under the same license.
 
-If you use NEST for your project, don't forget to :doc:`cite NEST <citing-nest>`!
+If you use NEST for your project, don't forget to :doc:`cite NEST <citing_nest>`!
 
 Download the current version of NEST here:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
