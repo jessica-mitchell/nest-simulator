@@ -216,10 +216,10 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     any distribution-specific parameters (e.g. 'mu' and 'sigma').
 
     To see all available distributions, run:
-    nest.slirun('rdevdict info')
+    ``nest.slirun('rdevdict info')``
 
     To get information on a particular distribution, e.g. 'binomial', run:
-    nest.help('rdevdict::binomial')
+    ``nest.help('rdevdict::binomial')``
 
     **Most common available distributions and associated parameters**
 
@@ -231,15 +231,17 @@ def Connect(pre, post, conn_spec=None, syn_spec=None, model=None):
     - 'uniform_int' with 'low', 'high'
 
     **Example syn-spec choices**
+    
+    ::
 
-    - ``{'weight': 2.4, 'receptor_type': 1}``
-    - ``{'model': 'stdp_synapse',
-       'weight': 2.5,
-       'delay': {'distribution': 'uniform', 'low': 0.8, 'high': 2.5},
-       'alpha': {
-           'distribution': 'normal_clipped', 'low': 0.5,
-           'mu': 5.0, 'sigma': 1.0}
-      }``
+        {'weight': 2.4, 'receptor_type': 1}``
+        {'model': 'stdp_synapse',
+           'weight': 2.5,
+           'delay': {'distribution': 'uniform', 'low': 0.8, 'high': 2.5},
+           'alpha': {
+               'distribution': 'normal_clipped', 'low': 0.5,
+               'mu': 5.0, 'sigma': 1.0}
+         }
     """
 
     if model is not None:

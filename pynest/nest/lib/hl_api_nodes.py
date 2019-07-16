@@ -61,7 +61,7 @@ def Create(model, n=1, params=None):
 
     Raises
     ------
-    NESTError
+    NESTError:
         If setting node parameters fail. However, the nodes will still have
         been created.
 
@@ -117,7 +117,7 @@ def GetLID(gid):
 
     Raises
     ------
-    NESTError
+    NESTError:
         If `gid` contains more than one GID
 
     KEYWORDS:
