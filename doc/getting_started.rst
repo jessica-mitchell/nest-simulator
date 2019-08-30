@@ -81,7 +81,7 @@ Connections
 
 Connections between nodes (neurons, devices or synapses) define possible channels for interactions between
 them. A connection between two nodes is established, using the command
-``Connect``.
+:py:func:`.Connect`.
 
 Each connection has two basic parameters, *weight* and *delay*. The weight
 determines the strength of the connection, the delay determines how long an
@@ -100,13 +100,13 @@ to the network, you need a device which delivers this input.
 
 Devices have a built-in timer which controls the period they are active. Outside
 this interval, a device will remain silent. The timer can be configured using
-the command ``SetStatus``.
+the command :py:func:`.SetStatus`.
 
 Simulation
 ~~~~~~~~~~~~~
 
 NEST simulations are time driven. The simulation time proceeds in discrete steps
-of size ``dt``, set using the property ``resolution`` of the root node. In each time
+of size ``dt``, set using the property :term:`resolution` of the root node. In each time
 slice, all nodes in the system are updated and pending events are delivered.
 
 The simulation is run by calling the command ``Simulate(t)``, where ``t`` is the

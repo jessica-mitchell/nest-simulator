@@ -35,7 +35,7 @@ Random Numbers vs Random Deviates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NEST distinguishes between random number generators, provided by
-``rngdict`` and random deviate generators provided by ``rdevdict``.
+``rngdict`` and random deviate generators provided by :term:`rdevdict`.
 Random *number* generators only provide double-valued numbers uniformly
 distributed on [0, 1] and uniformly distributed integers in {0, 1, ...,
 N}. Random *deviate* generators, on the other hand, provide random
@@ -52,7 +52,7 @@ Changes in random number generation in NEST 2.4
 
 Random deviate generation has become significantly more powerful in NEST
 2.4, to fully support randomization of connections parameters offered by
-the revised ``Connect`` function, as described in :doc:`Connection
+the revised :py:func:`.Connect` function, as described in :doc:`Connection
 Management <connection_management>` and illustrated by the
 :ref:`examples-rng` below. We have also made minor
 changes to make to achieve greater similarity between NEST, PyNN, and
@@ -218,7 +218,7 @@ generators:
 | One RNG per VP in NEST
 | These generators are used when creating connections using
   ``RandomConvergentConnect`` and to provide random numbers to nodes
-  generating random output, e.g. the ``poisson_generator``.
+  generating random output, e.g. the :cpp:class:`poisson_generator <nest::poisson_generator>`.
 
 | One RNG per VP in Python
 | These generators are used to randomized node properties (e.g., the
@@ -343,7 +343,7 @@ The following happens here:
 
 -  This is generator is then passed to the ``/grng`` status variable of
    the kernel. This is a "write only" variable that is invisible in
-   ``GetKernelStatus()``.
+   :py:func:`.GetKernelStatus`.
 
 Setting different per-processes RNGs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -376,7 +376,7 @@ No random variables in script
 
 If no explicit random variables appear in your script, i.e., if
 randomness only enters in your simulation through random stimulus
-generators such as ``poisson_generator`` or randomized connection
+generators such as :cpp:class:`poisson_generator <nest::poisson_generator>` or randomized connection
 routines such as ``RandomConvergentConnect``, you do not need to worry
 about anything except choosing and setting your random seeds, possibly
 exchanging the random number generators.
@@ -436,7 +436,7 @@ with this weight list as argument. Note a few details:
 -  We need to convert the NumPy array ``weights`` to a plain Python
    list, as most PyNEST functions currently cannot handle array input.
 
--  If we specify ``weight``, we must also provide ``delay``.
+-  If we specify :term:`weight`, we must also provide :term:`delay`.
 
 You can check the weights selected by
 
@@ -447,7 +447,7 @@ You can check the weights selected by
 which will print a list containing a triple of source GID, target GID
 and weight for each connection in the network. If you want to see only a
 subset of connections, pass source, target, or synapse model to
-``GetConnections()``.
+:py:func:`.GetConnections`.
 
 Randomizing divergent connections
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

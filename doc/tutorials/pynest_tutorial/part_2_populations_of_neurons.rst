@@ -41,7 +41,7 @@ two optional arguments are ``n``, which gives the number of nodes to be
 created (default: 1) and ``params``, which is a dictionary giving the
 parameters with which the nodes should be initialised. So the most basic
 way of creating a batch of identically parameterised neurons is to
-exploit the optional arguments of ``Create()``:
+exploit the optional arguments of :py:func:`.Create`:
 
 ::
 
@@ -52,7 +52,7 @@ The variable ``neuronpop`` is a tuple of all the ids of the created
 neurons.
 
 Parameterising the neurons at creation is more efficient than using
-``SetStatus()`` after creation, so try to do this wherever possible.
+:py:func:`.SetStatus` after creation, so try to do this wherever possible.
 
 We can also set the parameters of a neuron model *before* creation,
 which allows us to define a simulation more concisely in many cases. If
@@ -72,7 +72,7 @@ containing the desired parameter/value pairings. For example:
     neuronpop3 = nest.Create("iaf_psc_alpha", 100)
 
 The three populations are now identically parameterised with the usual
-model default values for all parameters except ``I_e`` and ``tau_m``,
+model default values for all parameters except :term:`I_e` and :term:`tau_m`,
 which have the values specified in the dictionary ``ndict``.
 
 If batches of neurons should be of the same model but using different
@@ -81,7 +81,7 @@ to make a customised version of a neuron model with its own default
 parameters. This function is an effective tool to help you write clearer
 simulation scripts, as you can use the name of the model to indicate
 what role it plays in the simulation. Set up your customised model in
-two steps using ``SetDefaults()``:
+two steps using :py:func:`.SetDefaults`:
 
 ::
 
@@ -97,7 +97,7 @@ or in one step:
     nest.CopyModel("iaf_psc_alpha", "inh_iaf_psc_alpha", params=idict)
 
 Either way, the newly defined models can now be used to generate neuron
-populations and will also be returned by the function ``Models()``.
+populations and will also be returned by the function :py:func:`.Models`.
 
 ::
 
@@ -132,7 +132,7 @@ make a loop over the population and set the status of each one:
     for neuron in epop1:
         nest.SetStatus([neuron], {"V_m": Vrest+(Vth-Vrest)*numpy.random.rand()})
 
-However, ``SetStatus()`` expects a list of nodes and can set the
+However, :py:func:`.SetStatus` expects a list of nodes and can set the
 parameters for each of them, which is more efficient, and thus to be
 preferred. One way to do it is to give a list of dictionaries which is
 the same length as the number of nodes to be parameterised, for example
@@ -176,7 +176,7 @@ populations of ten neurons each.
     nest.SetStatus(multimeter, {"withtime":True, "record_from":["V_m"]})
 
 If no connectivity pattern is specified, the populations are connected
-via the default rule, namely ``all_to_all``. Each neuron of ``pop1`` is
+via the default rule, namely :term:`all_to_all`. Each neuron of ``pop1`` is
 connected to every neuron in ``pop2``, resulting in :math:`10^2`
 connections.
 
@@ -184,7 +184,7 @@ connections.
 
     nest.Connect(pop1, pop2, syn_spec={"weight":20.0})
 
-Alternatively, the neurons can be connected with the ``one_to_one``.
+Alternatively, the neurons can be connected with the :term:`one_to_one`.
 This means that the first neuron in ``pop1`` is connected to the first
 neuron in ``pop2``, the second to the second, etc., creating ten
 connections in total.
@@ -204,23 +204,23 @@ patterns requiring the specification of further parameters, such as
 in-degree or connection probabilities, must be defined in a dictionary
 containing the key ``rule`` and the key for parameters associated to the
 rule. Please see :doc:`Connection management <../../guides/connection_management>`
-for an illustrated guide to the usage of ``Connect``.
+for an illustrated guide to the usage of :py:func:`.Connect`.
 
 Connecting populations with random connections
 ----------------------------------------------
 
 In the previous handout we looked at the connectivity patterns
-``one_to_one`` and ``all_to_all``. However, we often want to look at
+:term:`one_to_one` and :term:`all_to_all`. However, we often want to look at
 networks with a sparser connectivity than all-to-all. Here we introduce
 four connectivity patterns which generate random connections between two
 populations of neurons.
 
-The connection rule ``fixed_indegree`` allows us to create ``n`` random
-connections for each neuron in the target population ``post`` to a
-randomly selected neuron from the source population ``pre``. The
-variables ``weight`` and ``delay`` can be left unspecified, in which
+The connection rule :term:`fixed_indegree` allows us to create ``n`` random
+connections for each neuron in the target population :term:`post` to a
+randomly selected neuron from the source population :term:`pre`. The
+variables :term:`weight` and :term:`delay` can be left unspecified, in which
 case the default weight and delay are used. Alternatively we can set
-them in the ``syn_spec`` , so each created connection has the same
+them in the :term:`syn_spec` , so each created connection has the same
 weight and delay. Here is an example:
 
 ::
@@ -243,33 +243,33 @@ weight ``Je`` and delay ``d``, and each neuron in the target population
 ``epop1`` has ``Ki`` incoming random connections chosen from the source
 population ``ipop1`` with weight ``Ji`` and delay ``d``.
 
-The connectivity rule ``fixed_outdegree`` works in analogous fashion,
+The connectivity rule :term:`fixed_outdegree` works in analogous fashion,
 with ``n`` connections (keyword ``outdegree``) being randomly selected
-from the target population ``post`` for each neuron in the source
-population ``pre``. For reasons of efficiency, particularly when
+from the target population :term:`post` for each neuron in the source
+population :term:`pre`. For reasons of efficiency, particularly when
 simulating in a distributed fashion, it is better to use
-``fixed_indegree`` if possible.
+:term:`fixed_indegree` if possible.
 
-Another connectivity pattern available is ``fixed_total_number``. Here
+Another connectivity pattern available is :term:`fixed_total_number`. Here
 ``n`` connections (keyword ``N``) are created by randomly drawing source
-neurons from the populations ``pre`` and target neurons from the
-population ``post``.
+neurons from the populations :term:`pre` and target neurons from the
+population :term:`post`.
 
-When choosing the connectivity rule ``pairwise_bernoulli`` connections
+When choosing the connectivity rule :term:`pairwise_bernoulli` connections
 are generated by iterating through all possible source-target pairs and
 creating each connection with the probability ``p`` (keyword ``p``).
 
 In addition to the rule specific parameters ``indegree``, ``outdegree``,
-``N`` and ``p``, the ``conn_spec`` can contain the keywords ``autapses``
-and ``multapses`` (set to ``False`` or ``True``) allowing or forbidding
+``N`` and ``p``, the :term:`conn_spec` can contain the keywords :term:`autapses`
+and :term:`multapses` (set to ``False`` or ``True``) allowing or forbidding
 self-connections and multiple connections between two neurons,
 respectively.
 
 Note that for all connectivity rules, it is perfectly legitimate to have
-the same population simultaneously in the role of ``pre`` and ``post``.
+the same population simultaneously in the role of :term:`pre` and :term:`post`.
 
 For more information on connecting neurons, please read the
-documentation of the ``Connect`` function and consult the guide at
+documentation of the :py:func:`.Connect` function and consult the guide at
 :doc:`Connection management <../../guides/connection_management>`.
 
 Specifying the behaviour of devices
@@ -279,7 +279,7 @@ All devices implement a basic timing capacity; the parameter ``start``
 (default 0) determines the beginning of the device's activity and the
 parameter ``stop`` (default: :math:`∞`) its end. These values are taken
 relative to the value of ``origin`` (default: 0). For example, the
-following example creates a ``poisson_generator`` which is only active
+following example creates a :cpp:class:`poisson_generator <nest::poisson_generator>` which is only active
 between 100 and 150ms:
 
 ::
@@ -318,7 +318,7 @@ It often occurs that we need to reset a simulation. For example, if you
 are developing a script, then you may need to run it from the
 ``ipython`` console multiple times before you are happy with its
 behaviour. In this case, it is useful to use the function
-``ResetKernel()``. This gets rid of all nodes you have created, any
+:py:func:`.ResetKernel`. This gets rid of all nodes you have created, any
 customised models you created, and resets the internal clock to 0.
 
 The other main use of resetting is when you need to run a simulation in
@@ -328,7 +328,7 @@ connect everything, it is enough to re-parameterise the network. A good
 strategy here is to create and connect your network outside the loop,
 and then carry out the parametrisation, simulation and data collection
 steps within the loop. Here it is often helpful to call the function
-``ResetNetwork()`` within each loop iteration. It resets all nodes to
+:py:func:`.ResetNetwork` within each loop iteration. It resets all nodes to
 their default configuration and wipes the data from recording devices.
 
 Command overview
@@ -371,14 +371,14 @@ Models
 Simulation control
 ~~~~~~~~~~~~~~~~~~
 
--  ``ResetKernel()``
+-  :py:func:`.ResetKernel`
 
    Reset the simulation kernel. This will destroy the network as well as
-   all custom models created with ``CopyModel()``. The parameters of
+   all custom models created with :py:func:`.CopyModel`. The parameters of
    built-in models are reset to their defaults. Calling this function is
    equivalent to restarting NEST.
 
--  ``ResetNetwork()``
+-  :py:func:`.ResetNetwork`
 
    Reset all nodes and connections to the defaults of their respective
    model.

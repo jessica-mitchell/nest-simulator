@@ -11,7 +11,7 @@ Introduction
 ------------
 
 Simulations with gap junctions are supported by the Hodgkin-Huxley
-neuron model ``hh_psc_alpha_gap``. The synapse model to create a
+neuron model :cpp:class:`hh_psc_alpha_gap <nest::hh_psc_alpha_gap>`. The synapse model to create a
 gap-junction connection is named ``gap_junction``. Unlike chemical
 synapses gap junctions are bidirectional connections. In order to create
 **one** accurate gap-junction connection **two** NEST connections are
@@ -35,15 +35,15 @@ In this case the reverse connection is created internally. In order to
 prevent the creation of incomplete or non-symmetrical gap junctions the
 creation of gap junctions is restricted to
 
--  ``one_to_one`` connections with ``'make_symmetric': True``
--  ``all_to_all`` connections with equal source and target populations
+-  :term:`one_to_one` connections with ``'make_symmetric': True``
+-  :term:`all_to_all` connections with equal source and target populations
    and default or scalar parameters
 
 Create random connections
 -------------------------
 
-NEST random connection rules like ``fixed_total_number``,
-``fixed_indegree`` etc. cannot be employed for the creation of gap
+NEST random connection rules like :term:`fixed_total_number`,
+:term:`fixed_indegree` etc. cannot be employed for the creation of gap
 junctions. Therefore random connections have to be created on the Python
 level with e.g. the ``random`` module of the Python Standard Library:
 

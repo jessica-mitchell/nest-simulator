@@ -1,7 +1,6 @@
 NEST Community
 ===============
 
-
 Mailing List
 -------------
 
