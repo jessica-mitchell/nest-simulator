@@ -33,7 +33,6 @@ import os
 import pip
 import subprocess
 
-
 from subprocess import check_output, CalledProcessError
 from mock import Mock as MagicMock
 
@@ -89,7 +88,7 @@ sys.modules["nest.kernel"] = pynestkernel_mock
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
-            return MagicMock()
+        return MagicMock()
 
 
 MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot', 'pandas']
@@ -98,7 +97,6 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # If your documentation needs a minimal Sphinx version, state it here.
 #
 # needs_sphinx = '1.0'
-
 
 extensions = [
     'sphinx.ext.autodoc',
