@@ -2,6 +2,8 @@
 Welcome to the NEST simulator documentation!
 ***********************************************
 
+This file is purposoly modified poorly. So let's make bad sentence, with many, problems.
+nest can be used to do it. Let's try policeman and she's all that. I simply don't understadn
 
 +------------------------------------+---------------------------------------+
 |                                    |                                       |
