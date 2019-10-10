@@ -3,6 +3,8 @@ Welcome to the NEST simulator documentation!
 ***********************************************
 
 This file is purposoly modified poorly. So let's make bad sentence, with many, problems.
+- and here is a very long and run on sentence that should be notd in some respects to not being a very very good
+  sentence and someone should have stopped this a long while a go
 nest can be used to do it. Let's try policeman and she's all that. I simply don't understadn
 
 +------------------------------------+---------------------------------------+
