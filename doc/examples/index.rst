@@ -57,8 +57,6 @@ NEST Example Networks
    ../auto_examples/hpc_benchmark
 
 
-
-
 .. _sphx_glr_auto_examples_Potjans_2014:
 
 Microcircuit Example

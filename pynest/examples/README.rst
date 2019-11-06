@@ -1,2 +1,2 @@
-NEST Example Networks
-======================
+NEST example networks
+=========================
