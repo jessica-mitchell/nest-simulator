@@ -6,3 +6,4 @@ python:
   setup_py_install: false
 
 requirements_file: doc/requirements.txt
+formats: []
