@@ -26,6 +26,8 @@ One neuron example
 This script simulates a neuron driven by a constant external current
 and records its membrane potential.
 
+Test
+
 See Also
 ~~~~~~~~
 
