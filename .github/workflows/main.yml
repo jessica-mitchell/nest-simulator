@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@master
-    - name: Vale
+      uses: actions/checkout@vale_action
+    - name: Vale Linter
       uses: errata-ai/vale-action@v1.0.1
       with:
         styles: |
