@@ -2,6 +2,7 @@ Features
 ========
 
 So, now we we tst to see how much we can find with vale.
+and we have shown nEST is misspelled along with
 
 1.  NEST provides over 50 neuron models many of which have been
     published. Choose from simple integrate-and-fire neurons with
