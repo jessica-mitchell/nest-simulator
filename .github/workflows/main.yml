@@ -1,0 +1,17 @@
+name: CI
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Vale
+      uses: errata-ai/vale-action@v1.0.1
+      with:
+        styles: |
+          https://github.com/errata-ai/write-good/releases/latest/download/write-good.zip
+        files: doc/
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
