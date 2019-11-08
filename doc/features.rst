@@ -1,6 +1,8 @@
 Features
 ========
 
+So, now we we tst to see how much we can find with vale.
+
 1.  NEST provides over 50 neuron models many of which have been
     published. Choose from simple integrate-and-fire neurons with
     current or conductance based synapses, over the Izhikevich or AdEx
