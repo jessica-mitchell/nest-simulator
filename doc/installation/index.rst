@@ -39,7 +39,7 @@ compile NEST from source, see section** :ref:`advanced_install`.
 
            sudo dnf install python3-nest
 
-       Find out more on the NeuroFedora site: https://docs.fedoraproject.org/en-US/neurofedora/nest/.       
+       Find out more on the NeuroFedora site: https://docs.fedoraproject.org/en-US/neurofedora/nest/.
 
 
    .. tab:: Conda (Linux/macOS)
@@ -50,7 +50,7 @@ compile NEST from source, see section** :ref:`advanced_install`.
           installed packages.
 
           .. pull-quote::
-        
+
 	     We strongly recommend that you **install all programs**
              you'll need, (such as ``ipython`` or ``jupyter-lab``) in
              the environment (ENVNAME) **at the same time**, by
@@ -82,12 +82,12 @@ compile NEST from source, see section** :ref:`advanced_install`.
 
              conda activate ENVNAME
 
-	     
+
 In addition to native installations from ready-made packages, we
 provide containerized versions of NEST in several formats:
 
 .. tabs::
-	  
+
    .. tab:: Docker (Linux/macOS)
 
        Docker provides an isolated container to run applications. The
@@ -127,7 +127,7 @@ provide containerized versions of NEST in several formats:
           generated, as shown below. You can then copy and paste the
           link into your browser.
 
-           .. image:: ../../_static/img/docker_link.png
+           .. image:: ../_static/img/docker_link.png
               :align: center
               :width: 1000px
 

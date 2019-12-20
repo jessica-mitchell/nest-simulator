@@ -218,7 +218,11 @@ def setup(app):
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #
+    'preamble': "".join((
+        '\usepackage[utf8x]{inputenc}',
+        '\DeclareUnicodeCharacter{1F9}{ǹ}',  # n accent
+        '\DeclareUnicodeCharacter{221E}{∞}',  # infinity
+    ))
     # 'papersize': 'letterpaper',
 
     # The font size ('10pt', '11pt' or '12pt').
