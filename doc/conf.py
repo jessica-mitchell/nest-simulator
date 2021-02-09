@@ -89,6 +89,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
+    'breathe',
     'sphinx_tabs.tabs'
 ]
 
@@ -106,6 +107,10 @@ sphinx_gallery_conf = {
      # 'backreferences_dir': False
      'plot_gallery': 'False'
 }
+
+breathe_projects = {"dev_docs": build_dir / "doc/breathe/doxygen/dev_docs/xml"}
+breathe_projects_source = {"dev_docs": (source_dir / "doc", list(source_dir.rglob('*.h')))}
+breathe_default_project = "dev_docs"
 
 master_doc = 'contents'
 
