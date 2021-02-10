@@ -44,6 +44,12 @@ build_dir = Path(os.environ['OLDPWD'])
 if os.environ.get('READTHEDOCS', 'False') == 'True':
     build_dir = source_dir / "doc"
 
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+
+    subprocess.call('doxygen', shell=True)
+
 print("build_dir", str(build_dir))
 print("source_dir", str(source_dir))
 
@@ -108,7 +114,7 @@ sphinx_gallery_conf = {
      'plot_gallery': 'False'
 }
 
-breathe_projects = {"dev_docs": build_dir / "doc/breathe/doxygen/dev_docs/xml"}
+breathe_projects = {"dev_docs": build_dir / "doc/doxygen/xml"}
 breathe_projects_source = {"dev_docs": (source_dir / "doc", list(source_dir.rglob('*.h')))}
 breathe_default_project = "dev_docs"
 
