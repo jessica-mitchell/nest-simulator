@@ -44,6 +44,9 @@ jobs:
         uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        run: |
+          git config --unset-all http.https://github.com/.extraheader
+
         with:
           source_file: "pynest/examples/*.ipynb"
           destination_repo: "nest/nest-simulator-examples"
