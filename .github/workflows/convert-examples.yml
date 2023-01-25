@@ -30,6 +30,7 @@ jobs:
         run: |
           find pynest/examples/ -iname "*.py"
           sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
+          ls pynest/examples
 
       - name: "Upload notebooks as artifacts"
         uses: actions/upload-artifact@v2
@@ -46,7 +47,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
 
         with:
-          source_file: "pynest/examples/*.ipynb"
+          source_file: "pynest/examples/balancedneuron.ipynb"
           destination_repo: "nest/nest-simulator-examples"
           destination_folder: "notebooks"
           user_email: "mitchell20j@gmail.com"
