@@ -43,7 +43,7 @@ jobs:
       - name: "Push a file to another repository"
         uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
-          CONVERT_NOTEBOOKS: ${{ secrets.CONVERT_NOTEBOOKS }}
+          API_GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
         with:
           source_file: "pynest/examples/*.ipynb"
           destination_repo: "nest/nest-simulator-examples"
