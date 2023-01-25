@@ -50,7 +50,7 @@ jobs:
           git config --global user.email "mitchell20j@gmail.com"
           git config --unset-all http.https://github.com/.extraheader
 
-          git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples.git # This works
+          git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/jessica-mitchell/nest-simulator.git # This works
 
           cd nest-simulator-examples
 
