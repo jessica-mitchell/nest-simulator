@@ -49,5 +49,5 @@ jobs:
           destination_repo: "nest/nest-simulator-examples"
           destination_folder: "notebooks"
           user_email: "j.mitchell@fz-juelich.de"
-          user_name: "jessicamitchell"
+          user_name: "jessica-mitchell"
           commit_message: "Test commit"
