@@ -47,8 +47,11 @@ jobs:
         run: |
 
           git config --global user.name "jessica-mitchell"
+          pwd
           git config --global user.email "mitchell20j@gmail.com"
+          ls
           git config --unset-all http.https://github.com/.extraheader
+          ls ../
           git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples # This works
 
           cd nest-simulator-examples
