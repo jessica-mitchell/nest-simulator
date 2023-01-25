@@ -41,21 +41,26 @@ jobs:
             pynest/examples/*.ipynb
 
       - name: "Push a file to another repository"
-        #uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        run: |
 
-          git config --global user.name "notebook converter bot"
-          git config --global user.email "mitchell20j@gmail.com"
-          #git config --unset-all http.https://github.com/.extraheader
+        with:
+          source_file: "pynest/examples/*.ipynb"
+          destination_repo: "nest/nest-simulator-examples"
+          destination_folder: "notebooks"
+          user_email: "mitchell20j@gmail.com"
+          user_name: "jessica-mitchell"
+          commit_message: "Test commit"          #  git config --global user.name "notebook converter bot"
+          #  git config --global user.email "mitchell20j@gmail.com"
+          #  #git config --unset-all http.https://github.com/.extraheader
 
-          git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples.git # This works
+          #  git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples.git # This works
 
-          cd nest-simulator-examples
+          #  cd nest-simulator-examples
 
-          ls
-          pwd
+          #  ls
+          #  pwd
 
 
           # git checkout notebooks-repo
@@ -68,10 +73,4 @@ jobs:
 
           # git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples.git" "$CLONE_DIR"
 
-          #with:
-          #  source_file: "pynest/examples/*.ipynb"
-          #  destination_repo: "nest/nest-simulator-examples"
-          #  destination_folder: "notebooks"
-          #  user_email: "mitchell20j@gmail.com"
-          #  user_name: "jessica-mitchell"
-          #  commit_message: "Test commit"
+
