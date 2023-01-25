@@ -31,7 +31,7 @@ jobs:
           find pynest/examples/ -iname "*.py"
           sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
 
-      - name: "Upload install and test results"
+      - name: "Upload notebooks as artifacts"
         uses: actions/upload-artifact@v2
         if: always()
         with:
@@ -40,3 +40,14 @@ jobs:
             pynest/examples/**/*.ipynb
             pynest/examples/*.ipynb
 
+      - name: "Push a file to another repository"
+        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+        env:
+          CONVERT_NOTEBOOKS: ${{ secrets.CONVERT_NOTEBOOKS }}
+        with:
+          source_file: "pynest/examples/*.ipynb"
+          destination_repo: "nest/nest-simulator-examples"
+          destination_folder: "notebooks"
+          user_email: "j.mitchell@fz-juelich.de"
+          user_name: "jessicamitchell"
+          commit_message: "Test commit"
