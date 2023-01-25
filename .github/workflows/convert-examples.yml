@@ -46,10 +46,10 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         run: |
 
-          git config user.name "jessica-mitchell"
-          git config user.email "mitchell20j@gmail.com"
+          git config --global user.name "jessica-mitchell"
+          git config --global user.email "mitchell20j@gmail.com"
           git config --unset-all http.https://github.com/.extraheader
-          git clone https://user:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples # This works
+          git clone https://jessica-mitchell:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples # This works
 
           cd nest-simulator-examples
 
