@@ -1,0 +1,42 @@
+name: Convert examples
+
+on: [push, pull_request]
+
+jobs:
+  convert_examples:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository content"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: "Set up Python 3.x"
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: "Install Linux system dependencies"
+        run: |
+          sudo apt-get update
+
+      - name: "Install Python dependencies"
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install sphinx sphinx-gallery
+
+      - name: "Convert to notebooks"
+        run: |
+          find pynest/examples/ -iname "*.py"
+          sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
+
+      - name: "Upload install and test results"
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: notebooks
+          path: |
+            pynest/examples/**/*.ipynb
+            pynest/examples/*.ipynb
+
