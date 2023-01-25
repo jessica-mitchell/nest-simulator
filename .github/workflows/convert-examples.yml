@@ -41,16 +41,34 @@ jobs:
             pynest/examples/*.ipynb
 
       - name: "Push a file to another repository"
-        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+        #uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         run: |
-          git config --unset-all http.https://github.com/.extraheader
+          git clone https://user:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples # This works
 
-        with:
-          source_file: "pynest/examples/*.ipynb"
-          destination_repo: "nest/nest-simulator-examples"
-          destination_folder: "notebooks"
-          user_email: "mitchell20j@gmail.com"
-          user_name: "jessica-mitchell"
-          commit_message: "Test commit"
+          cd nest-simulator
+
+          pwd
+
+          # git config user.name "jessica-mitchell"
+          # git config user.email "mitchell20j@gmail.com"
+
+          # git config --unset-all http.https://github.com/.extraheader
+          # git checkout notebooks-repo
+
+          # touch new_file.txt
+          # git add new_file.txt
+          # git commit -m "testing add new file"
+          # git remote -v
+          # git push 
+
+          # git clone --single-branch --branch main "https://x-access-token:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples.git" "$CLONE_DIR"
+
+          #with:
+          #  source_file: "pynest/examples/*.ipynb"
+          #  destination_repo: "nest/nest-simulator-examples"
+          #  destination_folder: "notebooks"
+          #  user_email: "mitchell20j@gmail.com"
+          #  user_name: "jessica-mitchell"
+          #  commit_message: "Test commit"
