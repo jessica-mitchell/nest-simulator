@@ -45,16 +45,17 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         run: |
+
+          git config user.name "jessica-mitchell"
+          git config user.email "mitchell20j@gmail.com"
+          git config --unset-all http.https://github.com/.extraheader
           git clone https://user:$API_TOKEN_GITHUB@github.com/nest/nest-simulator-examples # This works
 
-          cd nest-simulator
+          cd nest-simulator-examples
 
           pwd
 
-          # git config user.name "jessica-mitchell"
-          # git config user.email "mitchell20j@gmail.com"
 
-          # git config --unset-all http.https://github.com/.extraheader
           # git checkout notebooks-repo
 
           # touch new_file.txt
