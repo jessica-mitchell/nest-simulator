@@ -29,9 +29,12 @@ jobs:
       - name: "Convert to notebooks"
         run: |
           mkdir pynest/notebooks
-          sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py") 
+          sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
           mv pynest/examples/* pynest/notebooks
           find pynest/notebooks -name \*.py -type f -delete
+
+          grep -rl '"display_name": "Python 3"' pynest/notebooks | xargs sed -i 's/"display_name": "Python 3"/"display_name": "EBRAINS-22.10"/g'
+          grep -rl '"name": "python3"' pynest/noteboks | xargs sed -i 's/"name": "python3"/"name": "spack_python_kernel_release_202210"/g'
 
           #- name: "Upload notebooks as artifacts"
           #  uses: actions/upload-artifact@v2
