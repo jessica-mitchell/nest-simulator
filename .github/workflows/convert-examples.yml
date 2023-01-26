@@ -28,11 +28,10 @@ jobs:
 
       - name: "Convert to notebooks"
         run: |
-          sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
           mkdir pynest/notebooks
-          mv pynest/examples/**/*.ipynb  pynest/notebooks/
-          mv pynest/notebooks/*.ipynb pynest/notebooks/
-          ls pynest/notebooks/
+          sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py") 
+          mv pynest/examples/* pynest/notebooks
+          find pynest/notebooks -name \*.py -type f -delete
 
           #- name: "Upload notebooks as artifacts"
           #  uses: actions/upload-artifact@v2
