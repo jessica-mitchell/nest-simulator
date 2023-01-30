@@ -23,6 +23,21 @@ r"""Constructing and simulating compartmental models with active and passive den
 ---------------------------------------------------------------------------------------
 This example demonstrates how to initialize compartmental models. It creates
 two models with two compartments, once with active channels in the dendritic
+
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fcompartmental_model%2Ftwo_comps.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
 compartment and once without. It then adds and excitatory receptors with AMPA
 and NMDA components to both the somatic and dendritic compartment.
 

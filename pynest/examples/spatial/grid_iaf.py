@@ -23,6 +23,21 @@
 4x3 grid
 ---------
 
+
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fspatial%2Fgrid_iaf.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
 Create a population of iaf_psc_alpha neurons on a 4x3 grid.
 
 BCCN Tutorial @ CNS*09

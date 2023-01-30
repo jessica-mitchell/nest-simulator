@@ -23,6 +23,21 @@
 Use evolution strategies to find parameters for a random balanced network (alpha synapses)
 ------------------------------------------------------------------------------------------
 
+
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fbrunel_alpha_evolution_strategies.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
 This script uses an optimization algorithm to find the appropriate
 parameter values for the external drive "eta" and the relative ratio
 of excitation and inhibition "g" for a balanced random network that

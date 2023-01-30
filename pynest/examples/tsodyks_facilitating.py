@@ -23,6 +23,21 @@
 Tsodyks facilitating example
 ----------------------------
 
+
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Ftsodyks_facilitating.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
 This scripts simulates two neurons. One is driven with dc-input and
 connected to the other one with a facilitating Tsodyks synapse. The
 membrane potential trace of the second neuron is recorded.

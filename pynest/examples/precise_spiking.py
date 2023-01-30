@@ -23,6 +23,21 @@
 Comparing precise and grid-based neuron models
 ----------------------------------------------
 
+
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fprecise_spiking.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
 In traditional time-driven simulations, spikes are constrained to the
 time grid at a user-defined resolution. The precise spiking models
 overcome this by handling spikes in continuous time [1]_ and [2]_.

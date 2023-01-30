@@ -24,6 +24,21 @@
 Random balanced network HPC benchmark
 -------------------------------------
 
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fhpc_benchmark.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
+
 This script produces a balanced random network of `scale*11250` neurons in
 which the excitatory-excitatory neurons exhibit STDP with
 multiplicative depression and power-law potentiation. A mutual

@@ -24,6 +24,21 @@
 Sinusoidal gamma generator example
 ----------------------------------
 
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fsinusoidal_gamma_generator.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
+
 This script demonstrates the use of the ``sinusoidal_gamma_generator`` and its
 different parameters and modes. The source code of the model can be found in
 ``models/sinusoidal_gamma_generator.h``.

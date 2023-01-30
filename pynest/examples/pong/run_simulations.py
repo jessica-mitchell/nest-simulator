@@ -24,6 +24,21 @@ r"""Application to train networks to play pong against each other
 This program makes two spiking neural networks of two layers each compete
 against each other in encoding an input-output mapping within their weights.
 
+
+.. only:: html
+
+  .. card:: Run this example as a Jupyter notebook
+    :margin: auto
+    :width: 50%
+    :text-align: center
+
+    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fpong%2Frun_simulations.ipynb&branch=main
+
+    For details and troubleshooting see :ref:`run_jupyter`.
+
+
+
 The script is centered around a simulation of the classic game Pong
 in which the vertical position of the ball determines the input for both
 'players' and their output activation after a predetermined simulation
