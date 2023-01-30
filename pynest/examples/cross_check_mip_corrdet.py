@@ -23,21 +23,6 @@
 Auto- and crosscorrelation functions for spike trains
 -----------------------------------------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fcross_check_mip_corrdet.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 A time bin of size `tbin` is centered around the time difference it
 represents. If the correlation function is calculated for `tau` in
 `[-tau_max, tau_max]`, the pair events contributing to the left-most

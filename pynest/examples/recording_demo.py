@@ -23,21 +23,6 @@
 Recording examples
 ------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Frecording_demo.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 This script demonstrates how to select different recording backends
 and read the result data back in. The simulated network itself is
 rather boring with only a single poisson generator stimulating a

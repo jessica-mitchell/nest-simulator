@@ -23,21 +23,6 @@ r"""Classes to encapsulate the neuronal networks.
 ----------------------------------------------------------------
 Two types of network capable of playing pong are implemented. PongNetRSTDP
 can solve the problem by updating the weights of static synapses after
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fpong%2Fnetworks.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 every simulation step according to the R-STDP rules defined in [1]_.
 
 PongNetDopa uses the actor-critic model described in [2]_ to determine the

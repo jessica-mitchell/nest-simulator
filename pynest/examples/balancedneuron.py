@@ -23,21 +23,6 @@
 Balanced neuron example
 -----------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fbalancedneuron.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 This script simulates a neuron driven by an excitatory and an
 inhibitory population of neurons firing Poisson spike trains. The aim
 is to find a firing rate for the inhibitory population that will make

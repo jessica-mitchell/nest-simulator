@@ -23,21 +23,6 @@
 Example for the quantal_stp_synapse
 -----------------------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fevaluate_quantal_stp_synapse.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 The ``quantal_stp_synapse`` is a stochastic version of the Tsodys-Markram model
 for synaptic short term plasticity (STP).
 This script compares the two variants of the Tsodyks/Markram synapse in NEST.

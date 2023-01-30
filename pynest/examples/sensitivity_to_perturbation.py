@@ -23,21 +23,6 @@
 Sensitivity to perturbation
 ---------------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fsensitivity_to_perturbation.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 This script simulates a network in two successive trials, which are identical
 except for one extra input spike in the second realization (a small
 perturbation). The network consists of recurrent, randomly connected excitatory

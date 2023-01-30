@@ -23,21 +23,6 @@
 Numerical phase-plane analysis of the Hodgkin-Huxley neuron
 -----------------------------------------------------------
 
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fhh_phaseplane.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 hh_phaseplane makes a numerical phase-plane analysis of the Hodgkin-Huxley
 neuron (``hh_psc_alpha``). Dynamics is investigated in the V-n space (see remark
 below). A constant DC can be specified  and its influence on the nullclines

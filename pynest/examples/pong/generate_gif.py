@@ -23,21 +23,6 @@ r"""Script to visualize a simulated Pong game.
 ----------------------------------------------------------------
 All simulations store data about both networks and the game in .pkl files.
 This script reads these files and generates image snapshots at different
-
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fpong%2Fgenerate_gif.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
 times during the simulation. These are subsequently aggregated into a GIF.
 
 :Authors: J Gille, T Wunderlich, Electronic Vision(s)

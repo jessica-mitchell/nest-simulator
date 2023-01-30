@@ -24,21 +24,6 @@
 Music example
 --------------
 
-
-.. only:: html
-
-  .. card:: Run this example as a Jupyter notebook
-    :margin: auto
-    :width: 50%
-    :text-align: center
-
-    .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
-         :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator-examples%2Fnotebooks%2Fnotebooks%2Fmusic_cont_out_proxy_example%2Fnest_script.ipynb&branch=main
-
-    For details and troubleshooting see :ref:`run_jupyter`.
-
-
-
 This example runs 2 NEST instances and one receiver instance. Neurons on
 the NEST instances are observed by the music_cont_out_proxy and their
 values are forwarded through MUSIC to the receiver.
