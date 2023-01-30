@@ -26,6 +26,7 @@ import re
 import pip
 import subprocess
 
+from os import walk
 from pathlib import Path
 from shutil import copyfile
 import json
@@ -228,6 +229,22 @@ intersphinx_mapping = {
     'extmod': ('https://nest-extension-module.readthedocs.io/en/latest/', None),
 }
 
+
+example_prolog = """
+.. only:: HTML
+
+    .. card:: Run this example as a Jupyter notebook
+      :margin: auto
+      :width: 50%
+      :text-align: center
+
+      .. image:: https://nest-simulator.org/TryItOnEBRAINS.png
+           :target: https://lab.ebrains.eu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=lab%2Ftree%2Fnest-simulator%2Fdoc%2Fhtmldoc%2Fnotebooks%2F{{ filepath | replace("/", "%2F" )}}.ipynb&branch=main
+
+      For details and troubleshooting see :ref:`run_jupyter`.
+
+"""
+
 from doc.extractor_userdocs import ExtractUserDocs, relative_glob  # noqa
 
 
@@ -248,8 +265,76 @@ def toc_customizer(app, docname, source):
         source[0] = rendered
 
 
+def add_example_prolog(app, docname, source):
+    # todo get path and filename to notebook path2docname
+    # look like notebook-name or subdirectory/notebook-name 
+    # note no extension
+
+    dir_path = str(source_dir / "pynest/examples/")
+    # ohly gets filename need path
+    #files = os.listdir(str(doc_build_dir / "auto_examples/"))
+    res= []
+# list to store files name
+    for (dir_path, dir_names, file_names) in walk(dir_path):
+        res.extend(file_names)
+        print(res)
+
+    for file in filepath:
+    #for file in files:
+        if file.endswith(".py"):
+       #with open(str(doc_build_dir / "auto_examples") + "/" + file, 'w') as original:
+       #    lines = original.readlines()
+       #    for line in lines:
+       #        if "only::" in line:
+       #            print(line)
+       #            line.replace(
+            with open(file, "r") as f:
+                contents = f.readlines()
+
+            index = 27
+            contents.insert(index, "a single line")
+
+            with open(file, "w") as f:
+                contents = "".join(contents)
+                f.write(contents)
+     #          modified.write(example_prolog  + data)
+
+                # get the filename only from the path
+            name = os.path.basename(file)
+            # get the path of file only
+            path2dir = os.path.dirname(file)
+            # get the last segement of path
+            path2sub = os.path.basename(path2dir)
+            # no extension
+            name_noext = os.path.splitext(name)[0]
+            # Create proper links for nbgitpuller for each notebook
+            # check if subdirectory
+            if path2sub != "examples":
+                path2example = path2sub + "%2F" + name_noext
+            #    #links = link_puller.replace('one_neuron_with_noise.ipynb', link_sub_path)
+                html_context =  {"filepath": path2example}
+            #    print(html_context)
+                example_source = source[0]
+
+                rendered = app.builder.templates.render_string(example_source, html_context)
+                source[0] = rendered
+
+        #else:
+        #    path2example = os.path.splitext(name)[0]
+        #    html_context =  {"filepath": path2example}
+        #    example_source = source[0]
+
+        #    rendered = app.builder.templates.render_string(example_source, html_context)
+        #    source[0] = rendered
+
+    #`with open("text_file.txt",'r') as text_file:
+#    lines = text_file.readlines()
+#    for line in lines:
+#        if "magician" in line:
+#            print(line)
 def setup(app):
     app.connect("source-read", toc_customizer)
+    app.connect("source-read", add_example_prolog)
     app.add_css_file('css/custom.css')
     app.add_css_file('css/pygments.css')
     app.add_js_file("js/custom.js")
