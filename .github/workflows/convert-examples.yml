@@ -31,7 +31,6 @@ jobs:
           mkdir pynest/notebooks
           sphx_glr_python_to_jupyter.py $(find pynest/examples/ -iname "*.py")
           mv pynest/examples/* pynest/notebooks
-          find pynest/notebooks -name \*.py -type f -delete
 
           grep -rl '"display_name": "Python 3"' pynest/notebooks | xargs sed -i 's/"display_name": "Python 3"/"display_name": "EBRAINS-22.10"/g'
           grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i 's/"name": "python3"/"name": "spack_python_kernel_release_202210"/g'
@@ -55,7 +54,7 @@ jobs:
           destination_folder: "notebooks"
           user_email: "mitchell20j@gmail.com"
           user_name: "jessica-mitchell"
-          commit_message: "Test commit"          #  git config --global user.name "notebook converter bot"
+          commit_message: "Move examples to repo"          #  git config --global user.name "notebook converter bot"
           #  git config --global user.email "mitchell20j@gmail.com"
           #  #git config --unset-all http.https://github.com/.extraheader
 
