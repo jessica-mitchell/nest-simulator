@@ -1,5 +1,8 @@
 .. _connection_management:
 
+.. meta::
+   :keywords: connect
+
 Connection Management
 =====================
 
