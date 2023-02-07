@@ -1,7 +1,7 @@
 .. _connection_management:
 
 .. meta::
-   :keywords: connect
+   :keywords: connect, connections, connecting
 
 Connection Management
 =====================
