@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+#
+# ll_api_kernel_attributes.py
+#
+# This file is part of NEST.
+#
+# Copyright (C) 2004 The NEST Initiative
+#
+# NEST is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# NEST is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NEST.  If not, see <http://www.gnu.org/licenses/>.
+
 from .ll_api import sr, stack_checker, sps, spp
 
 
@@ -5,7 +26,10 @@ class KernelAttribute:
     """
     Descriptor that dispatches attribute access to the nest kernel.
     """
-    def __init__(self, typehint, description, readonly=False, default=None, localonly=False):
+
+    def __init__(
+        self, typehint, description, readonly=False, default=None, localonly=False
+    ):
         self._readonly = readonly
         self._localonly = localonly
         self._default = default
@@ -30,7 +54,7 @@ class KernelAttribute:
         if instance is None:
             return self
 
-        sr('GetKernelStatus')
+        sr("GetKernelStatus")
         status_root = spp()
 
         if self._full_status:
@@ -44,4 +68,4 @@ class KernelAttribute:
             msg = f"`{self._name}` is a read only kernel attribute."
             raise AttributeError(msg)
         sps({self._name: value})
-        sr('SetKernelStatus')
+        sr("SetKernelStatus")

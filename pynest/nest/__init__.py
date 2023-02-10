@@ -29,8 +29,8 @@ r"""PyNEST - Python interface for the NEST Simulator
 
 * ``nest.synapse_models`` shows all available synapse models.
 
-* ``nest.help("model_name") displays help for the given model, e.g.,
-  ``nest.help("iaf_psc_exp")``
+* To get details on the model equations and parameters,
+  please check out our model documentation at https://nest-simulator.readthedocs.io/en/stable/models/index.html.
 
 * To get help on functions in the ``nest`` package, use Python's
   ``help()`` function or IPython's ``?``, e.g.
@@ -50,11 +50,11 @@ For more information visit https://www.nest-simulator.org.
 # instance later on. Use `.copy()` to prevent pollution with other variables
 _original_module_attrs = globals().copy()
 
-from .ll_api_ka import KernelAttribute  # noqa
-import sys                              # noqa
-import types                            # noqa
-import importlib                        # noqa
-import builtins                         # noqa
+from .ll_api_kernel_attributes import KernelAttribute  # noqa
+import sys        # noqa
+import types      # noqa
+import importlib  # noqa
+import builtins   # noqa
 
 try:
     import versionchecker
@@ -425,6 +425,13 @@ class NestModule(types.ModuleType):
     _readonly_kernel_attrs = builtins.set(
         k for k, v in vars().items() if isinstance(v, KernelAttribute) and v._readonly
     )
+
+    userdict = {}
+    """
+    The variable userdict allows users to store custom data with the NEST kernel.
+
+    Example: nest.userdict["nodes"] = [1,2,3,4]
+    """
 
 
 def _setattr_error(self, attr, val):
