@@ -1,10 +1,12 @@
 .. _connection_management:
 
-.. meta::
-   :keywords: connect, connections, connecting
-
 Connection Management
 =====================
+
+.. meta::
+   :description lang=en: Learn how to manage connections in NEST
+   :keywords: connect, connections, connecting, synapses
+
 
 Connections between populations of neurons and between neurons and
 devices for stimulation and recording in NEST are created with the

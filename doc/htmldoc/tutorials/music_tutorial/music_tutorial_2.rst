@@ -1,5 +1,9 @@
 .. _music_tutorial_2:
 
+.. meta::
+   :keywords: MUSIC, interface
+   :description: Learn how MUSIC interfaces with NEST to combine 2 simulations.
+
 Connect two NEST simulations using MUSIC
 ========================================
 
