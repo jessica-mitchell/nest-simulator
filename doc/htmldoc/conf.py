@@ -164,6 +164,8 @@ html_theme_options = {
 
 html_static_path = ['static']
 html_additional_pages = {'index': 'index.html'}
+html_css_files = ['css/custom.css', 'css/pygments.css', 'css/bootstrap/bootstrap.min.css', 'css/normalize.css']
+html_js_files = ['js/bootstrap/bootstrap.bundle.min.js']
 html_sidebars = {
     "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
 }
@@ -281,10 +283,6 @@ def toc_customizer(app, docname, source):
 
 def setup(app):
     app.connect("source-read", toc_customizer)
-    app.add_css_file('css/custom.css')
-    app.add_css_file('css/pygments.css')
-    app.add_js_file("js/custom.js")
-
     # for events see
     # https://www.sphinx-doc.org/en/master/extdev/appapi.html#sphinx-core-events
     app.connect('env-before-read-docs', add_button_to_examples)
