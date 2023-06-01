@@ -160,6 +160,7 @@ html_theme_options = {
     'globaltoc_collapse': True,
     # If True, show hidden TOC entries
     'globaltoc_includehidden': True,
+    'logo_icon': ''
     }
 
 html_static_path = ['static']
