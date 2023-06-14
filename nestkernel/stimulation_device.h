@@ -94,7 +94,7 @@ stop
 EndUserDocs */
 
 /**
- *  @noop DocKeywords: io, io device, stimulation device, stimulation, device, interface
+ * @xmlonly <DocKeywords> io, io device, stimulation device, stimulation, device, interface @endxmlonly
  *
  * Base class for common properties of StimulationDevices.
  *
@@ -116,6 +116,8 @@ EndUserDocs */
  * requires that the Event communicating the stimulus must be delivered
  * at time a, i.e., by the deliver_events() call prior to the update for
  * (a, a+h].
+ *
+ * DocKeywords: io, io device, stimulation device, stimulation, device, interface
  *
  * Since stimulation devices are connected to their targets with a delay of one
  * time step, this means that analog stimulation devices need to emit the event
