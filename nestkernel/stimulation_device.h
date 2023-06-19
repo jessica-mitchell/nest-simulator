@@ -94,7 +94,7 @@ stop
 EndUserDocs */
 
 /**
- * @xmlonly <DocKeywords> io, io device, stimulation device, stimulation, device, interface @endxmlonly
+ * @xmlonly <DocKeywords> io, io device, stimulation device, stimulation, device, interface </DocKeywords> @endxmlonly
  *
  * Base class for common properties of StimulationDevices.
  *
