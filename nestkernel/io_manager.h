@@ -36,7 +36,7 @@ namespace nest
 {
 
 /**
- * @noop DocKeywords: io, manager
+ * @DocKeywords: io, manager
  *
  * IOManager: Handles data storage files from spike recorders and
  * multimeters to file system(s)/memory/output. Distinct from logging
@@ -110,6 +110,7 @@ public:
 
   /**
    * Send device data to a given recording backend.
+   * @DocKeywords: io, stimulation
    *
    * This function is called from a RecordingDevice `device` when it
    * wants to write data to a given recording backend, identified by
