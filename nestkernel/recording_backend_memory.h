@@ -95,7 +95,7 @@ namespace nest
 {
 
 /**
- * @noop DocKeywords: io, io backend, recording backend, recording
+ * @DocKeywords io, io backend, recording backend, recording
  *
  * Memory specialization of the RecordingBackend interface.
  *

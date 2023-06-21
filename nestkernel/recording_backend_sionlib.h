@@ -190,7 +190,7 @@ EndUserDocs */
 namespace nest
 {
 /**
- * @noop DocKeywords: io, io backend, recording backend, recording, mpi
+ * @DocKeywords io, io backend, recording backend, recording, mpi
  *
  */
 

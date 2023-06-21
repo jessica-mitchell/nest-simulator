@@ -97,7 +97,7 @@ stop
 EndUserDocs */
 
 /**
- * @noop DocKeywords: io, io device, recording device, recording, device, interface
+ * @DocKeywords io, io device, recording device, recording, device, interface
  *
  * Base class for all recording devices.
  *

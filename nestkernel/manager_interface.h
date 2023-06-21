@@ -33,7 +33,7 @@ namespace nest
 {
 
 /**
- * @noop DocKeywords: manager, interface
+ * @DocKeywords manager, interface
  *
  * Interface for kernel manager classes.
  *

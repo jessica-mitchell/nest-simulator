@@ -70,6 +70,7 @@ namespace nest
  * @author Sandra Diaz
  *
  * @ingroup NESTio
+ * @DocKeywords stimulation, anotherone
  */
 
 class StimulationBackend

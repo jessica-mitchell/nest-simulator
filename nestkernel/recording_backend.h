@@ -37,7 +37,7 @@ class RecordingDevice;
 class Event;
 
 /**
- * @noop DocKeywords: io, io backend, recording backend, recording, interface
+ * @DocKeywords io, io backend, recording backend, recording, interface
  *
  * Abstract base class for all NESTio recording backends
  *

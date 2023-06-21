@@ -75,7 +75,7 @@ namespace nest
 {
 
 /**
- * @noop DocKeywords: io, io backend, recording backend, recording
+ * @DocKeywords io, io backend, recording backend, recording
  *
  * A simple recording backend implementation that prints all recorded data to
  * screen.
