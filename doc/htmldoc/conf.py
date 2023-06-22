@@ -55,6 +55,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
+    'breathe',
     'sphinx_design',
     'HoverXTooltip',
     'VersionSyncRole',
