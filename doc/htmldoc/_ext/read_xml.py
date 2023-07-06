@@ -7,7 +7,10 @@ import json
 
 
 
-
+# Run doxygen
+# Store xml files
+# Get the list of keywords and use as key and value as the class name
+# directive .. keyword:: io - list all classes with io
 #def write_file(name):
 ##    """Write the output file for module/package <name>."""
 #    destdir = "../"

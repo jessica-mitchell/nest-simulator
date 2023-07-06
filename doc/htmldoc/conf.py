@@ -68,6 +68,12 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['templates']
 
+breathe_projects = {
+    "NEST Simulator": "./_doxygen/xml"
+}
+breathe_default_project = "NEST Simulator"
+
+
 sphinx_gallery_conf = {
     # path to your examples scripts
     'examples_dirs': '../../pynest/examples',
