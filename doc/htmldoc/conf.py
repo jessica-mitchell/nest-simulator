@@ -61,6 +61,8 @@ extensions = [
     "todo",
     "VersionSyncRole",
     "sphinx_copybutton",
+    "sphinx_copybutton",
+    "notfound.extension",
 ]
 
 autodoc_mock_imports = ["nest.pynestkernel", "nest.ll_api"]
@@ -87,10 +89,13 @@ sphinx_gallery_conf = {
 }
 
 # General information about the project.
-project = u"NEST Simulator user documentation"
-copyright = u"2004, nest-simulator"
-author = u"nest-simulator"
+project = "NEST Simulator user documentation"
+copyright = "2004, nest-simulator"
+author = "nest-simulator"
 
+copybutton_prompt_text = ">>> "
+# The output lines will not be copied if set to True
+copybutton_only_copy_prompt_lines = True
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -126,9 +131,8 @@ todo_include_todos = False
 # add numbered figure link
 numfig = True
 
-numfig_secnum_depth = (2)
-numfig_format = {"figure": "Figure %s", "table": "Table %s",
-                 "code-block": "Code Block %s"}
+numfig_secnum_depth = 2
+numfig_format = {"figure": "Figure %s", "table": "Table %s", "code-block": "Code Block %s"}
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -147,7 +151,6 @@ html_theme_options = {
     # Set the name of the project to appear in the navigation.
     # Set you GA account ID to enable tracking
     # 'google_analytics_account': 'UA-XXXXX',
-
     # Specify a base_url used to generate sitemap.xml. If not
     # specified, then no sitemap will be built.
     "base_url": "https://nest-simulator.readthedocs.io/en/latest/",
@@ -171,13 +174,11 @@ html_theme_options = {
     "globaltoc_collapse": True,
     # If True, show hidden TOC entries
     "globaltoc_includehidden": True,
-    }
+}
 
 html_static_path = ["static"]
 html_additional_pages = {"index": "index.html"}
-html_sidebars = {
-    "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
-}
+html_sidebars = {"**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]}
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -189,7 +190,7 @@ html_show_copyright = False
 
 # This way works for ReadTheDocs
 # With this local 'make html' is broken!
-github_doc_root = ''
+github_doc_root = ""
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
@@ -217,21 +218,21 @@ def config_inited_handler(app, config):
 def add_button_to_examples(app, env, docnames):
     """Find all examples and include a link to launch notebook.
 
-     Function finds all restructured text files in auto_examples
-     and injects the multistring prolog, which is rendered
-     as a button link in HTML. The target is set to a Jupyter notebook of
-     the same name and a service to run it.
-     The nameholder in the string is replaced with the file name.
+    Function finds all restructured text files in auto_examples
+    and injects the multistring prolog, which is rendered
+    as a button link in HTML. The target is set to a Jupyter notebook of
+    the same name and a service to run it.
+    The nameholder in the string is replaced with the file name.
 
-     The rst files are generated at build time by Sphinx_gallery.
-     The notebooks that the target points to are linked with
-     services (like EBRAINS JupyterHub) that runs notebooks using nbgitpuller.
-     See https://hub.jupyter.org/nbgitpuller/link.html
-     The notebooks are located in the repository nest/nest-simulator-examples/.
-     The notebooks are generated from the CI workflow of NEST
-     on GitHub, which converts the source Python files to .ipynb.
+    The rst files are generated at build time by Sphinx_gallery.
+    The notebooks that the target points to are linked with
+    services (like EBRAINS JupyterHub) that runs notebooks using nbgitpuller.
+    See https://hub.jupyter.org/nbgitpuller/link.html
+    The notebooks are located in the repository nest/nest-simulator-examples/.
+    The notebooks are generated from the CI workflow of NEST
+    on GitHub, which converts the source Python files to .ipynb.
 
-     The link to run the notebook is rendered in an image within a card directive.
+    The link to run the notebook is rendered in an image within a card directive.
     """
     example_prolog = """
 .. only:: html
@@ -269,7 +270,6 @@ git-pull?repo=https%3A%2F%2Fgithub.com%2Fnest%2Fnest-simulator-examples&urlpath=
     # Inject prolog into Python example
     files = list(Path("auto_examples/").rglob("*.rst"))
     for file in files:
-
         # Skip index files and benchmark file. These files do not have notebooks that can run
         # on the service.
         if file.stem == "index" or file.stem == "hpc_benchmark":
@@ -317,24 +317,25 @@ def setup(app):
     app.connect("config-inited", config_inited_handler)
 
 
-nitpick_ignore = [("py:class", "None"),
-                  ("py:class", "optional"),
-                  ("py:class", "s"),
-                  ("cpp:identifier", "CommonSynapseProperties"),
-                  ("cpp:identifier", "Connection<targetidentifierT>"),
-                  ("cpp:identifier", "ArchivingNode"),
-                  ("cpp:identifier", "DeviceNode"),
-                  ("cpp:identifier", "Node"),
-                  ("cpp:identifier", "ClopathArchivingNode"),
-                  ("cpp:identifier", "MessageHandler"),
-                  ("cpp:identifer", "CommonPropertiesHomW")]
+nitpick_ignore = [
+    ("py:class", "None"),
+    ("py:class", "optional"),
+    ("py:class", "s"),
+    ("cpp:identifier", "CommonSynapseProperties"),
+    ("cpp:identifier", "Connection<targetidentifierT>"),
+    ("cpp:identifier", "ArchivingNode"),
+    ("cpp:identifier", "DeviceNode"),
+    ("cpp:identifier", "Node"),
+    ("cpp:identifier", "ClopathArchivingNode"),
+    ("cpp:identifier", "MessageHandler"),
+    ("cpp:identifer", "CommonPropertiesHomW"),
+]
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "NESTsimulator.tex", u"NEST Simulator Documentation",
-     u"NEST Developer Community", "manual"),
+    (master_doc, "NESTsimulator.tex", "NEST Simulator Documentation", "NEST Developer Community", "manual"),
 ]
 
 
@@ -342,10 +343,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, "nestsimulator", u"NEST Simulator Documentation",
-     [author], 1)
-]
+man_pages = [(master_doc, "nestsimulator", "NEST Simulator Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -354,9 +352,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, "NESTsimulator", u"NEST Simulator Documentation",
-     author, "NESTsimulator", "One line description of project.",
-     "Miscellaneous"),
+    (
+        master_doc,
+        "NESTsimulator",
+        "NEST Simulator Documentation",
+        author,
+        "NESTsimulator",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 
@@ -365,14 +369,7 @@ def copy_example_file(src):
 
 
 # -- Copy documentation for Microcircuit Model ----------------------------
-copy_example_file("examples/Potjans_2014/box_plot.png")
-copy_example_file("examples/Potjans_2014/raster_plot.png")
-copy_example_file("examples/Potjans_2014/microcircuit.png")
 copy_example_file("examples/hpc_benchmark_connectivity.svg")
-copyfile(
-    os.path.join(pynest_dir, "examples/Potjans_2014/README.rst"),
-    "examples/README.rst",
-)
 
 
 def patch_documentation(patch_url):
@@ -400,21 +397,19 @@ def patch_documentation(patch_url):
       3. retrieve the patch
 
     """
-
     print("Preparing patch...")
     try:
-        git_dir = repo_root_dir / ".git"
+        git_dir = f"{repo_root_dir}/.git"
         git_hash = subprocess.check_output(
-            f"GIT_DIR="{git_dir}" git rev-parse HEAD",
-            shell=True,
-            encoding="utf8").strip()
+            f"GIT_DIR='{git_dir}' git rev-parse HEAD", shell=True, encoding="utf8"
+        ).strip()
         print(f"  current git hash: {git_hash}")
         patch_file = f"{git_hash}_doc.patch"
         patch_url = f"{patch_url}/{patch_file}"
         print(f"  retrieving {patch_url}")
         urlretrieve(patch_url, patch_file)
         print(f"  applying {patch_file}")
-        result = subprocess.check_output("patch -p3", stdin=open(patch_file, "r"), stderr=subprocess.STDOUT, shell=True)
+        result = subprocess.check_output(f"git apply '{patch_file}'", stderr=subprocess.STDOUT, shell=True)
         print(f"Patch result: {result}")
     except Exception as exc:
         print(f"Error while applying patch: {exc}")
