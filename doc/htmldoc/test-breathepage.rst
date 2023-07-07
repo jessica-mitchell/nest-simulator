@@ -2,12 +2,10 @@ Breathe test
 ============
 
 
+.. todolist::
+
 .. doxygenpage:: DocKeywords
    :project: NEST Simulator
 
 
 
-
-
-.. doxgygenclass:: nest::DSSpikeEvent
-   :members:
