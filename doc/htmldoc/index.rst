@@ -15,3 +15,5 @@ NEST Simulator documentaiton
    What's new? <whats_new/index>
    Community <community>
    license
+   test-breathepage
+   test-extension
