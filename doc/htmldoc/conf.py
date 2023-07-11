@@ -58,7 +58,7 @@ extensions = [
     "breathe",
     "sphinx_design",
     "HoverXTooltip",
-    "todo",
+    "hello_world",
     "VersionSyncRole",
     "sphinx_copybutton",
     "sphinx_copybutton",
@@ -71,7 +71,6 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-todo_include_todos = True
 
 breathe_projects = {
     "NEST Simulator": "./_doxygen/xml"
