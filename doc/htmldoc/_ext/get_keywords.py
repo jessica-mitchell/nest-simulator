@@ -8,8 +8,8 @@ import json
 #index = xml.etree.ElementTree.parse(os.path.join(path, "DocKeywords.xml"))
 #root = index.getroot()
 from collections import defaultdict
-from docutils import nodes
-from docutils.parsers.rst import Directive
+#from docutils import nodes
+#from docutils.parsers.rst import Directive
 
 import xml.etree.ElementTree as ET
 
@@ -50,6 +50,9 @@ file_path = '_doxygen/xml/DocKeywords.xml'
 
 ref_list, term_list, para_list = extract_data_from_xml(file_path)
 
+# NEED TO GET THIS INTO DOUBLE QUOTES, AND REMOVE OUTER QUOTE
+
+
 zipped_kw = zip(ref_list, term_list, para_list)
 dict_kw = dict(zip(ref_list, para_list))
 list_kw = list(zipped_kw)
@@ -63,7 +66,11 @@ for keys, values in dict_kw.items():
         res[value].append(keys)
 
 rev_dict = str(dict(res))
-print(rev_dict)
+
+output_file_path ="reverse_dict.json"
+
+with open(output_file_path, "w") as out_file:
+    json.dump(rev_dict, out_file)
 
 #print("Ref List:", ref_list)
 #print("Term List:", term_list)
