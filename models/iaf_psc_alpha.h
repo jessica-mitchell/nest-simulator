@@ -178,6 +178,12 @@ See also
 
 iaf_psc_delta, iaf_psc_exp, iaf_cond_exp
 
+
+Examples using this model
++++++++++++++++++++++++++
+
+.. listExamples:: iaf_psc_alpha
+
 EndUserDocs */
 
 class iaf_psc_alpha : public ArchivingNode
