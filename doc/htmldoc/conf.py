@@ -58,9 +58,7 @@ extensions = [
     "breathe",
     "sphinx_design",
     "HoverXTooltip",
-    "hello_world",
     "VersionSyncRole",
-    "sphinx_copybutton",
     "sphinx_copybutton",
     "notfound.extension",
 ]
@@ -72,9 +70,7 @@ panels_add_bootstrap_css = False
 templates_path = ["templates"]
 
 
-breathe_projects = {
-    "NEST Simulator": "./_doxygen/xml"
-}
+breathe_projects = {"NEST Simulator": "./_doxygen/xml"}
 breathe_default_project = "NEST Simulator"
 
 
