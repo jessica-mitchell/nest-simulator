@@ -41,7 +41,8 @@ namespace nest
  * IOManager: Handles data storage files from spike recorders and
  * multimeters to file system(s)/memory/output. Distinct from logging
  * for error streams.
- */
+ *
+  */
 class IOManager : public ManagerInterface
 {
 public:
@@ -59,6 +60,7 @@ public:
 
   /**
    * The prefix for files written by devices.
+   *
    * The prefix must not contain any part of a path.
    * @see get_data_dir(), overwrite_files()
    */
@@ -66,6 +68,7 @@ public:
 
   /**
    * The path for files written by devices.
+   *
    * It may be the empty string (use current directory).
    * @see get_data_prefix(), overwrite_files()
    */
@@ -73,6 +76,7 @@ public:
 
   /**
    * Indicate if existing data files should be overwritten.
+   *
    * @return true if existing data files should be overwritten by devices.
    * Default: false.
    */

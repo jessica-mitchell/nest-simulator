@@ -369,4 +369,4 @@ private:
 
 } // namespace
 
-#endif // RECORDING_BACKEND_SIONLIB_H
+#endif /* #ifndef RECORDING_BACKEND_SIONLIB_H */

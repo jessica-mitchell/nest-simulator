@@ -22,6 +22,9 @@
 
 #include "vp_manager.h"
 
+// C++ includes:
+#include <cstdlib>
+
 // Includes from libnestutil:
 #include "logging.h"
 
@@ -50,12 +53,11 @@ nest::VPManager::initialize()
 // When the VPManager is initialized, you will have 1 thread again.
 // Setting more threads will be done via nest::set_kernel_status
 #ifdef _OPENMP
-  /* The next line is required because we use the OpenMP
-   threadprivate() directive in the allocator, see OpenMP
-   API Specifications v 3.1, Ch 2.9.2, p 89, l 14f.
-   It keeps OpenMP from automagically changing the number
-   of threads used for parallel regions.
-   */
+  // The next line is required because we use the OpenMP
+  // threadprivate() directive in the allocator, see OpenMP
+  // API Specifications v 3.1, Ch 2.9.2, p 89, l 14f.
+  // It keeps OpenMP from automagically changing the number
+  // of threads used for parallel regions.
   omp_set_dynamic( false );
 #endif
   set_num_threads( 1 );
@@ -159,6 +161,19 @@ nest::VPManager::set_num_threads( size_t n_threads )
   {
     throw KernelException( "Multiple threads can not be used if structural plasticity is enabled" );
   }
+
+  char* omp_num_threads = std::getenv( "OMP_NUM_THREADS" );
+  if ( omp_num_threads and static_cast< size_t >( std::atoi( omp_num_threads ) ) != n_threads )
+  {
+    const std::string tstr = ( n_threads > 1 ) ? "threads" : "thread";
+    const int ONT = std::atoi( omp_num_threads );
+    std::string msg = "The new number of threads disagrees with the environment variable OMP_NUM_THREADS.\n";
+    msg += "NEST only respects the kernel attributes /local_num_threads or /total_num_virtual_procs\n";
+    msg += String::compose( "and will now use %1 %2 and ignore OMP_NUM_THREADS (set to %3).", n_threads, tstr, ONT );
+
+    LOG( M_WARNING, "MPIManager::init_mpi()", msg );
+  }
+
   n_threads_ = n_threads;
 
 #ifdef _OPENMP

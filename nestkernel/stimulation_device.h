@@ -158,6 +158,7 @@ public:
 
   /**
    * Determine whether device is active.
+   *
    * The argument is the value of the simulation time.
    * @see class comment for details.
    */
@@ -240,5 +241,4 @@ StimulationDevice::has_proxies() const
 
 } // namespace nest
 
-
-#endif
+#endif /* #ifndef STIMULATION_DEVICE_H */

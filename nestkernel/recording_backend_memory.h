@@ -176,4 +176,4 @@ private:
 
 } // namespace
 
-#endif // RECORDING_BACKEND_MEMORY_H
+#endif /* #ifndef RECORDING_BACKEND_MEMORY_H */
