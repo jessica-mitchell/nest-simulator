@@ -55,6 +55,8 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "IPython.sphinxext.ipython_console_highlighting",
+    "sphinxcontrib.mermaid",
+    "new_xml",
     "breathe",
     "nbsphinx",
     "sphinx_design",
@@ -72,6 +74,12 @@ templates_path = ["templates"]
 
 breathe_projects = {"NEST Simulator": "./_doxygen/xml"}
 breathe_default_project = "NEST Simulator"
+
+mermaid_output_format = "raw"
+mermaid_version = "10.2.0"
+
+# disable require js - mermaid doesn't work if require.js is loaded before it
+nbsphinx_requirejs_path = ""
 
 sphinx_gallery_conf = {
     # path to your examples scripts

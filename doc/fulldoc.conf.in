@@ -404,7 +404,7 @@ EXTRACT_ALL            = YES
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_PACKAGE tag is set to YES all members with package or internal
 # scope will be included in the documentation.
@@ -416,7 +416,7 @@ EXTRACT_PACKAGE        = NO
 # included in the documentation.
 # The default value is: NO.
 
-EXTRACT_STATIC         = YES
+EXTRACT_STATIC         = NO
 
 # If the EXTRACT_LOCAL_CLASSES tag is set to YES classes (and structs) defined
 # locally in source files will be included in the documentation. If set to NO
@@ -424,7 +424,7 @@ EXTRACT_STATIC         = YES
 # for Java sources.
 # The default value is: YES.
 
-EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_CLASSES  = NO
 
 # This flag is only useful for Objective-C code. When set to YES local methods,
 # which are defined in the implementation section but not in the interface are
@@ -580,7 +580,7 @@ STRICT_PROTO_MATCHING  = NO
 # documentation.
 # The default value is: YES.
 
-GENERATE_TODOLIST      = YES
+GENERATE_TODOLIST      = NO
 
 # The GENERATE_TESTLIST tag can be used to enable ( YES) or disable ( NO) the
 # test list. This list is created by putting \test commands in the
@@ -744,16 +744,11 @@ WARN_LOGFILE           = doxygen.log
 # Note: If this tag is empty the current directory is searched.
 
 INPUT		=	@PROJECT_SOURCE_DIR@/README.md \
-			@PROJECT_SOURCE_DIR@/doc \
-			@PROJECT_SOURCE_DIR@/examples \
 			@PROJECT_SOURCE_DIR@/lib \
 			@PROJECT_SOURCE_DIR@/libnestutil \
 			@PROJECT_SOURCE_DIR@/models \
 			@PROJECT_SOURCE_DIR@/nest \
-			@PROJECT_SOURCE_DIR@/nestkernel \
-			@PROJECT_SOURCE_DIR@/pynest \
-			@PROJECT_SOURCE_DIR@/sli \
-			@PROJECT_SOURCE_DIR@/testsuite
+			@PROJECT_SOURCE_DIR@/nestkernel
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

@@ -129,7 +129,6 @@ public:
    * \param event the Event to be written
    * \param double_values a vector of doubles to be written
    * \param long_values a vector of longs to be written
-   * @DocKeywords io, backend
    */
   void write( const Name backend_name,
     const RecordingDevice& device,

@@ -1,15 +1,24 @@
 Breathe test
 ============
 
-io
---
 
 
+{% for key, values in cpp_dict | dictsort -%}
 
-.. doxygenpage:: DocKeywords
-   :project: NEST Simulator
+{% if key == "io" %}
 
 
-.. doxygenclass:: nest::IOManager
+Keyword: {{ key }}
+-----------------------
+
+{% for value in values %}
+
+{{ value }}
+..  .. doxygenclass:: {{ value }}
+      :members:
+
+{% endfor %}
+{% endif %}
+{% endfor %}
 
 
