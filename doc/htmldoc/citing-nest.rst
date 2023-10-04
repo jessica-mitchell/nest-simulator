@@ -3,7 +3,7 @@
 Cite NEST
 =========
 
-Please cite the *version of NEST you used in your work*. 
+Please cite the *version of NEST you used in your work*.
 
 For all versions from 2.8 onwards, you can find the full citation `on Zenodo <https://zenodo.org/search?page=1&size=20&q=title:NEST%20AND%20-description:graphical%20AND%20simulator&file_type=gz&sort=-publication_date>`_
 You can also specify the commit hash for work done in the development branches.
@@ -14,11 +14,23 @@ visible to potential readers.
 
 You can also `get the NEST logo <https://github.com/nest/nest-simulator/tree/master/doc/logos>`_ for your poster or presentation.
 
+.. uml::
+
+    !include <C4/C4_Context>
+    !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+    !include FONTAWESOME/users.puml
+    Person(user, "C4 fans", "Hello to Sphinx!", $sprite="users")
+
 ----
 
 For all versions below NEST 2.8.0 and for citing NEST without referring
 to a specific version, please use: `Gewaltig M-O & Diesmann M (2007) NEST (Neural Simulation Tool) Scholarpedia
 2(4):1430 <http://www.scholarpedia.org/article/NEST_(Neural_Simulation_Tool)>`__.
+
+.. uml::
+
+   Alice -> Bob: Hi!
+   Alice <- Bob: How are you?
 
 Here is a suitable BibTeX entry:
 
