@@ -5,7 +5,6 @@ build:
   tools:
     python: "3.10"
   apt_packages:
-    - default-jre
     - default-jdk
 
 sphinx:
