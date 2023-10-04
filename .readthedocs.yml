@@ -5,7 +5,8 @@ build:
   tools:
     python: "3.10"
   apt_packages:
-    - plantuml
+    - default-jre
+    - default-jdk
 
 sphinx:
   builder: html
