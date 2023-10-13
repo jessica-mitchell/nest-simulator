@@ -71,7 +71,7 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-plantuml = "java -jar /tmp/plantuml-1.2023.10.jar"
+plantuml = "java -jar /opt/plantuml.jar"
 sphinx_gallery_conf = {
     # path to your examples scripts
     "examples_dirs": "../../pynest/examples",
