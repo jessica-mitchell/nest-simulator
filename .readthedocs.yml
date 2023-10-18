@@ -15,7 +15,7 @@ python:
 
 search:
   ranking:
-    connect_nest/using_nest_with_music.html: -4
-    tutorials/music_tutorial/*: -4
-    ref_material/pynest_api/*: 6
-    synapses/connection_management.html: 5
+    connect_nest/using_nest_with_music.html: -9
+    tutorials/music_tutorial/*: -9
+    ref_material/pynest_api/*: 8
+    synapses/connection_management.html: 9
