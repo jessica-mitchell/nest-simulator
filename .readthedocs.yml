@@ -17,5 +17,7 @@ search:
   ranking:
     connect_nest/using_nest_with_music.html: -9
     tutorials/music_tutorial/*: -9
+    auto_examples/*: 4
+    models/*: 7
     ref_material/pynest_api/*: 8
     synapses/connection_management.html: 9
