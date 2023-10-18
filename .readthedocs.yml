@@ -10,5 +10,12 @@ sphinx:
   configuration: doc/htmldoc/conf.py
 
 python:
-   install:
-   - requirements: doc/requirements.txt
+  install:
+    - requirements: doc/requirements.txt
+
+search:
+  ranking:
+    connect_nest/using_nest_with_music.html: -4
+    tutorials/music_tutorial/*: -4
+    ref_material/pynest_api/*: 6
+    synapses/connection_management.html: 5
