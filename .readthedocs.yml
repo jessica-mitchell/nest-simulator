@@ -18,8 +18,6 @@ search:
     connect_nest/using_nest_with_music.html: -9
     connect_nest/index.html: -4
     tutorials/music_tutorial/*: -9
-    auto_examples/*: 4
     models/*: 7
-    networks/spatially_structured_networks.html: 7
     ref_material/pynest_api/*: 8
     synapses/connection_management.html: 9
