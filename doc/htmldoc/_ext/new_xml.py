@@ -49,22 +49,31 @@ def extractFromXML():
     return reverse_dict
 
 
-def CreateCPPdocs(app):
-    class_list = getClassXML()
+def xml_cpp_extractor(app, docname, source):
+    if docname == "test-breathepage":
+        list_cppClasses = getClassXML()
+        html_context = {"cpp_list": list_cppClasses}
+        xml_source = source[0]
+        rendered = app.builder.templates.render_string(xml_source, html_context)
+        source[0] = rendered
 
-    for item in class_list:
-        if "nest::" in item:
-            filename = item[6:]
-        else:
-            filename = item
 
-        text = item + "\n\n"
-        text += ".. doxygenclass:: " + item + "\n"
-
-        with open("cppDocs_{}.rst".format(filename.strip()), "w") as f:
-            f.write(text)
-
-        CreateIndex(filename)
+# def CreateCPPdocs(app):
+#    class_list = getClassXML()
+#
+#    for item in class_list:
+#        if "nest::" in item:
+#            filename = item[6:]
+#        else:
+#            filename = item
+#
+#        text = item + "\n\n"
+#        text += ".. doxygenclass:: " + item + "\n"
+#
+#        with open("cppDocs_{}.rst".format(filename.strip()), "w") as f:
+#            f.write(text)
+#
+#        CreateIndex(filename)
 
 
 def CreateIndex(filename):
@@ -77,7 +86,7 @@ def CreateIndex(filename):
         for value in values:
             if filename in value:
                 text += ".. toctree::" + "\n\n"
-                text += "  " + value + " <" + filename + ">\n"
+                text += "  " + "cppDocs_" + filename + "\n"
 
             # para_node = nodes.paragraph(text=text)
 
@@ -93,7 +102,6 @@ def CreateIndex(filename):
             # rst_content = paragraph_node
             # rst_content = doc_node.pformat()
 
-            # print("RST CONTENT: ", rst_content)
             with open("cppKeywords_{}.rst".format(key.strip()), "w") as f:
                 f.write(text)
 
@@ -116,6 +124,7 @@ def CreateIndex(filename):
 
 def setup(app):
     # app.connect("source-read", ByKeywords)
-    app.connect("builder-inited", CreateCPPdocs)
+    # app.connect("builder-inited", CreateCPPdocs)
+    app.connect("source-read", xml_cpp_extractor)
 
     return {"version": "0.1", "parallel_read_safe": True, "parallel_write_safe": True}

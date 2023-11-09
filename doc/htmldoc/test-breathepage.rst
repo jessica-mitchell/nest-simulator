@@ -1,23 +1,25 @@
 Breathe test
 ============
 
+Managers
+--------
 
 
-{% for key, values in cpp_dict | dictsort -%}
+All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, ``getstatus``, ``cleanup``).
 
-{% if key == "io" %}
+.. doxygenclass:: nest::ManagerInterface
+
+{% for item in cpp_list %}
+{% if "Manager" in item and "Interface" not in item %}
 
 
-Keyword: {{ key }}
------------------------
+.. doxygenclass:: {{ item }}
+   :no-link:
 
-{% for value in values %}
+.. doxygenclass:: {{ item }}
+   :members:
+   :members-only:
 
-{{ value }}
-..  .. doxygenclass:: {{ value }}
-      :members:
-
-{% endfor %}
 {% endif %}
 {% endfor %}
 
