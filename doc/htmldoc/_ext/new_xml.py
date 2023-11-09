@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 
 def getClassXML():
-    xml_index = "/home/mitchell/Work/build-repo/doc/doxygen/xml/index.xml"
+    xml_index = "xml/index.xml"
 
     tree2 = ET.parse(xml_index)
     root2 = tree2.getroot()
@@ -23,7 +23,7 @@ def getClassXML():
 
 
 def extractFromXML():
-    xml_file_path = "/home/mitchell/Work/build-repo/doc/doxygen/xml/DocKeywords.xml"
+    xml_file_path = "xml/DocKeywords.xml"
 
     # Parse the XML file
     tree = ET.parse(xml_file_path)
