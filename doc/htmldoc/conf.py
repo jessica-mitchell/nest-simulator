@@ -43,6 +43,10 @@ pynest_dir = os.path.join(repo_root_dir, "pynest")
 sys.path.append(pynest_dir)
 
 # -- General configuration ------------------------------------------------
+read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
+
+if read_the_docs_build:
+    subprocess.call("cd ../doxygen; doxygen", shell=True)
 
 source_suffix = ".rst"
 master_doc = "index"
@@ -55,6 +59,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "IPython.sphinxext.ipython_console_highlighting",
+    "sphinxcontrib.plantuml",
     "sphinxcontrib.mermaid",
     "new_xml",
     "breathe",
@@ -72,8 +77,10 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-breathe_projects = {"NEST Simulator": "./_doxygen/xml"}
+breathe_projects = {"NEST Simulator": "../xml"}
 breathe_default_project = "NEST Simulator"
+
+plantuml = "java -jar /tmp/plantuml.jar"
 
 mermaid_output_format = "raw"
 mermaid_version = "10.2.0"
