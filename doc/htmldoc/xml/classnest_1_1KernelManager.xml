@@ -911,7 +911,7 @@
 *
 * +------------------------------------+-------------+----------------------------------------------------------------------+
 * |rng_seed                            |integertype  | Seed value used as basis of seeding of all random number generators  |
-* |                                    |             | managed by the kernel (:math:`1 leq s \leq 2^{32}-1`).         |
+* |                                    |             | managed by the kernel (:math:`1 leq s \leq 2^{32}-1`).               |
 * +------------------------------------+-------------+----------------------------------------------------------------------+
 * |rng_type                            |stringtype   | Name of random number generator type used by NEST, defaults to       |
 * |                                    |             | mt19937_64.                                                          |
