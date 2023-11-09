@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1glif__psc_1_1State__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::glif_psc::State_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a5b7cae745f243a12f556b41aba5e5ef2" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::U_</definition>
+        <argsstring></argsstring>
+        <name>U_</name>
+        <briefdescription>
+<para>relative membrane potential in mV </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="283" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1af050d5153d79211e5d5d5316823bef49" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::threshold_</definition>
+        <argsstring></argsstring>
+        <name>threshold_</name>
+        <briefdescription>
+<para>total threshold in mV </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="284" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1add1b03aa8dd3f56ce242774799ae76dd" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::threshold_spike_</definition>
+        <argsstring></argsstring>
+        <name>threshold_spike_</name>
+        <briefdescription>
+<para>spike component of threshold in mV </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="285" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a0cce3e3b4375961a91cbe1fdb618150f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::threshold_voltage_</definition>
+        <argsstring></argsstring>
+        <name>threshold_voltage_</name>
+        <briefdescription>
+<para>voltage component of threshold in mV </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="286" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a9765d33d2eb2ce92c840359de68ca519" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::I_</definition>
+        <argsstring></argsstring>
+        <name>I_</name>
+        <briefdescription>
+<para>external current in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="287" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a6d35bb3aa0925c94ccbb8b0167946601" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::I_syn_</definition>
+        <argsstring></argsstring>
+        <name>I_syn_</name>
+        <briefdescription>
+<para>postsynaptic current in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="288" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="288" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a657abea024b308a7dd25cdf1e7fbb4b6" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::glif_psc::State_::ASCurrents_</definition>
+        <argsstring></argsstring>
+        <name>ASCurrents_</name>
+        <briefdescription>
+<para>after-spike currents in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="289" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1aefe4273cbd6bc73400b1a23148586293" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::glif_psc::State_::ASCurrents_sum_</definition>
+        <argsstring></argsstring>
+        <name>ASCurrents_sum_</name>
+        <briefdescription>
+<para>in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="290" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="290" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1afde09a303b2218d0ecd49d429f77bfe6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int nest::glif_psc::State_::refractory_steps_</definition>
+        <argsstring></argsstring>
+        <name>refractory_steps_</name>
+        <briefdescription>
+<para>Number of refractory steps remaining. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="291" column="9" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="291" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a080e862716fc10a93f02cab62da56a29" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::glif_psc::State_::y1_</definition>
+        <argsstring></argsstring>
+        <name>y1_</name>
+        <briefdescription>
+<para>synapse current evolution state 1 in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="292" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="292" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1glif__psc_1_1State___1a7f2e3f201ca4e5011526995ec95b9887" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::glif_psc::State_::y2_</definition>
+        <argsstring></argsstring>
+        <name>y2_</name>
+        <briefdescription>
+<para>synapse current evolution state 2 in pA </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="293" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="293" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1glif__psc_1_1State___1a80b06bc7c47ee46df40437cf464f8c55" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::glif_psc::State_::State_</definition>
+        <argsstring>(const Parameters_ &amp;)</argsstring>
+        <name>State_</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="295" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.cpp" bodystart="91" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1glif__psc_1_1State___1acb65190882b96ab1b703d839eaf202ac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::glif_psc::State_::get</definition>
+        <argsstring>(DictionaryDatum &amp;, const Parameters_ &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="297" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.cpp" bodystart="299" bodyend="305"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1glif__psc_1_1State___1a11388ddcad35e739e5269020229eb196" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::glif_psc::State_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, const Parameters_ &amp;, double, Node *)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <defname>p</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>delta_EL</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+          <defname>node</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="298" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.cpp" bodystart="308" bodyend="345"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" line="281" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/glif_psc.h" bodystart="282" bodyend="299"/>
+    <listofallmembers>
+      <member refid="structnest_1_1glif__psc_1_1State___1a657abea024b308a7dd25cdf1e7fbb4b6" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>ASCurrents_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1aefe4273cbd6bc73400b1a23148586293" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>ASCurrents_sum_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1acb65190882b96ab1b703d839eaf202ac" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>get</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a9765d33d2eb2ce92c840359de68ca519" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>I_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a6d35bb3aa0925c94ccbb8b0167946601" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>I_syn_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1afde09a303b2218d0ecd49d429f77bfe6" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>refractory_steps_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a11388ddcad35e739e5269020229eb196" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>set</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a80b06bc7c47ee46df40437cf464f8c55" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>State_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1af050d5153d79211e5d5d5316823bef49" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>threshold_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1add1b03aa8dd3f56ce242774799ae76dd" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>threshold_spike_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a0cce3e3b4375961a91cbe1fdb618150f" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>threshold_voltage_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a5b7cae745f243a12f556b41aba5e5ef2" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>U_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a080e862716fc10a93f02cab62da56a29" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>y1_</name></member>
+      <member refid="structnest_1_1glif__psc_1_1State___1a7f2e3f201ca4e5011526995ec95b9887" prot="public" virt="non-virtual"><scope>nest::glif_psc::State_</scope><name>y2_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

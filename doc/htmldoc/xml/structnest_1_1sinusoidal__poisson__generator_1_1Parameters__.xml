@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::sinusoidal_poisson_generator::Parameters_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a4ad5fb25e84be8f897b115dc04ca8c70" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::sinusoidal_poisson_generator::Parameters_::om_</definition>
+        <argsstring></argsstring>
+        <name>om_</name>
+        <briefdescription>
+<para>Temporal frequency in radian/ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="191" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a3f66d3e00c1f9aa19a4527cc47d94121" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::sinusoidal_poisson_generator::Parameters_::phi_</definition>
+        <argsstring></argsstring>
+        <name>phi_</name>
+        <briefdescription>
+<para>Phase in radian. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="194" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="194" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1ae85441aa58dcc74ede036306e9404398" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::sinusoidal_poisson_generator::Parameters_::rate_</definition>
+        <argsstring></argsstring>
+        <name>rate_</name>
+        <briefdescription>
+<para>Mean firing rate in spikes/ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="197" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1aa11cdfaca0a6852df2d26598efda4229" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::sinusoidal_poisson_generator::Parameters_::amplitude_</definition>
+        <argsstring></argsstring>
+        <name>amplitude_</name>
+        <briefdescription>
+<para>Firing rate modulation amplitude in spikes/ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="200" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1afa4f438fc4cdf8cb7b9bee9acfee3cde" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nest::sinusoidal_poisson_generator::Parameters_::individual_spike_trains_</definition>
+        <argsstring></argsstring>
+        <name>individual_spike_trains_</name>
+        <briefdescription>
+<para>Emit individual spike trains for each target, or same for all? </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="203" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1aed3dd7db90a724a4f4cc888da19e6053" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::sinusoidal_poisson_generator::Parameters_::Parameters_</definition>
+        <argsstring>()</argsstring>
+        <name>Parameters_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="205" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.cpp" bodystart="61" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1ab2e39d931cb4fba824ccd7a029fbd7a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::sinusoidal_poisson_generator::Parameters_::Parameters_</definition>
+        <argsstring>(const Parameters_ &amp;)</argsstring>
+        <name>Parameters_</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="206" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.cpp" bodystart="70" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a830e27a645d9483762bd9b7b4a4b2c47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Parameters_ &amp;</type>
+        <definition>nest::sinusoidal_poisson_generator::Parameters_ &amp; nest::sinusoidal_poisson_generator::Parameters_::operator=</definition>
+        <argsstring>(const Parameters_ &amp;p)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="207" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.cpp" bodystart="80" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a0857d05c951bde90a18afc0388991a16" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::sinusoidal_poisson_generator::Parameters_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="209" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.cpp" bodystart="120" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a112ec4587c343e11b61b569a36995ddf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::sinusoidal_poisson_generator::Parameters_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, const sinusoidal_poisson_generator &amp;, Node *)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1sinusoidal__poisson__generator" kindref="compound">sinusoidal_poisson_generator</ref> &amp;</type>
+          <defname>n</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+          <defname>node</defname>
+        </param>
+        <briefdescription>
+<para>Set values from dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>State is passed so that the position can be reset if the spike_times_ vector has been filled with new data. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="216" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.cpp" bodystart="137" bodyend="169"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" line="188" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/sinusoidal_poisson_generator.h" bodystart="189" bodyend="217"/>
+    <listofallmembers>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1aa11cdfaca0a6852df2d26598efda4229" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>amplitude_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a0857d05c951bde90a18afc0388991a16" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>get</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1afa4f438fc4cdf8cb7b9bee9acfee3cde" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>individual_spike_trains_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a4ad5fb25e84be8f897b115dc04ca8c70" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>om_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a830e27a645d9483762bd9b7b4a4b2c47" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>operator=</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1aed3dd7db90a724a4f4cc888da19e6053" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1ab2e39d931cb4fba824ccd7a029fbd7a9" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a3f66d3e00c1f9aa19a4527cc47d94121" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>phi_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1ae85441aa58dcc74ede036306e9404398" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>rate_</name></member>
+      <member refid="structnest_1_1sinusoidal__poisson__generator_1_1Parameters___1a112ec4587c343e11b61b569a36995ddf" prot="public" virt="non-virtual"><scope>nest::sinusoidal_poisson_generator::Parameters_</scope><name>set</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

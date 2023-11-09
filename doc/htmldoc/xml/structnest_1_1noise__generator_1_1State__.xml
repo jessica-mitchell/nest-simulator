@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1noise__generator_1_1State__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::noise_generator::State_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1noise__generator_1_1State___1a75cf7d051cb2b3350999fa9a81680494" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::noise_generator::State_::y_0_</definition>
+        <argsstring></argsstring>
+        <name>y_0_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="236" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" bodystart="236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1noise__generator_1_1State___1a3ce62d949dab7971091991218bda6391" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::noise_generator::State_::y_1_</definition>
+        <argsstring></argsstring>
+        <name>y_1_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="237" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1noise__generator_1_1State___1a01b0c6201bc2df3dd13ef6215a1d34c3" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::noise_generator::State_::I_avg_</definition>
+        <argsstring></argsstring>
+        <name>I_avg_</name>
+        <briefdescription>
+<para>Average of instantaneous currents computed Used for recording current. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="238" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1noise__generator_1_1State___1ad70888f7260dd3cad622aee2eca77f79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::noise_generator::State_::State_</definition>
+        <argsstring>()</argsstring>
+        <name>State_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="241" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.cpp" bodystart="105" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1noise__generator_1_1State___1a3fbb34395507895e09cef03075572c51" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::noise_generator::State_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="243" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.cpp" bodystart="140" bodyend="144"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" line="234" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/noise_generator.h" bodystart="235" bodyend="244"/>
+    <listofallmembers>
+      <member refid="structnest_1_1noise__generator_1_1State___1a3fbb34395507895e09cef03075572c51" prot="public" virt="non-virtual"><scope>nest::noise_generator::State_</scope><name>get</name></member>
+      <member refid="structnest_1_1noise__generator_1_1State___1a01b0c6201bc2df3dd13ef6215a1d34c3" prot="public" virt="non-virtual"><scope>nest::noise_generator::State_</scope><name>I_avg_</name></member>
+      <member refid="structnest_1_1noise__generator_1_1State___1ad70888f7260dd3cad622aee2eca77f79" prot="public" virt="non-virtual"><scope>nest::noise_generator::State_</scope><name>State_</name></member>
+      <member refid="structnest_1_1noise__generator_1_1State___1a75cf7d051cb2b3350999fa9a81680494" prot="public" virt="non-virtual"><scope>nest::noise_generator::State_</scope><name>y_0_</name></member>
+      <member refid="structnest_1_1noise__generator_1_1State___1a3ce62d949dab7971091991218bda6391" prot="public" virt="non-virtual"><scope>nest::noise_generator::State_</scope><name>y_1_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1iaf__psc__alpha_1_1Parameters__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::iaf_psc_alpha::Parameters_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7e800c1de31c5f2a1d42866f0d48847e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::Tau_</definition>
+        <argsstring></argsstring>
+        <name>Tau_</name>
+        <briefdescription>
+<para>Membrane time constant in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="197" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a219f6a34853b8f77e6326435feb201b0" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::C_</definition>
+        <argsstring></argsstring>
+        <name>C_</name>
+        <briefdescription>
+<para>Membrane capacitance in pF. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="200" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a3959ce8906f97cc036e73377a103a88d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::TauR_</definition>
+        <argsstring></argsstring>
+        <name>TauR_</name>
+        <briefdescription>
+<para>Refractory period in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="203" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1adc3c1f250d974d96631fa1cdc4a16020" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::E_L_</definition>
+        <argsstring></argsstring>
+        <name>E_L_</name>
+        <briefdescription>
+<para>Resting potential in mV. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="206" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="206" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a527e713d90ba0041e3844233332abb22" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::I_e_</definition>
+        <argsstring></argsstring>
+        <name>I_e_</name>
+        <briefdescription>
+<para>External current in pA. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="209" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="209" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a0080ab9595ab56fb72da06951873b7e9" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::V_reset_</definition>
+        <argsstring></argsstring>
+        <name>V_reset_</name>
+        <briefdescription>
+<para>Reset value of the membrane potential. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="212" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="212" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1aa2542dc55307c1d997893e3d919ec6e5" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::Theta_</definition>
+        <argsstring></argsstring>
+        <name>Theta_</name>
+        <briefdescription>
+<para>Threshold, RELATIVE TO RESTING POTENTIAL(!). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>I.e. the real threshold is (E_L_+Theta_). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="216" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="216" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7e7d77078a27bdc80a63dee8c31d3e38" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::LowerBound_</definition>
+        <argsstring></argsstring>
+        <name>LowerBound_</name>
+        <briefdescription>
+<para>Lower bound, RELATIVE TO RESTING POTENTIAL(!). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>I.e. the real lower bound is (LowerBound_+E_L_). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="220" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1ab414b346e1fd9be39c090d919a0be94d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::tau_ex_</definition>
+        <argsstring></argsstring>
+        <name>tau_ex_</name>
+        <briefdescription>
+<para><ref refid="classnest_1_1Time" kindref="compound">Time</ref> constant of excitatory synaptic current in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="223" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7cff6990be53e72cd5183a523a5b5aea" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::tau_in_</definition>
+        <argsstring></argsstring>
+        <name>tau_in_</name>
+        <briefdescription>
+<para><ref refid="classnest_1_1Time" kindref="compound">Time</ref> constant of inhibitory synaptic current in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="226" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1aa37adb2954b897924f81dcfa43a0a6ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::iaf_psc_alpha::Parameters_::Parameters_</definition>
+        <argsstring>()</argsstring>
+        <name>Parameters_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="228" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.cpp" bodystart="63" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a43a41f3d5128849fdc650593ff4e8f96" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::iaf_psc_alpha::Parameters_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="230" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.cpp" bodystart="93" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1iaf__psc__alpha_1_1Parameters___1a2454c6b884f4b3e373f1c402bec685cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double nest::iaf_psc_alpha::Parameters_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, Node *node)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+<para>Set values from dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Change in reversal potential E_L, to be passed to State_::set() </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="235" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.cpp" bodystart="108" bodyend="175"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" line="194" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/iaf_psc_alpha.h" bodystart="195" bodyend="236"/>
+    <listofallmembers>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a219f6a34853b8f77e6326435feb201b0" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>C_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1adc3c1f250d974d96631fa1cdc4a16020" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>E_L_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a43a41f3d5128849fdc650593ff4e8f96" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>get</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a527e713d90ba0041e3844233332abb22" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>I_e_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7e7d77078a27bdc80a63dee8c31d3e38" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>LowerBound_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1aa37adb2954b897924f81dcfa43a0a6ba" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a2454c6b884f4b3e373f1c402bec685cb" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>set</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7e800c1de31c5f2a1d42866f0d48847e" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>Tau_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1ab414b346e1fd9be39c090d919a0be94d" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>tau_ex_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a7cff6990be53e72cd5183a523a5b5aea" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>tau_in_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a3959ce8906f97cc036e73377a103a88d" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>TauR_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1aa2542dc55307c1d997893e3d919ec6e5" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>Theta_</name></member>
+      <member refid="structnest_1_1iaf__psc__alpha_1_1Parameters___1a0080ab9595ab56fb72da06951873b7e9" prot="public" virt="non-virtual"><scope>nest::iaf_psc_alpha::Parameters_</scope><name>V_reset_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

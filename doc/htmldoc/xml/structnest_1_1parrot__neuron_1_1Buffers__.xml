@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1parrot__neuron_1_1Buffers__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::parrot_neuron::Buffers_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1parrot__neuron_1_1Buffers___1a7fd9ac62e5a559151eec68807137b91b" prot="public" static="no" mutable="no">
+        <type><ref refid="classnest_1_1RingBuffer" kindref="compound">RingBuffer</ref></type>
+        <definition>RingBuffer nest::parrot_neuron::Buffers_::n_spikes_</definition>
+        <argsstring></argsstring>
+        <name>n_spikes_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/parrot_neuron.h" line="119" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/parrot_neuron.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Buffers and accumulates the number of incoming spikes per time step; <ref refid="classnest_1_1RingBuffer" kindref="compound">RingBuffer</ref> stores doubles; for now the numbers are casted. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>nest::parrot_neuron::Buffers_</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>n_spikes_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::RingBuffer</label>
+        <link refid="classnest_1_1RingBuffer"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/parrot_neuron.h" line="117" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/parrot_neuron.h" bodystart="118" bodyend="120"/>
+    <listofallmembers>
+      <member refid="structnest_1_1parrot__neuron_1_1Buffers___1a7fd9ac62e5a559151eec68807137b91b" prot="public" virt="non-virtual"><scope>nest::parrot_neuron::Buffers_</scope><name>n_spikes_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

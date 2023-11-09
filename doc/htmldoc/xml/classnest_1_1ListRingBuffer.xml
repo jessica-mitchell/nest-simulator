@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1ListRingBuffer" kind="class" language="C++" prot="public">
+    <compoundname>nest::ListRingBuffer</compoundname>
+    <includes refid="ring__buffer_8h" local="no">ring_buffer.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnest_1_1ListRingBuffer_1a6007afa93585fb4f2e77433b243e7c16" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::list&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt; std::list&lt; double &gt; &gt; nest::ListRingBuffer::buffer_</definition>
+        <argsstring></argsstring>
+        <name>buffer_</name>
+        <briefdescription>
+<para>Buffered data. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="328" column="15" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="328" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1afcdece45c38459fec59c12f849f7e8a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::ListRingBuffer::ListRingBuffer</definition>
+        <argsstring>()</argsstring>
+        <name>ListRingBuffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="291" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.cpp" bodystart="72" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1aa6cc9f4dd09e0b448daee6453ec4a26a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::ListRingBuffer::append_value</definition>
+        <argsstring>(const long offs, const double)</argsstring>
+        <name>append_value</name>
+        <param>
+          <type>const long</type>
+          <declname>offs</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <defname>v</defname>
+        </param>
+        <briefdescription>
+<para>Append a value to the ring buffer list. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Arrival time relative to beginning of slice. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>double</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value to append. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="299" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="341" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1a9092dda132f5c69f826769c6439f64c7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::list&lt; double &gt; &amp;</type>
+        <definition>std::list&lt; double &gt; &amp; nest::ListRingBuffer::get_list</definition>
+        <argsstring>(const long offs)</argsstring>
+        <name>get_list</name>
+        <param>
+          <type>const long</type>
+          <declname>offs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="301" column="13" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="347" bodyend="356"/>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1a30141591bdbe65cfb2f9ec1a2e7dd96f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::ListRingBuffer::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <briefdescription>
+<para>Initialize the buffer with empty lists. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Also resizes the buffer if necessary. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="307" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.cpp" bodystart="88" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1a1cad599eada80719aed5f06e7164fd59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::ListRingBuffer::resize</definition>
+        <argsstring>()</argsstring>
+        <name>resize</name>
+        <briefdescription>
+<para>Resize the buffer according to max_thread and max_delay. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>New elements are filled with empty lists. <simplesect kind="note"><para><ref refid="classnest_1_1ListRingBuffer_1a1cad599eada80719aed5f06e7164fd59" kindref="member">resize()</ref> has no effect if the buffer has the correct size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="315" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.cpp" bodystart="78" bodyend="85"/>
+        <references refid="classnest_1_1KernelManager_1a0e27508a351fe5c17f42aea52caedb3e" compoundref="kernel__manager_8h" startline="331">nest::KernelManager::connection_manager</references>
+        <references refid="classnest_1_1ConnectionManager_1a715ad85569ef1dd109d75058cada0108" compoundref="connection__manager_8h" startline="674" endline="677">nest::ConnectionManager::get_max_delay</references>
+        <references refid="classnest_1_1ConnectionManager_1a0bf3cf56925e4d196c71dedb7f94cb09" compoundref="connection__manager_8h" startline="668" endline="671">nest::ConnectionManager::get_min_delay</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1a696f9789580c0f9bb1a99ecf0a78fa23" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nest::ListRingBuffer::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <briefdescription>
+<para>Returns buffer size, for memory measurement. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="321" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="321" bodyend="324"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classnest_1_1ListRingBuffer_1a25642e2cf318fd26ea278431a6b9deb6" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nest::ListRingBuffer::get_index_</definition>
+        <argsstring>(const long d) const</argsstring>
+        <name>get_index_</name>
+        <param>
+          <type>const long</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+<para>Obtain buffer index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>delay</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>delivery delay for event </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>index to buffer element into which event should be recorded. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="337" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="359" bodyend="365"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" line="288" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/ring_buffer.h" bodystart="289" bodyend="338"/>
+    <listofallmembers>
+      <member refid="classnest_1_1ListRingBuffer_1aa6cc9f4dd09e0b448daee6453ec4a26a" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>append_value</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a6007afa93585fb4f2e77433b243e7c16" prot="private" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>buffer_</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a30141591bdbe65cfb2f9ec1a2e7dd96f" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>clear</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a25642e2cf318fd26ea278431a6b9deb6" prot="private" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>get_index_</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a9092dda132f5c69f826769c6439f64c7" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>get_list</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1afcdece45c38459fec59c12f849f7e8a6" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>ListRingBuffer</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a1cad599eada80719aed5f06e7164fd59" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>resize</name></member>
+      <member refid="classnest_1_1ListRingBuffer_1a696f9789580c0f9bb1a99ecf0a78fa23" prot="public" virt="non-virtual"><scope>nest::ListRingBuffer</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1Time_1_1LimitPosInf" kind="struct" language="C++" prot="protected">
+    <compoundname>nest::Time::LimitPosInf</compoundname>
+    <includes refid="nest__time_8h" local="no">nest_time.h</includes>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structnest_1_1Time_1_1LimitPosInf_1a8a03615768c101bf70b4aa31821abc7b" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="namespacenest_1a824af732762ca1ba47526652442e562e" kindref="member">tic_t</ref></type>
+        <definition>const tic_t Time::LimitPosInf::tics</definition>
+        <argsstring></argsstring>
+        <name>tics</name>
+        <initializer>= <ref refid="namespacenest_1a39616f30db57cea0cea5dea16ddde948" kindref="member">tic_t_max</ref> / <ref refid="structnest_1_1Time_1_1Range_1a2c3376890467144d48e6c2925c687ab2" kindref="member">Range::INF_MARGIN</ref> + 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" line="227" column="24" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1Time_1_1LimitPosInf_1a3a1a0fd4f997f35e4eb58e22ae6941ef" prot="public" static="yes" mutable="no">
+        <type>const long</type>
+        <definition>const long Time::LimitPosInf::steps</definition>
+        <argsstring></argsstring>
+        <name>steps</name>
+        <initializer>= <ref refid="namespacenest_1af443d1b42b9fbb51a07fe94ef6965446" kindref="member">delay_max</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" line="228" column="23" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" bodystart="228" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" line="225" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/nest_time.h" bodystart="226" bodyend="230"/>
+    <listofallmembers>
+      <member refid="structnest_1_1Time_1_1LimitPosInf_1a3a1a0fd4f997f35e4eb58e22ae6941ef" prot="public" virt="non-virtual"><scope>nest::Time::LimitPosInf</scope><name>steps</name></member>
+      <member refid="structnest_1_1Time_1_1LimitPosInf_1a8a03615768c101bf70b4aa31821abc7b" prot="public" virt="non-virtual"><scope>nest::Time::LimitPosInf</scope><name>tics</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

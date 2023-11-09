@@ -1,0 +1,572 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1GridLayer" kind="class" language="C++" prot="public">
+    <compoundname>nest::GridLayer</compoundname>
+    <basecompoundref refid="classnest_1_1Layer" prot="public" virt="non-virtual">nest::Layer&lt; D &gt;</basecompoundref>
+    <includes refid="grid__layer_8h" local="no">grid_layer.h</includes>
+    <innerclass refid="classnest_1_1GridLayer_1_1masked__iterator" prot="public">nest::GridLayer::masked_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>D</declname>
+        <defname>D</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnest_1_1GridLayer_1a7d85aa32dd80818d446ee449d14c0def" prot="public" static="no">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;</type>
+        <definition>typedef Position&lt; D &gt; nest::GridLayer&lt; D &gt;::key_type</definition>
+        <argsstring></argsstring>
+        <name>key_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="39" column="20" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnest_1_1GridLayer_1a5246f754cd72711cbbfb4100baf5edb2" prot="public" static="no">
+        <type>size_t</type>
+        <definition>typedef size_t nest::GridLayer&lt; D &gt;::mapped_type</definition>
+        <argsstring></argsstring>
+        <name>mapped_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="40" column="18" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnest_1_1GridLayer_1a70620737ca3cac2217854d9af4240695" prot="public" static="no">
+        <type>std::pair&lt; <ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;, size_t &gt;</type>
+        <definition>typedef std::pair&lt; Position&lt; D &gt;, size_t &gt; nest::GridLayer&lt; D &gt;::value_type</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="41" column="21" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnest_1_1GridLayer_1ac118ae3c42d00eafcc3be5cd92816eb7" prot="public" static="no">
+        <type><ref refid="classnest_1_1GridLayer_1a70620737ca3cac2217854d9af4240695" kindref="member">value_type</ref> &amp;</type>
+        <definition>typedef value_type&amp; nest::GridLayer&lt; D &gt;::reference</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="42" column="22" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnest_1_1GridLayer_1af31070d93808c1a6e6af43686110e738" prot="public" static="no">
+        <type>const <ref refid="classnest_1_1GridLayer_1a70620737ca3cac2217854d9af4240695" kindref="member">value_type</ref> &amp;</type>
+        <definition>typedef const value_type&amp; nest::GridLayer&lt; D &gt;::const_reference</definition>
+        <argsstring></argsstring>
+        <name>const_reference</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="43" column="28" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnest_1_1GridLayer_1ae2f4724cd14475d98dedc64418b7df01" prot="protected" static="no" mutable="no">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D, size_t &gt;</type>
+        <definition>Position&lt; D, size_t &gt; nest::GridLayer&lt; D &gt;::dims_</definition>
+        <argsstring></argsstring>
+        <name>dims_</name>
+        <briefdescription>
+<para>number of nodes in each direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="155" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="155" bodyend="-1"/>
+        <referencedby refid="classnest_1_1GridLayer_1_1masked__iterator_1a7d2815902bd06d0e211ec1b8a0111792" compoundref="grid__layer_8h" startline="323" endline="373">nest::GridLayer&lt; D &gt;::masked_iterator::masked_iterator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a324704a1045e3f7dd2bf5b97dd568c85" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nest::GridLayer&lt; D &gt;::GridLayer</definition>
+        <argsstring>()</argsstring>
+        <name>GridLayer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="108" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="108" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a1b694490e4c85b8db45605f15ae838ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nest::GridLayer&lt; D &gt;::GridLayer</definition>
+        <argsstring>(const GridLayer &amp;layer)</argsstring>
+        <name>GridLayer</name>
+        <param>
+          <type>const <ref refid="classnest_1_1GridLayer" kindref="compound">GridLayer</ref> &amp;</type>
+          <declname>layer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="113" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="113" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1ae5961dbce701fdeec983b65c6439fba2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;</type>
+        <definition>Position&lt; D &gt; nest::GridLayer&lt; D &gt;::get_position</definition>
+        <argsstring>(size_t sind) const</argsstring>
+        <name>get_position</name>
+        <reimplements refid="classnest_1_1Layer_1a2a2f5a8e9640c437d64bf0958dbddb26">get_position</reimplements>
+        <param>
+          <type>size_t</type>
+          <declname>sind</declname>
+        </param>
+        <briefdescription>
+<para>Get position of node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Only possible for local nodes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sind</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of node </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>position of node. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="125" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="248" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a6ea0a24150843d114d185e33faf08447" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;</type>
+        <definition>Position&lt; D &gt; nest::GridLayer&lt; D &gt;::lid_to_position</definition>
+        <argsstring>(size_t lid) const</argsstring>
+        <name>lid_to_position</name>
+        <param>
+          <type>size_t</type>
+          <declname>lid</declname>
+        </param>
+        <briefdescription>
+<para>Get position of node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Also allowed for non-local nodes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lid</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>local index of node </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>position of node. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="133" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="218" bodyend="229"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1ae0b13833c5575c0e9eea8d8794a47d9f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nest::GridLayer&lt; D &gt;::gridpos_to_lid</definition>
+        <argsstring>(Position&lt; D, int &gt; pos) const</argsstring>
+        <name>gridpos_to_lid</name>
+        <param>
+          <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D, int &gt;</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="135" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="255" bodyend="279"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1aaaaa4b8b7380f7ff0a48e29eeb807390" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;</type>
+        <definition>Position&lt; D &gt; nest::GridLayer&lt; D &gt;::gridpos_to_position</definition>
+        <argsstring>(Position&lt; D, int &gt; gridpos) const</argsstring>
+        <name>gridpos_to_position</name>
+        <param>
+          <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D, int &gt;</type>
+          <declname>gridpos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="137" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="233" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a6a3db3f272fed7ae99ef000b622d4917" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::pair&lt; <ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;, size_t &gt; &gt;</type>
+        <definition>std::vector&lt; std::pair&lt; Position&lt; D &gt;, size_t &gt; &gt; nest::GridLayer&lt; D &gt;::get_global_positions_vector</definition>
+        <argsstring>(const AbstractMask &amp;mask, const Position&lt; D &gt; &amp;anchor, bool allow_oversized, NodeCollectionPTR node_collection)</argsstring>
+        <name>get_global_positions_vector</name>
+        <param>
+          <type>const <ref refid="classnest_1_1AbstractMask" kindref="compound">AbstractMask</ref> &amp;</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt; &amp;</type>
+          <declname>anchor</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_oversized</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>node_collection</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="141" column="15" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="405" bodyend="419"/>
+        <references refid="namespacenest_1_1names_1ac3df6aff8b6e53821a239077aff7d7a5">nest::names::anchor</references>
+        <references refid="namespacenest_1_1names_1a5b38373f58e71172fcc2a32f0fa9075a">nest::names::mask</references>
+        <references refid="classnest_1_1GridLayer_1a119a691bc6c97ec3983ac063326daad9" compoundref="grid__layer_8h" startline="310" endline="313">nest::GridLayer&lt; D &gt;::masked_begin</references>
+        <references refid="classnest_1_1GridLayer_1a49352295fab9b7920de6710de56775f0" compoundref="grid__layer_8h" startline="317" endline="320">nest::GridLayer&lt; D &gt;::masked_end</references>
+        <references refid="namespacenest_1_1names_1a7af2cbff1ab1cbeb555cca79508a6156">nest::names::positions</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a119a691bc6c97ec3983ac063326daad9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnest_1_1GridLayer_1_1masked__iterator" kindref="compound">masked_iterator</ref></type>
+        <definition>GridLayer&lt; D &gt;::masked_iterator nest::GridLayer&lt; D &gt;::masked_begin</definition>
+        <argsstring>(const Mask&lt; D &gt; &amp;mask, const Position&lt; D &gt; &amp;anchor)</argsstring>
+        <name>masked_begin</name>
+        <param>
+          <type>const <ref refid="classnest_1_1Mask" kindref="compound">Mask</ref>&lt; D &gt; &amp;</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt; &amp;</type>
+          <declname>anchor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="146" column="19" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="310" bodyend="313"/>
+        <references refid="namespacenest_1_1names_1ac3df6aff8b6e53821a239077aff7d7a5">nest::names::anchor</references>
+        <references refid="namespacenest_1_1names_1a5b38373f58e71172fcc2a32f0fa9075a">nest::names::mask</references>
+        <referencedby refid="classnest_1_1GridLayer_1a6a3db3f272fed7ae99ef000b622d4917" compoundref="grid__layer_8h" startline="405" endline="419">nest::GridLayer&lt; D &gt;::get_global_positions_vector</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a49352295fab9b7920de6710de56775f0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnest_1_1GridLayer_1_1masked__iterator" kindref="compound">masked_iterator</ref></type>
+        <definition>GridLayer&lt; D &gt;::masked_iterator nest::GridLayer&lt; D &gt;::masked_end</definition>
+        <argsstring>()</argsstring>
+        <name>masked_end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="147" column="19" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="317" bodyend="320"/>
+        <referencedby refid="classnest_1_1GridLayer_1a6a3db3f272fed7ae99ef000b622d4917" compoundref="grid__layer_8h" startline="405" endline="419">nest::GridLayer&lt; D &gt;::get_global_positions_vector</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a76ba3785e10e0c98a7071f3fb2f41e71" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D, size_t &gt;</type>
+        <definition>Position&lt; D, size_t &gt; nest::GridLayer&lt; D &gt;::get_dims</definition>
+        <argsstring>() const</argsstring>
+        <name>get_dims</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="149" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="166" bodyend="169"/>
+        <referencedby refid="classnest_1_1MaskedLayer_1a14154bde3fb721e481239aeb4f0ba8dc" compoundref="layer__impl_8h" startline="356" endline="435">nest::MaskedLayer&lt; D &gt;::check_mask_</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a53874da08aaf56d7893d0f7fabbe0546" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void nest::GridLayer&lt; D &gt;::set_status</definition>
+        <argsstring>(const DictionaryDatum &amp;d)</argsstring>
+        <name>set_status</name>
+        <reimplements refid="classnest_1_1AbstractLayer_1ad06fa8f1d890798881a7ae445b964108">set_status</reimplements>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+        </param>
+        <briefdescription>
+<para>Change properties of the layer according to the entries in the dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>d</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dictionary with named parameter settings. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="151" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="173" bodyend="205"/>
+        <references refid="namespacenest_1_1names_1ab6a84185037ad26c4cd8424009260146">nest::names::center</references>
+        <references refid="namespacenest_1_1names_1a8881fb5c6cc400d4eb90a2035d9a2df5">nest::names::d</references>
+        <references refid="namespacenest_1_1names_1af7b1105361532fdf663e95e418b8fba6">nest::names::extent</references>
+        <references refid="classnest_1_1Layer_1a7e195bd64082ccf858d4419328b000d7" compoundref="layer__impl_8h" startline="82" endline="91">nest::Layer&lt; D &gt;::set_status</references>
+        <references refid="namespacenest_1_1names_1a0a1ad3c05a0ab3bb13578701960f806a">nest::names::shape</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a6d74aca4288fc48455401d4027fa9378" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void nest::GridLayer&lt; D &gt;::get_status</definition>
+        <argsstring>(DictionaryDatum &amp;d) const</argsstring>
+        <name>get_status</name>
+        <reimplements refid="classnest_1_1AbstractLayer_1a4e6967b12d99eccd9dc329daa1149c96">get_status</reimplements>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+        </param>
+        <briefdescription>
+<para>Export properties of the layer by setting entries in the status dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>d</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dictionary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="152" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="209" bodyend="214"/>
+        <references refid="namespacenest_1_1names_1a8881fb5c6cc400d4eb90a2035d9a2df5">nest::names::d</references>
+        <references refid="classnest_1_1Layer_1aa997b0fe16bc08093545385042fe6e19" compoundref="layer__impl_8h" startline="95" endline="108">nest::Layer&lt; D &gt;::get_status</references>
+        <references refid="namespacenest_1_1names_1a0a1ad3c05a0ab3bb13578701960f806a">nest::names::shape</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a3aaee1ebe9c651d1b65aff8a2cfd1d75" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Ins</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nest::GridLayer&lt; D &gt;::insert_global_positions_</definition>
+        <argsstring>(Ins iter, NodeCollectionPTR node_collection)</argsstring>
+        <name>insert_global_positions_</name>
+        <param>
+          <type>Ins</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>node_collection</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="158" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="284" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1adc195c61be26f82f80052881efb1e5be" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void nest::GridLayer&lt; D &gt;::insert_global_positions_ntree_</definition>
+        <argsstring>(Ntree&lt; D, size_t &gt; &amp;tree, NodeCollectionPTR node_collection)</argsstring>
+        <name>insert_global_positions_ntree_</name>
+        <reimplements refid="classnest_1_1Layer_1a1cc0c123910a032da53f36060c7e4f09">insert_global_positions_ntree_</reimplements>
+        <param>
+          <type><ref refid="classnest_1_1Ntree" kindref="compound">Ntree</ref>&lt; D, size_t &gt; &amp;</type>
+          <declname>tree</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>node_collection</declname>
+        </param>
+        <briefdescription>
+<para>Insert global position info into ntree. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="159" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="295" bodyend="298"/>
+        <references refid="classnest_1_1Ntree_1ae8a66ad3f812ec29ab4ba076004ca54d" compoundref="ntree_8h" startline="336" endline="339">nest::Ntree&lt; D, T, max_capacity, max_depth &gt;::end</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1GridLayer_1a2ee002c7e490033be4f42d83a476597a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void nest::GridLayer&lt; D &gt;::insert_global_positions_vector_</definition>
+        <argsstring>(std::vector&lt; std::pair&lt; Position&lt; D &gt;, size_t &gt; &gt; &amp;vec, NodeCollectionPTR node_collection)</argsstring>
+        <name>insert_global_positions_vector_</name>
+        <reimplements refid="classnest_1_1Layer_1ae092b2719b5025e44827d5a6b94b7264">insert_global_positions_vector_</reimplements>
+        <param>
+          <type>std::vector&lt; std::pair&lt; <ref refid="classnest_1_1Position" kindref="compound">Position</ref>&lt; D &gt;, size_t &gt; &gt; &amp;</type>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+        </param>
+        <briefdescription>
+<para>Insert global position info into vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="160" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="302" bodyend="306"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para><ref refid="classnest_1_1Layer" kindref="compound">Layer</ref> with neurons placed in a grid. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>nest::GridLayer&lt; D &gt;</label>
+        <link refid="classnest_1_1GridLayer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::Layer&lt; D &gt;</label>
+        <link refid="classnest_1_1Layer"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>nest::AbstractLayer</label>
+        <link refid="classnest_1_1AbstractLayer"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>nest::GridLayer&lt; D &gt;</label>
+        <link refid="classnest_1_1GridLayer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>dims_</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>nest::Position&lt; D, T &gt;</label>
+        <link refid="classnest_1_1Position"/>
+      </node>
+      <node id="2">
+        <label>nest::Layer&lt; D &gt;</label>
+        <link refid="classnest_1_1Layer"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>nest::Position&lt; D, size_t &gt;</label>
+        <link refid="classnest_1_1Position"/>
+        <childnode refid="5" relation="template-instance">
+          <edgelabel>&lt; D, size_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>nest::AbstractLayer</label>
+        <link refid="classnest_1_1AbstractLayer"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" line="36" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/grid_layer.h" bodystart="37" bodyend="162"/>
+    <listofallmembers>
+      <member refid="classnest_1_1AbstractLayer_1a0ad131746b1272ec9866a336dc380a91" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>AbstractLayer</name></member>
+      <member refid="classnest_1_1Layer_1ac90aeaae6b41a6d3f5c719878b2195ba" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>cached_ntree_</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a1e8fda88e7029c3b23f35819cba848c6" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>cached_ntree_md_</name></member>
+      <member refid="classnest_1_1Layer_1a643dec7c3d63a250b941d851d6438378" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>cached_vector_</name></member>
+      <member refid="classnest_1_1AbstractLayer_1add028a9b29284bac5c09ac20f6b42c3b" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>cached_vector_md_</name></member>
+      <member refid="classnest_1_1Layer_1a3bdf16e4d5e8ce0a7d2c8807b9e858c2" prot="protected" virt="virtual"><scope>nest::GridLayer</scope><name>clear_ntree_cache_</name></member>
+      <member refid="classnest_1_1Layer_1a0320d45963d9093ac80d6908f140b3f0" prot="protected" virt="virtual"><scope>nest::GridLayer</scope><name>clear_vector_cache_</name></member>
+      <member refid="classnest_1_1Layer_1a5bdc6e9ae51ca2c547ef62a25315681d" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>compute_displacement</name></member>
+      <member refid="classnest_1_1Layer_1a52c45681c7e56df3264fe31db5032108" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>compute_displacement</name></member>
+      <member refid="classnest_1_1Layer_1a0217b750a594fddedd7e7c61a3a9607b" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>compute_displacement</name></member>
+      <member refid="classnest_1_1Layer_1a8ef6944a233d00dbe37550653c53f0d6" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>compute_displacement</name></member>
+      <member refid="classnest_1_1Layer_1a19121f22ae5a8bf6857e6200869ac8fa" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>compute_distance</name></member>
+      <member refid="classnest_1_1Layer_1a0580aa7c4fb517a3b4f09b4b864ed3e9" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>compute_distance</name></member>
+      <member refid="classnest_1_1Layer_1a8680705537ec5ed10f3dadd966075feb" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>compute_distance</name></member>
+      <member refid="classnest_1_1Layer_1a805e0bc30af5b8449cbb5ee09fbd71fb" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>connect</name></member>
+      <member refid="classnest_1_1GridLayer_1af31070d93808c1a6e6af43686110e738" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>const_reference</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a268b14297e57188c5f29a44bad369990" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>create_layer</name></member>
+      <member refid="classnest_1_1GridLayer_1ae2f4724cd14475d98dedc64418b7df01" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>dims_</name></member>
+      <member refid="classnest_1_1Layer_1a64c3b4bd332b9ea9bf3496426bb645c6" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>do_get_global_positions_ntree_</name></member>
+      <member refid="classnest_1_1Layer_1ac1b9a1c8651f3eefae09c200e00974af" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>dump_connections</name></member>
+      <member refid="classnest_1_1Layer_1a84ccd5b88b173dedb7cb3b4b9b6c2a95" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>dump_nodes</name></member>
+      <member refid="classnest_1_1Layer_1a3fe40a896502071fc257e0bf4b7f5961" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>extent_</name></member>
+      <member refid="classnest_1_1Layer_1a53c46f3e1dabf057073dab59b51813e3" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_center</name></member>
+      <member refid="classnest_1_1GridLayer_1a76ba3785e10e0c98a7071f3fb2f41e71" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_dims</name></member>
+      <member refid="classnest_1_1Layer_1ad1eb42e8f942fcd2dd85c64ef4233900" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_extent</name></member>
+      <member refid="classnest_1_1Layer_1a15cc508f8be8e286e9d0cbc12dea6b89" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>get_global_nodes</name></member>
+      <member refid="classnest_1_1Layer_1a3740d371ee5c690ecc0eb1b398e91457" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_global_positions_ntree</name></member>
+      <member refid="classnest_1_1Layer_1a7d5cf68c2a142eaaac26f9ac564eb053" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_global_positions_ntree</name></member>
+      <member refid="classnest_1_1GridLayer_1a6a3db3f272fed7ae99ef000b622d4917" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_global_positions_vector</name></member>
+      <member refid="classnest_1_1Layer_1ad6bde489bf4dd2351a2740b06eb167c8" prot="public" virt="non-virtual" ambiguityscope="nest::Layer::"><scope>nest::GridLayer</scope><name>get_global_positions_vector</name></member>
+      <member refid="classnest_1_1Layer_1a9bc3aaf255283a049a4591c49061a490" prot="public" virt="virtual" ambiguityscope="nest::Layer::"><scope>nest::GridLayer</scope><name>get_global_positions_vector</name></member>
+      <member refid="classnest_1_1Layer_1ab711e33971020b78cde12543b57d4be4" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_lower_left</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a560ba4e701334a2040b56a34c60f3d64" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_metadata</name></member>
+      <member refid="classnest_1_1AbstractLayer_1aa22fca27ef998582d5ede2a7f293478b" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_node_collection</name></member>
+      <member refid="classnest_1_1Layer_1a6e68c37a78e18c593855cc6875c1dbf2" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>get_num_dimensions</name></member>
+      <member refid="classnest_1_1Layer_1a8ea1571c299ddf01b5dcd2544507c83e" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>get_periodic_mask</name></member>
+      <member refid="classnest_1_1GridLayer_1ae5961dbce701fdeec983b65c6439fba2" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>get_position</name></member>
+      <member refid="classnest_1_1Layer_1a10647faea44a0f3e48872ed80861ba18" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>get_position_vector</name></member>
+      <member refid="classnest_1_1GridLayer_1a6d74aca4288fc48455401d4027fa9378" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>get_status</name></member>
+      <member refid="classnest_1_1GridLayer_1a324704a1045e3f7dd2bf5b97dd568c85" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>GridLayer</name></member>
+      <member refid="classnest_1_1GridLayer_1a1b694490e4c85b8db45605f15ae838ce" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>GridLayer</name></member>
+      <member refid="classnest_1_1GridLayer_1ae0b13833c5575c0e9eea8d8794a47d9f" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>gridpos_to_lid</name></member>
+      <member refid="classnest_1_1GridLayer_1aaaaa4b8b7380f7ff0a48e29eeb807390" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>gridpos_to_position</name></member>
+      <member refid="classnest_1_1GridLayer_1a3aaee1ebe9c651d1b65aff8a2cfd1d75" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>insert_global_positions_</name></member>
+      <member refid="classnest_1_1GridLayer_1adc195c61be26f82f80052881efb1e5be" prot="protected" virt="virtual"><scope>nest::GridLayer</scope><name>insert_global_positions_ntree_</name></member>
+      <member refid="classnest_1_1GridLayer_1a2ee002c7e490033be4f42d83a476597a" prot="protected" virt="virtual"><scope>nest::GridLayer</scope><name>insert_global_positions_vector_</name></member>
+      <member refid="classnest_1_1GridLayer_1a7d85aa32dd80818d446ee449d14c0def" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>key_type</name></member>
+      <member refid="classnest_1_1Layer_1a44db808bdb6b71ff3392cd4d743f49e1" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>Layer</name></member>
+      <member refid="classnest_1_1Layer_1afe8b87e0bc750f510e35a413e6cea13b" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>Layer</name></member>
+      <member refid="classnest_1_1GridLayer_1a6ea0a24150843d114d185e33faf08447" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>lid_to_position</name></member>
+      <member refid="classnest_1_1Layer_1af53da8f0c9a40e6c25a99fac5e303487" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>lower_left_</name></member>
+      <member refid="classnest_1_1GridLayer_1a5246f754cd72711cbbfb4100baf5edb2" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>mapped_type</name></member>
+      <member refid="classnest_1_1GridLayer_1a119a691bc6c97ec3983ac063326daad9" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>masked_begin</name></member>
+      <member refid="classnest_1_1GridLayer_1a49352295fab9b7920de6710de56775f0" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>masked_end</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a32cbd1dbb9fdfd0b12903814aeb5c066" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>node_collection_</name></member>
+      <member refid="classnest_1_1Layer_1ac2a10c1e0879d2166cdbcfdb0ba3a82e" prot="protected" virt="non-virtual"><scope>nest::GridLayer</scope><name>periodic_</name></member>
+      <member refid="classnest_1_1GridLayer_1ac118ae3c42d00eafcc3be5cd92816eb7" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>reference</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a54c83f92a30139407e7477a8ce019414" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>set_node_collection</name></member>
+      <member refid="classnest_1_1GridLayer_1a53874da08aaf56d7893d0f7fabbe0546" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>set_status</name></member>
+      <member refid="classnest_1_1GridLayer_1a70620737ca3cac2217854d9af4240695" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>value_type</name></member>
+      <member refid="classnest_1_1AbstractLayer_1a5ffddcffaba780d5e7b61d2850d2c922" prot="public" virt="virtual"><scope>nest::GridLayer</scope><name>~AbstractLayer</name></member>
+      <member refid="classnest_1_1Layer_1a5c95831f62337f6b03b7a3030721140e" prot="public" virt="non-virtual"><scope>nest::GridLayer</scope><name>~Layer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

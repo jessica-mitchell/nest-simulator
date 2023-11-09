@@ -1,0 +1,354 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1SliceRingBuffer" kind="class" language="C++" prot="public">
+    <compoundname>nest::SliceRingBuffer</compoundname>
+    <includes refid="slice__ring__buffer_8h" local="no">slice_ring_buffer.h</includes>
+    <innerclass refid="structnest_1_1SliceRingBuffer_1_1SpikeInfo" prot="private">nest::SliceRingBuffer::SpikeInfo</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnest_1_1SliceRingBuffer_1aa6652a068bb1b14681be02f2abf68cc4" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; SpikeInfo &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; SpikeInfo &gt; &gt; nest::SliceRingBuffer::queue_</definition>
+        <argsstring></argsstring>
+        <name>queue_</name>
+        <briefdescription>
+<para>entire queue, one slot per min_delay block within max_delay </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="150" column="15" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnest_1_1SliceRingBuffer_1a80990f9ac1389449d9719827fa8c10d1" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; SpikeInfo &gt; *</type>
+        <definition>std::vector&lt; SpikeInfo &gt;* nest::SliceRingBuffer::deliver_</definition>
+        <argsstring></argsstring>
+        <name>deliver_</name>
+        <briefdescription>
+<para>slot to deliver from </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="153" column="15" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnest_1_1SliceRingBuffer_1acab4696bb4433289970314a4573d8842" prot="private" static="no" mutable="no">
+        <type>SpikeInfo</type>
+        <definition>SpikeInfo nest::SliceRingBuffer::refract_</definition>
+        <argsstring></argsstring>
+        <name>refract_</name>
+        <briefdescription>
+<para>pseudo-event for return from refractoriness </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="155" column="13" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1a0828f5acdfa3de6562a883a04b2f831c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::SliceRingBuffer::SliceRingBuffer</definition>
+        <argsstring>()</argsstring>
+        <name>SliceRingBuffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="65" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.cpp" bodystart="29" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1ac87d1d88b3579073cb394e4c063f08f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::add_spike</definition>
+        <argsstring>(const long rel_delivery, const long stamp, const double ps_offset, const double weight)</argsstring>
+        <name>add_spike</name>
+        <param>
+          <type>const long</type>
+          <declname>rel_delivery</declname>
+        </param>
+        <param>
+          <type>const long</type>
+          <declname>stamp</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>ps_offset</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>weight</declname>
+        </param>
+        <briefdescription>
+<para>Add spike to queue. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rel_delivery</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relative delivery time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stamp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Delivery time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Precise timing offset of spike time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weight</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Weight of spike. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="75" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="159" bodyend="166"/>
+        <references refid="classnest_1_1KernelManager_1a39a94f269d1aeb7363ae5c33783b762e" compoundref="kernel__manager_8h" startline="333">nest::KernelManager::event_delivery_manager</references>
+        <references refid="classnest_1_1EventDeliveryManager_1a4cae17a0605bb51109dca36ea53f7a7e" compoundref="event__delivery__manager_8h" startline="558" endline="565">nest::EventDeliveryManager::get_slice_modulo</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+        <references refid="namespacenest_1_1names_1a89371cf52bd3967922c650c11858cf7d">nest::names::weight</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1af72799635aad23f7d78f0640185ea920" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::add_refractory</definition>
+        <argsstring>(const long stamp, const double ps_offset)</argsstring>
+        <name>add_refractory</name>
+        <param>
+          <type>const long</type>
+          <declname>stamp</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>ps_offset</declname>
+        </param>
+        <briefdescription>
+<para>Add refractory event to queue. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The refractory event is actually stored as a pseudo-event. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stamp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Delivery time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Precise timing offset of spike time </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="84" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="169" bodyend="181"/>
+        <references refid="namespacenest_1_1names_1a9426cabb2c0dd92562f8a017eecef730">nest::names::max</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1a75765b9d90c31ac2010af3311917d6f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::prepare_delivery</definition>
+        <argsstring>()</argsstring>
+        <name>prepare_delivery</name>
+        <briefdescription>
+<para>Prepare for spike delivery in current slice by sorting. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="89" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.cpp" bodystart="66" bodyend="73"/>
+        <references refid="classnest_1_1KernelManager_1a39a94f269d1aeb7363ae5c33783b762e" compoundref="kernel__manager_8h" startline="333">nest::KernelManager::event_delivery_manager</references>
+        <references refid="classnest_1_1EventDeliveryManager_1a4cae17a0605bb51109dca36ea53f7a7e" compoundref="event__delivery__manager_8h" startline="558" endline="565">nest::EventDeliveryManager::get_slice_modulo</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+        <references refid="namespacenest_1a54cad81a8fdaa7618b888d9678b41c33" compoundref="sort_8h" startline="177" endline="186">nest::sort</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1a01390dbc1eadaab667cfc9918c176818" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::discard_events</definition>
+        <argsstring>()</argsstring>
+        <name>discard_events</name>
+        <briefdescription>
+<para>Discard all events in current slice. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="94" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.cpp" bodystart="76" bodyend="82"/>
+        <references refid="classnest_1_1KernelManager_1a39a94f269d1aeb7363ae5c33783b762e" compoundref="kernel__manager_8h" startline="333">nest::KernelManager::event_delivery_manager</references>
+        <references refid="classnest_1_1EventDeliveryManager_1a4cae17a0605bb51109dca36ea53f7a7e" compoundref="event__delivery__manager_8h" startline="558" endline="565">nest::EventDeliveryManager::get_slice_modulo</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1a093aefdbb234e5fbbe9c3711150e306a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nest::SliceRingBuffer::get_next_spike</definition>
+        <argsstring>(const long req_stamp, bool accumulate_simultaneous, double &amp;ps_offset, double &amp;weight, bool &amp;end_of_refract)</argsstring>
+        <name>get_next_spike</name>
+        <param>
+          <type>const long</type>
+          <declname>req_stamp</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>accumulate_simultaneous</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>ps_offset</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>weight</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>end_of_refract</declname>
+        </param>
+        <briefdescription>
+<para>Return next spike. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>req_stamp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Request spike with this stamp. Queue should never contain spikes with smaller stamps. Spikes with larger stamps are left in queue. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>accumulate_simultaneous</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, return summed weight of simultaneous input spikes, otherwise return one spike at a time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>PS-sense offset of spike time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weight</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spike weight </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end_of_refract</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>True if spike is pseudo-spike marking end of refractory period </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if spike available, false otherwise </para>
+</simplesect>
+<simplesect kind="note"><para>If return from refractoriness coincides with a spike, return from refractoriness is returned. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="114" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="184" bodyend="235"/>
+        <references refid="namespacenest_1_1names_1a9426cabb2c0dd92562f8a017eecef730">nest::names::max</references>
+        <references refid="namespacenest_1_1names_1a89371cf52bd3967922c650c11858cf7d">nest::names::weight</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1aa6a118c151bd6f3116461622c6c7cd46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <briefdescription>
+<para>Clear buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="123" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.cpp" bodystart="57" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SliceRingBuffer_1af995247463e3cf4c1a10446f69c59436" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SliceRingBuffer::resize</definition>
+        <argsstring>()</argsstring>
+        <name>resize</name>
+        <briefdescription>
+<para>Resize the buffer according to min_delay and max_delay. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="128" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.cpp" bodystart="36" bodyend="54"/>
+        <references refid="namespacenest_1_1names_1a5a0ca6f3568e7ffc59143a1e1a31d790">nest::names::clear</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Queue for all spikes arriving into a neuron. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Spikes are stored unsorted on arrival, but are sorted when <ref refid="classnest_1_1SliceRingBuffer_1a75765b9d90c31ac2010af3311917d6f0" kindref="member">prepare_delivery()</ref> is called. They can then be retrieved one by one in correct temporal order. Coinciding spikes are combined into one, see <ref refid="classnest_1_1SliceRingBuffer_1a093aefdbb234e5fbbe9c3711150e306a" kindref="member">get_next_spike()</ref>.</para>
+<para>Data is organized as follows:<itemizedlist>
+<listitem><para>The time of the next return from refractoriness is stored in a separate variable and checked explicitly; otherwise, we&apos;d have to re-sort data during updating.</para>
+</listitem><listitem><para>We have a pseudo-ring of Nbuff=ceil((min_del+max_del)/min_del) elements. Each element is a vector storing incoming spikes that are due during a given time slice.</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="note"><para>The following assumptions underlie the handling of pseudo-events for return from refractoriness:<itemizedlist>
+<listitem><para>There is at most one such event per time step (value of time stamp). </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" line="62" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/slice_ring_buffer.h" bodystart="63" bodyend="156"/>
+    <listofallmembers>
+      <member refid="classnest_1_1SliceRingBuffer_1af72799635aad23f7d78f0640185ea920" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>add_refractory</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1ac87d1d88b3579073cb394e4c063f08f3" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>add_spike</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1aa6a118c151bd6f3116461622c6c7cd46" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>clear</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1a80990f9ac1389449d9719827fa8c10d1" prot="private" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>deliver_</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1a01390dbc1eadaab667cfc9918c176818" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>discard_events</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1a093aefdbb234e5fbbe9c3711150e306a" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>get_next_spike</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1a75765b9d90c31ac2010af3311917d6f0" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>prepare_delivery</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1aa6652a068bb1b14681be02f2abf68cc4" prot="private" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>queue_</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1acab4696bb4433289970314a4573d8842" prot="private" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>refract_</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1af995247463e3cf4c1a10446f69c59436" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>resize</name></member>
+      <member refid="classnest_1_1SliceRingBuffer_1a0828f5acdfa3de6562a883a04b2f831c" prot="public" virt="non-virtual"><scope>nest::SliceRingBuffer</scope><name>SliceRingBuffer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

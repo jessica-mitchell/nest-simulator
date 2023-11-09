@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1AssignedRanks" kind="struct" language="C++" prot="public">
+    <compoundname>nest::AssignedRanks</compoundname>
+    <includes refid="vp__manager_8h" local="no">vp_manager.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1AssignedRanks_1acadaa3612f474b246daeabf5d442da4c" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nest::AssignedRanks::begin</definition>
+        <argsstring></argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" line="45" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" bodystart="45" bodyend="-1"/>
+        <referencedby refid="classnest_1_1VPManager_1a6fc1d2c50da22bf9dda322b5d67c3668" compoundref="vp__manager__impl_8h" startline="121" endline="129">nest::VPManager::get_assigned_ranks</referencedby>
+        <referencedby refid="classnest_1_1SendBufferPosition_1a271a9dd1821f0798edc0e8196a9f4ff6" compoundref="send__buffer__position_8h" startline="90" endline="110">nest::SendBufferPosition::SendBufferPosition</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1AssignedRanks_1a6de06bc098ceda043ce1e010d87d5616" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nest::AssignedRanks::end</definition>
+        <argsstring></argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" line="46" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="classnest_1_1VPManager_1a6fc1d2c50da22bf9dda322b5d67c3668" compoundref="vp__manager__impl_8h" startline="121" endline="129">nest::VPManager::get_assigned_ranks</referencedby>
+        <referencedby refid="classnest_1_1SendBufferPosition_1a271a9dd1821f0798edc0e8196a9f4ff6" compoundref="send__buffer__position_8h" startline="90" endline="110">nest::SendBufferPosition::SendBufferPosition</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1AssignedRanks_1a8a4e719db8730a803368f2cf1b845e25" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nest::AssignedRanks::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" line="47" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="classnest_1_1VPManager_1a6fc1d2c50da22bf9dda322b5d67c3668" compoundref="vp__manager__impl_8h" startline="121" endline="129">nest::VPManager::get_assigned_ranks</referencedby>
+        <referencedby refid="classnest_1_1SendBufferPosition_1a271a9dd1821f0798edc0e8196a9f4ff6" compoundref="send__buffer__position_8h" startline="90" endline="110">nest::SendBufferPosition::SendBufferPosition</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1AssignedRanks_1abe2f2cbb84ebe2aac7407d443ca69bbc" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nest::AssignedRanks::max_size</definition>
+        <argsstring></argsstring>
+        <name>max_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" line="48" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" bodystart="48" bodyend="-1"/>
+        <referencedby refid="classnest_1_1VPManager_1a6fc1d2c50da22bf9dda322b5d67c3668" compoundref="vp__manager__impl_8h" startline="121" endline="129">nest::VPManager::get_assigned_ranks</referencedby>
+        <referencedby refid="classnest_1_1SendBufferPosition_1a271a9dd1821f0798edc0e8196a9f4ff6" compoundref="send__buffer__position_8h" startline="90" endline="110">nest::SendBufferPosition::SendBufferPosition</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" line="43" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/vp_manager.h" bodystart="44" bodyend="49"/>
+    <listofallmembers>
+      <member refid="structnest_1_1AssignedRanks_1acadaa3612f474b246daeabf5d442da4c" prot="public" virt="non-virtual"><scope>nest::AssignedRanks</scope><name>begin</name></member>
+      <member refid="structnest_1_1AssignedRanks_1a6de06bc098ceda043ce1e010d87d5616" prot="public" virt="non-virtual"><scope>nest::AssignedRanks</scope><name>end</name></member>
+      <member refid="structnest_1_1AssignedRanks_1abe2f2cbb84ebe2aac7407d443ca69bbc" prot="public" virt="non-virtual"><scope>nest::AssignedRanks</scope><name>max_size</name></member>
+      <member refid="structnest_1_1AssignedRanks_1a8a4e719db8730a803368f2cf1b845e25" prot="public" virt="non-virtual"><scope>nest::AssignedRanks</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

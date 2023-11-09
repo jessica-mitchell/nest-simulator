@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1NestModule_1_1ResetKernelFunction" kind="class" language="C++" prot="public">
+    <compoundname>nest::NestModule::ResetKernelFunction</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">SLIFunction</basecompoundref>
+    <includes refid="nestmodule_8h" local="no">nestmodule.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1NestModule_1_1ResetKernelFunction_1a7d07831ff2707057f055b41ae83e7f02" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::NestModule::ResetKernelFunction::execute</definition>
+        <argsstring>(SLIInterpreter *) const override</argsstring>
+        <name>execute</name>
+        <param>
+          <type>SLIInterpreter *</type>
+          <defname>i</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/nestmodule.h" line="551" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/nestmodule.cpp" bodystart="682" bodyend="686"/>
+        <references refid="namespacenest_1a75785465b86e1c71e993158e6200efb4" compoundref="nest_8cpp" startline="60" endline="63">nest::reset_kernel</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>SLIFunction</label>
+      </node>
+      <node id="1">
+        <label>nest::NestModule::ResetKernelFunction</label>
+        <link refid="classnest_1_1NestModule_1_1ResetKernelFunction"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>SLIFunction</label>
+      </node>
+      <node id="1">
+        <label>nest::NestModule::ResetKernelFunction</label>
+        <link refid="classnest_1_1NestModule_1_1ResetKernelFunction"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/nestmodule.h" line="548" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/nestmodule.h" bodystart="549" bodyend="552"/>
+    <listofallmembers>
+      <member refid="classnest_1_1NestModule_1_1ResetKernelFunction_1a7d07831ff2707057f055b41ae83e7f02" prot="public" virt="non-virtual"><scope>nest::NestModule::ResetKernelFunction</scope><name>execute</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

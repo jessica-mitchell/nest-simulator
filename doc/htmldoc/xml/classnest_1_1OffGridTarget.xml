@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1OffGridTarget" kind="class" language="C++" prot="public">
+    <compoundname>nest::OffGridTarget</compoundname>
+    <basecompoundref refid="classnest_1_1Target" prot="public" virt="non-virtual">nest::Target</basecompoundref>
+    <includes refid="target_8h" local="no">target.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnest_1_1OffGridTarget_1a0906bba341ab206e18efe20900828293" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::OffGridTarget::offset_</definition>
+        <argsstring></argsstring>
+        <name>offset_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" line="308" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1OffGridTarget_1ab58ea440be54add4ca2b244604943b6c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nest::OffGridTarget::OffGridTarget</definition>
+        <argsstring>()</argsstring>
+        <name>OffGridTarget</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" line="311" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" bodystart="316" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1OffGridTarget_1a9c5ed1a6bda2c674d40edfa0ff4052e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nest::OffGridTarget::OffGridTarget</definition>
+        <argsstring>(const Target &amp;target, const double offset)</argsstring>
+        <name>OffGridTarget</name>
+        <param>
+          <type>const <ref refid="classnest_1_1Target" kindref="compound">Target</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" line="312" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" bodystart="322" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1OffGridTarget_1ac53e2c65727d08968996833b2f4ddace" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double nest::OffGridTarget::get_offset</definition>
+        <argsstring>() const</argsstring>
+        <name>get_offset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" line="313" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" bodystart="329" bodyend="332"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>nest::Target</label>
+        <link refid="classnest_1_1Target"/>
+      </node>
+      <node id="1">
+        <label>nest::OffGridTarget</label>
+        <link refid="classnest_1_1OffGridTarget"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>nest::Target</label>
+        <link refid="classnest_1_1Target"/>
+      </node>
+      <node id="1">
+        <label>nest::OffGridTarget</label>
+        <link refid="classnest_1_1OffGridTarget"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" line="305" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/target.h" bodystart="306" bodyend="314"/>
+    <listofallmembers>
+      <member refid="classnest_1_1Target_1a8fc0ad0191e145132ccd7619a01035af" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_lcid</name></member>
+      <member refid="classnest_1_1OffGridTarget_1ac53e2c65727d08968996833b2f4ddace" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_offset</name></member>
+      <member refid="classnest_1_1Target_1a7d4a6bf584b0ad1363255f0d662e8470" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_rank</name></member>
+      <member refid="classnest_1_1Target_1a933bad3c9fcb53c9cee2c5fd71df712f" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_status</name></member>
+      <member refid="classnest_1_1Target_1a9c6e0cf458ee72dc5dbb827ecbf8f6fd" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_syn_id</name></member>
+      <member refid="classnest_1_1Target_1aa1d91663a780e3bddf1c73ec20001b1a" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>get_tid</name></member>
+      <member refid="classnest_1_1Target_1a7c99329778c3aba4c60a0ad2470e63cd" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>is_processed</name></member>
+      <member refid="classnest_1_1Target_1ac363bc4853141bd1def8bc1e887af352" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>mark_for_removal</name></member>
+      <member refid="classnest_1_1OffGridTarget_1ab58ea440be54add4ca2b244604943b6c" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>OffGridTarget</name></member>
+      <member refid="classnest_1_1OffGridTarget_1a9c5ed1a6bda2c674d40edfa0ff4052e2" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>OffGridTarget</name></member>
+      <member refid="classnest_1_1OffGridTarget_1a0906bba341ab206e18efe20900828293" prot="private" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>offset_</name></member>
+      <member refid="classnest_1_1Target_1a14cf6e8c8059c99826e3aad35ece9926" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>operator=</name></member>
+      <member refid="classnest_1_1Target_1ae5bd2f97cfd94ad7a854df532a608582" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>set_lcid</name></member>
+      <member refid="classnest_1_1Target_1a856ebddd4e2130eb9ee33cef861d0a52" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>set_rank</name></member>
+      <member refid="classnest_1_1Target_1acd05688ca9c76321878399e2a989c230" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>set_status</name></member>
+      <member refid="classnest_1_1Target_1a4303fe6f8b2ee43c5570650e8fbfce4b" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>set_syn_id</name></member>
+      <member refid="classnest_1_1Target_1ae092042dee81405e9d5a31c0c00c9127" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>set_tid</name></member>
+      <member refid="classnest_1_1Target_1a588ac5c555391178c44364f5de87c58f" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>Target</name></member>
+      <member refid="classnest_1_1Target_1a0fed97753f4dd8c66cf80002b0f26599" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>Target</name></member>
+      <member refid="classnest_1_1Target_1a60e0de5be4e428a2940b22a238a66f60" prot="public" virt="non-virtual"><scope>nest::OffGridTarget</scope><name>Target</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

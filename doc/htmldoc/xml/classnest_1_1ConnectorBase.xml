@@ -1,0 +1,607 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1ConnectorBase" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>nest::ConnectorBase</compoundname>
+    <derivedcompoundref refid="classnest_1_1Connector" prot="public" virt="non-virtual">nest::Connector&lt; ConnectionT &gt;</derivedcompoundref>
+    <includes refid="connector__base_8h" local="no">connector_base.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a2eef2a906c557e1970b66eefa6b99ec6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual nest::ConnectorBase::~ConnectorBase</definition>
+        <argsstring>()</argsstring>
+        <name>~ConnectorBase</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="67" column="11" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a3b4a213d82353d094869ad9aee212ff0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="namespacenest_1a2d283b4b36e5ee3b6f1d84b35c9ed475" kindref="member">synindex</ref></type>
+        <definition>virtual synindex nest::ConnectorBase::get_syn_id</definition>
+        <argsstring>() const =0</argsstring>
+        <name>get_syn_id</name>
+        <reimplementedby refid="classnest_1_1Connector_1a4af56d7c626a5e6fdfeebe045ae07463">get_syn_id</reimplementedby>
+        <briefdescription>
+<para>Return syn_id_ of the synapse type of this <ref refid="classnest_1_1Connector" kindref="compound">Connector</ref> (index in list of synapse prototypes). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="73" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1abbdfcab73f32165ded037f7bd7651a58" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t nest::ConnectorBase::size</definition>
+        <argsstring>() const =0</argsstring>
+        <name>size</name>
+        <reimplementedby refid="classnest_1_1Connector_1a5a49541b9150121be9d15df761f7dec0">size</reimplementedby>
+        <briefdescription>
+<para>Return the number of connections in this <ref refid="classnest_1_1Connector" kindref="compound">Connector</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="78" column="18"/>
+        <referencedby refid="classnest_1_1ConnectionManager_1aa02010a909e00e2a88ac9d5e51533e4a" compoundref="connection__manager_8cpp" startline="1085" endline="1267">nest::ConnectionManager::get_connections</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a49c9e41fc5f64dcc65f74dbeea69e7bb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_synapse_status</definition>
+        <argsstring>(const size_t tid, const size_t lcid, DictionaryDatum &amp;dict) const =0</argsstring>
+        <name>get_synapse_status</name>
+        <reimplementedby refid="classnest_1_1Connector_1a6f9a224372f1245faeb5581b4ef81560">get_synapse_status</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <briefdescription>
+<para>Write status of the connection at position lcid to the dictionary dict. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="84" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a1ad2147af10434a0655ac2dd29d0e029" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::set_synapse_status</definition>
+        <argsstring>(const size_t lcid, const DictionaryDatum &amp;dict, ConnectorModel &amp;cm)=0</argsstring>
+        <name>set_synapse_status</name>
+        <reimplementedby refid="classnest_1_1Connector_1a0f7e5d847f688e755057d6899cd76aac">set_synapse_status</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1ConnectorModel" kindref="compound">ConnectorModel</ref> &amp;</type>
+          <declname>cm</declname>
+        </param>
+        <briefdescription>
+<para>Set status of the connection at position lcid according to the dictionary dict. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="90" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a82c8aa72b247ec8164bf7fbc9e26609a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_connection</definition>
+        <argsstring>(const size_t source_node_id, const size_t target_node_id, const size_t tid, const size_t lcid, const long synapse_label, std::deque&lt; ConnectionID &gt; &amp;conns) const =0</argsstring>
+        <name>get_connection</name>
+        <reimplementedby refid="classnest_1_1Connector_1a90ff17ee23df7ac7fdb50ce3cd39617a">get_connection</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>source_node_id</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>target_node_id</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>const long</type>
+          <declname>synapse_label</declname>
+        </param>
+        <param>
+          <type>std::deque&lt; <ref refid="classnest_1_1ConnectionID" kindref="compound">ConnectionID</ref> &gt; &amp;</type>
+          <declname>conns</declname>
+        </param>
+        <briefdescription>
+<para>Add <ref refid="classnest_1_1ConnectionID" kindref="compound">ConnectionID</ref> with given source_node_id and lcid to conns. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If target_node_id is given, only add connection if target_node_id matches the node_id of the target of the connection. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="97" column="16"/>
+        <referencedby refid="classnest_1_1ConnectionManager_1aa02010a909e00e2a88ac9d5e51533e4a" compoundref="connection__manager_8cpp" startline="1085" endline="1267">nest::ConnectionManager::get_connections</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a213245ec4de935ab08c8fe30bd5c5447" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_connection_with_specified_targets</definition>
+        <argsstring>(const size_t source_node_id, const std::vector&lt; size_t &gt; &amp;target_neuron_node_ids, const size_t tid, const size_t lcid, const long synapse_label, std::deque&lt; ConnectionID &gt; &amp;conns) const =0</argsstring>
+        <name>get_connection_with_specified_targets</name>
+        <reimplementedby refid="classnest_1_1Connector_1a3417709b5b31ecd3361dca0400d2b993">get_connection_with_specified_targets</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>source_node_id</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>target_neuron_node_ids</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>const long</type>
+          <declname>synapse_label</declname>
+        </param>
+        <param>
+          <type>std::deque&lt; <ref refid="classnest_1_1ConnectionID" kindref="compound">ConnectionID</ref> &gt; &amp;</type>
+          <declname>conns</declname>
+        </param>
+        <briefdescription>
+<para>Add <ref refid="classnest_1_1ConnectionID" kindref="compound">ConnectionID</ref> with given source_node_id and lcid to conns. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If target_neuron_node_ids is given, only add connection if target_neuron_node_ids contains the node ID of the target of the connection. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="109" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a67b08882a4091d3a8244f751251f9a76" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_all_connections</definition>
+        <argsstring>(const size_t source_node_id, const size_t target_node_id, const size_t tid, const long synapse_label, std::deque&lt; ConnectionID &gt; &amp;conns) const =0</argsstring>
+        <name>get_all_connections</name>
+        <reimplementedby refid="classnest_1_1Connector_1a7ccb70820eb838c14de71e02fb131dea">get_all_connections</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>source_node_id</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>target_node_id</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const long</type>
+          <declname>synapse_label</declname>
+        </param>
+        <param>
+          <type>std::deque&lt; <ref refid="classnest_1_1ConnectionID" kindref="compound">ConnectionID</ref> &gt; &amp;</type>
+          <declname>conns</declname>
+        </param>
+        <briefdescription>
+<para>Add ConnectionIDs with given source_node_id to conns, looping over all lcids. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If target_node_id is given, only add connection if target_node_id matches the node ID of the target of the connection. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="121" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a064db0fc415bf29dfc5f3b573b17c62c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_source_lcids</definition>
+        <argsstring>(const size_t tid, const size_t target_node_id, std::vector&lt; size_t &gt; &amp;source_lcids) const =0</argsstring>
+        <name>get_source_lcids</name>
+        <reimplementedby refid="classnest_1_1Connector_1af0e3887e01a352709c284672c250efee">get_source_lcids</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>target_node_id</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; size_t &gt; &amp;</type>
+          <declname>source_lcids</declname>
+        </param>
+        <briefdescription>
+<para>For a given target_node_id add lcids of all connections with matching node ID of target to source_lcids. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="132" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1aeda409712e4ce1814c29761aac0b32a1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::get_target_node_ids</definition>
+        <argsstring>(const size_t tid, const size_t start_lcid, const std::string &amp;post_synaptic_element, std::vector&lt; size_t &gt; &amp;target_node_ids) const =0</argsstring>
+        <name>get_target_node_ids</name>
+        <reimplementedby refid="classnest_1_1Connector_1a6a7e13c1dd308abcf5e0a7e1c232e1db">get_target_node_ids</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>start_lcid</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>post_synaptic_element</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; size_t &gt; &amp;</type>
+          <declname>target_node_ids</declname>
+        </param>
+        <briefdescription>
+<para>For a given start_lcid add node IDs of all targets that belong to the same source to target_node_ids. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="138" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1af60bc414bf939ac6a1ec1a786cb33850" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t nest::ConnectorBase::get_target_node_id</definition>
+        <argsstring>(const size_t tid, const unsigned int lcid) const =0</argsstring>
+        <name>get_target_node_id</name>
+        <reimplementedby refid="classnest_1_1Connector_1abbb0e3fde2890059a04b4f30544f212e">get_target_node_id</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>lcid</declname>
+        </param>
+        <briefdescription>
+<para>For a given lcid return the node ID of the target of the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="146" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1ae707bfd3314afce53904ed81602ea07c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::send_to_all</definition>
+        <argsstring>(const size_t tid, const std::vector&lt; ConnectorModel * &gt; &amp;cm, Event &amp;e)=0</argsstring>
+        <name>send_to_all</name>
+        <reimplementedby refid="classnest_1_1Connector_1a02469d68a6fee863231b386948e9aa5b">send_to_all</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classnest_1_1ConnectorModel" kindref="compound">ConnectorModel</ref> * &gt; &amp;</type>
+          <declname>cm</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Event" kindref="compound">Event</ref> &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Send the event e to all connections of this <ref refid="classnest_1_1Connector" kindref="compound">Connector</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="151" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a81b5b8267fbe423f32162a0a86edae26" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t nest::ConnectorBase::send</definition>
+        <argsstring>(const size_t tid, const size_t lcid, const std::vector&lt; ConnectorModel * &gt; &amp;cm, Event &amp;e)=0</argsstring>
+        <name>send</name>
+        <reimplementedby refid="classnest_1_1Connector_1a6497fa2c9424f913538285fe1b21f208">send</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classnest_1_1ConnectorModel" kindref="compound">ConnectorModel</ref> * &gt; &amp;</type>
+          <declname>cm</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Event" kindref="compound">Event</ref> &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Send the event e to the connection at position lcid. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Return bool indicating whether the following connection belongs to the same source. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="158" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1aa8c8cea8940c66f34d34a78d3644b3eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::send_weight_event</definition>
+        <argsstring>(const size_t tid, const unsigned int lcid, Event &amp;e, const CommonSynapseProperties &amp;cp)=0</argsstring>
+        <name>send_weight_event</name>
+        <reimplementedby refid="classnest_1_1Connector_1aae0a5f7e50b67ecd5cd4a410d9d732e4">send_weight_event</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const unsigned int</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Event" kindref="compound">Event</ref> &amp;</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1CommonSynapseProperties" kindref="compound">CommonSynapseProperties</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="161" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a05eae2145e6b902b375ba977b2a25132" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::trigger_update_weight</definition>
+        <argsstring>(const long vt_node_id, const size_t tid, const std::vector&lt; spikecounter &gt; &amp;dopa_spikes, const double t_trig, const std::vector&lt; ConnectorModel * &gt; &amp;cm)=0</argsstring>
+        <name>trigger_update_weight</name>
+        <reimplementedby refid="classnest_1_1Connector_1a57e30347f4e29a07e0c81dd8442ebc92">trigger_update_weight</reimplementedby>
+        <param>
+          <type>const long</type>
+          <declname>vt_node_id</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classnest_1_1spikecounter" kindref="compound">spikecounter</ref> &gt; &amp;</type>
+          <declname>dopa_spikes</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>t_trig</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classnest_1_1ConnectorModel" kindref="compound">ConnectorModel</ref> * &gt; &amp;</type>
+          <declname>cm</declname>
+        </param>
+        <briefdescription>
+<para>Update weights of dopamine modulated STDP connections. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="166" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a5501e2d12e37fa05b93b4c77ce7d8b4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::sort_connections</definition>
+        <argsstring>(BlockVector&lt; Source &gt; &amp;)=0</argsstring>
+        <name>sort_connections</name>
+        <reimplementedby refid="classnest_1_1Connector_1acd9e81a181501c402d58b190b62f5e79">sort_connections</reimplementedby>
+        <param>
+          <type><ref refid="classBlockVector" kindref="compound">BlockVector</ref>&lt; <ref refid="classnest_1_1Source" kindref="compound">Source</ref> &gt; &amp;</type>
+        </param>
+        <briefdescription>
+<para>Sort connections according to source node IDs. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="175" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1aeff14e3b452b67366002fd45967bbbac" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::set_source_has_more_targets</definition>
+        <argsstring>(const size_t lcid, const bool has_more_targets)=0</argsstring>
+        <name>set_source_has_more_targets</name>
+        <reimplementedby refid="classnest_1_1Connector_1ac01907fd14f55065501c7a23fa32d046">set_source_has_more_targets</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>has_more_targets</declname>
+        </param>
+        <briefdescription>
+<para>Set a flag in the connection indicating whether the following connection belongs to the same source. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="181" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1af98fa458c458e7e2c09e1e2bb5ad6e39" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t nest::ConnectorBase::find_first_target</definition>
+        <argsstring>(const size_t tid, const size_t start_lcid, const size_t target_node_id) const =0</argsstring>
+        <name>find_first_target</name>
+        <reimplementedby refid="classnest_1_1Connector_1a815b9bd99d250bc53a4868e5a14c172d">find_first_target</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>start_lcid</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>target_node_id</declname>
+        </param>
+        <briefdescription>
+<para>Return lcid of the first connection after start_lcid (inclusive) where the node_id of the target matches target_node_id. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If there are no matches, the function returns invalid_index. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="188" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a97ae39742f2746dc416a81ca64013a3b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t nest::ConnectorBase::find_matching_target</definition>
+        <argsstring>(const size_t tid, const std::vector&lt; size_t &gt; &amp;matching_lcids, const size_t target_node_id) const =0</argsstring>
+        <name>find_matching_target</name>
+        <reimplementedby refid="classnest_1_1Connector_1a22e9fa70a2028f9e9eba685890e3a2b8">find_matching_target</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>matching_lcids</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>target_node_id</declname>
+        </param>
+        <briefdescription>
+<para>Return lcid of first connection where the node ID of the target matches target_node_id; consider only the connections with lcids given in matching_lcids. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If there is no match, the function returns invalid_index. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="196" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a71569873aad25a2eb76077aedca50ad9" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::disable_connection</definition>
+        <argsstring>(const size_t lcid)=0</argsstring>
+        <name>disable_connection</name>
+        <reimplementedby refid="classnest_1_1Connector_1a4bd83598e606907813cff0d3a0e1a57a">disable_connection</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>lcid</declname>
+        </param>
+        <briefdescription>
+<para>Disable the transfer of events through the connection at position lcid. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="204" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ConnectorBase_1a1d2d309a74b3b8cbd6a38ecd449046b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnectorBase::remove_disabled_connections</definition>
+        <argsstring>(const size_t first_disabled_index)=0</argsstring>
+        <name>remove_disabled_connections</name>
+        <reimplementedby refid="classnest_1_1Connector_1a509ed35fdb1e490edcd94f74d9b1b7dc">remove_disabled_connections</reimplementedby>
+        <param>
+          <type>const size_t</type>
+          <declname>first_disabled_index</declname>
+        </param>
+        <briefdescription>
+<para>Remove disabled connections from the connector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="209" column="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Base class to allow storing Connectors for different synapse types in vectors. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>We define the interface here to avoid casting. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>nest::Connector&lt; ConnectionT &gt;</label>
+        <link refid="classnest_1_1Connector"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>nest::ConnectorBase</label>
+        <link refid="classnest_1_1ConnectorBase"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" line="60" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connector_base.h" bodystart="61" bodyend="210"/>
+    <listofallmembers>
+      <member refid="classnest_1_1ConnectorBase_1a71569873aad25a2eb76077aedca50ad9" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>disable_connection</name></member>
+      <member refid="classnest_1_1ConnectorBase_1af98fa458c458e7e2c09e1e2bb5ad6e39" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>find_first_target</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a97ae39742f2746dc416a81ca64013a3b" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>find_matching_target</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a67b08882a4091d3a8244f751251f9a76" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_all_connections</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a82c8aa72b247ec8164bf7fbc9e26609a" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_connection</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a213245ec4de935ab08c8fe30bd5c5447" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_connection_with_specified_targets</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a064db0fc415bf29dfc5f3b573b17c62c" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_source_lcids</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a3b4a213d82353d094869ad9aee212ff0" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_syn_id</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a49c9e41fc5f64dcc65f74dbeea69e7bb" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_synapse_status</name></member>
+      <member refid="classnest_1_1ConnectorBase_1af60bc414bf939ac6a1ec1a786cb33850" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_target_node_id</name></member>
+      <member refid="classnest_1_1ConnectorBase_1aeda409712e4ce1814c29761aac0b32a1" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>get_target_node_ids</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a1d2d309a74b3b8cbd6a38ecd449046b4" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>remove_disabled_connections</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a81b5b8267fbe423f32162a0a86edae26" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>send</name></member>
+      <member refid="classnest_1_1ConnectorBase_1ae707bfd3314afce53904ed81602ea07c" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>send_to_all</name></member>
+      <member refid="classnest_1_1ConnectorBase_1aa8c8cea8940c66f34d34a78d3644b3eb" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>send_weight_event</name></member>
+      <member refid="classnest_1_1ConnectorBase_1aeff14e3b452b67366002fd45967bbbac" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>set_source_has_more_targets</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a1ad2147af10434a0655ac2dd29d0e029" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>set_synapse_status</name></member>
+      <member refid="classnest_1_1ConnectorBase_1abbdfcab73f32165ded037f7bd7651a58" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>size</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a5501e2d12e37fa05b93b4c77ce7d8b4c" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>sort_connections</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a05eae2145e6b902b375ba977b2a25132" prot="public" virt="pure-virtual"><scope>nest::ConnectorBase</scope><name>trigger_update_weight</name></member>
+      <member refid="classnest_1_1ConnectorBase_1a2eef2a906c557e1970b66eefa6b99ec6" prot="public" virt="virtual"><scope>nest::ConnectorBase</scope><name>~ConnectorBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

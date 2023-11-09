@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::gif_psc_exp_multisynapse::Parameters_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ab271e4575ce6f84fb503b266e638bc3c" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::g_L_</definition>
+        <argsstring></argsstring>
+        <name>g_L_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="253" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="253" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a2036b23d1bec1f9f344fa5853b50dbe2" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::E_L_</definition>
+        <argsstring></argsstring>
+        <name>E_L_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="254" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="254" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a71dcf9ab55711877c7a160924b313a21" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::V_reset_</definition>
+        <argsstring></argsstring>
+        <name>V_reset_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="255" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1af4a2c8c9fe11c7b85d65cfda96044a2e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::Delta_V_</definition>
+        <argsstring></argsstring>
+        <name>Delta_V_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="256" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="256" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ac268dab1daca1c71f1b554244c1b5fc5" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::V_T_star_</definition>
+        <argsstring></argsstring>
+        <name>V_T_star_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="257" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="257" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1aaaa4ed17f22409f2aeb229b98d33019f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::lambda_0_</definition>
+        <argsstring></argsstring>
+        <name>lambda_0_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="258" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="258" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ae893fe530dd00c551d7cd3e28c902cc5" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::t_ref_</definition>
+        <argsstring></argsstring>
+        <name>t_ref_</name>
+        <briefdescription>
+<para>1/ms </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Refractory period in ms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="262" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="262" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ad66c0570c4ffd3b12a46af0c7a70b22d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::c_m_</definition>
+        <argsstring></argsstring>
+        <name>c_m_</name>
+        <briefdescription>
+<para>Membrane capacitance in pF. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="265" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="265" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a4cd642bde9579b16d0c130d529c6d4b7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::gif_psc_exp_multisynapse::Parameters_::tau_stc_</definition>
+        <argsstring></argsstring>
+        <name>tau_stc_</name>
+        <briefdescription>
+<para>We use stc and sfa, respectively instead of eta and gamma (mentioned in the references). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>List of spike triggered current time constant in ms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="271" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="271" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a67e4700242e7435a7c73943833c21df5" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::gif_psc_exp_multisynapse::Parameters_::q_stc_</definition>
+        <argsstring></argsstring>
+        <name>q_stc_</name>
+        <briefdescription>
+<para>List of spike triggered current jumps in nA. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="274" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="274" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ac4f1c23b2df448925ff506d09c4085ac" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::gif_psc_exp_multisynapse::Parameters_::tau_sfa_</definition>
+        <argsstring></argsstring>
+        <name>tau_sfa_</name>
+        <briefdescription>
+<para>List of adaptive threshold time constant in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="277" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="277" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a58ab557774279a4404f5e8b25547aa72" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::gif_psc_exp_multisynapse::Parameters_::q_sfa_</definition>
+        <argsstring></argsstring>
+        <name>q_sfa_</name>
+        <briefdescription>
+<para>List of adaptive threshold jumps in mV. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="280" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="280" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a96f890da4fed78abdd90cc6c24f8f63f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::gif_psc_exp_multisynapse::Parameters_::tau_syn_</definition>
+        <argsstring></argsstring>
+        <name>tau_syn_</name>
+        <briefdescription>
+<para><ref refid="classnest_1_1Time" kindref="compound">Time</ref> constants of synaptic currents in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="283" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a3728c06e97cff4de278d50cdf28aa7eb" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nest::gif_psc_exp_multisynapse::Parameters_::has_connections_</definition>
+        <argsstring></argsstring>
+        <name>has_connections_</name>
+        <briefdescription>
+<para>boolean flag which indicates whether the neuron has connections </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="286" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a2fcb529560f5edf468134534d4b6a713" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::gif_psc_exp_multisynapse::Parameters_::I_e_</definition>
+        <argsstring></argsstring>
+        <name>I_e_</name>
+        <briefdescription>
+<para>External DC current. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="289" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a21563fa4e64d058059cf387730e0c556" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::gif_psc_exp_multisynapse::Parameters_::Parameters_</definition>
+        <argsstring>()</argsstring>
+        <name>Parameters_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="291" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.cpp" bodystart="65" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a5c5b47fe873f6ecab810ac2245fa6d68" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::gif_psc_exp_multisynapse::Parameters_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="293" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.cpp" bodystart="102" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a910f8608b89c61ed07a96ea1497b24a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::gif_psc_exp_multisynapse::Parameters_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, Node *node)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+<para>Set values from dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="294" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.cpp" bodystart="134" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1aa83196b86ef802fa2f080eb16e61bdf5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nest::gif_psc_exp_multisynapse::Parameters_::n_receptors_</definition>
+        <argsstring>() const</argsstring>
+        <name>n_receptors_</name>
+        <briefdescription>
+<para>Return the number of receptor ports. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="298" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="298" bodyend="301"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Independent parameters of the model. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" line="251" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/gif_psc_exp_multisynapse.h" bodystart="252" bodyend="302"/>
+    <listofallmembers>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ad66c0570c4ffd3b12a46af0c7a70b22d" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>c_m_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1af4a2c8c9fe11c7b85d65cfda96044a2e" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>Delta_V_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a2036b23d1bec1f9f344fa5853b50dbe2" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>E_L_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ab271e4575ce6f84fb503b266e638bc3c" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>g_L_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a5c5b47fe873f6ecab810ac2245fa6d68" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>get</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a3728c06e97cff4de278d50cdf28aa7eb" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>has_connections_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a2fcb529560f5edf468134534d4b6a713" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>I_e_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1aaaa4ed17f22409f2aeb229b98d33019f" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>lambda_0_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1aa83196b86ef802fa2f080eb16e61bdf5" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>n_receptors_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a21563fa4e64d058059cf387730e0c556" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a58ab557774279a4404f5e8b25547aa72" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>q_sfa_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a67e4700242e7435a7c73943833c21df5" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>q_stc_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a910f8608b89c61ed07a96ea1497b24a5" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>set</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ae893fe530dd00c551d7cd3e28c902cc5" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>t_ref_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ac4f1c23b2df448925ff506d09c4085ac" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>tau_sfa_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a4cd642bde9579b16d0c130d529c6d4b7" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>tau_stc_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a96f890da4fed78abdd90cc6c24f8f63f" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>tau_syn_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1a71dcf9ab55711877c7a160924b313a21" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>V_reset_</name></member>
+      <member refid="structnest_1_1gif__psc__exp__multisynapse_1_1Parameters___1ac268dab1daca1c71f1b554244c1b5fc5" prot="public" virt="non-virtual"><scope>nest::gif_psc_exp_multisynapse::Parameters_</scope><name>V_T_star_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

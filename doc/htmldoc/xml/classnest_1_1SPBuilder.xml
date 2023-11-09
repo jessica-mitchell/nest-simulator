@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1SPBuilder" kind="class" language="C++" prot="public">
+    <compoundname>nest::SPBuilder</compoundname>
+    <basecompoundref refid="classnest_1_1ConnBuilder" prot="public" virt="non-virtual">nest::ConnBuilder</basecompoundref>
+    <includes refid="conn__builder_8h" local="no">conn_builder.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnest_1_1SPBuilder_1aad5ab59156ce383392c60a99c7affdc5" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string nest::SPBuilder::name_</definition>
+        <argsstring></argsstring>
+        <name>name_</name>
+        <briefdescription>
+<para>The name of the <ref refid="classnest_1_1SPBuilder" kindref="compound">SPBuilder</ref>; used to identify its properties in the structural_plasticity_synapses kernel attributes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="526" column="15" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="526" bodyend="-1"/>
+        <referencedby refid="classnest_1_1SPBuilder_1a76c2d56d8845ee8e9048ef5f0c3ce009" compoundref="conn__builder_8h" startline="507" endline="510">get_name</referencedby>
+        <referencedby refid="classnest_1_1SPBuilder_1a354a53d31d9759a811923ee5ce01b495" compoundref="conn__builder_8h" startline="501" endline="504">set_name</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1ad52b37546d512e5d7c9e77b2a3e0d897" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::SPBuilder::SPBuilder</definition>
+        <argsstring>(NodeCollectionPTR sources, NodeCollectionPTR targets, const DictionaryDatum &amp;conn_spec, const std::vector&lt; DictionaryDatum &gt; &amp;syn_spec)</argsstring>
+        <name>SPBuilder</name>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>sources</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>targets</declname>
+        </param>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <declname>conn_spec</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; DictionaryDatum &gt; &amp;</type>
+          <declname>syn_spec</declname>
+        </param>
+        <briefdescription>
+<para>The <ref refid="classnest_1_1SPBuilder" kindref="compound">SPBuilder</ref> is in charge of the creation of synapses during the simulation under the control of the structural plasticity manager. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sources</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the source nodes on which synapses can be created/deleted </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>targets</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the target nodes on which synapses can be created/deleted </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>conn_spec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>connectivity specification </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>syn_spec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>synapse specifications </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="483" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1715" bodyend="1726"/>
+        <references refid="classnest_1_1ConnBuilder_1af814310aade0ed95f5061372325258d2" compoundref="conn__builder_8h" startline="215">nest::ConnBuilder::use_structural_plasticity_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a799282c1a580a02f438d48916ff1780a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; nest::SPBuilder::get_pre_synaptic_element_name</definition>
+        <argsstring>() const</argsstring>
+        <name>get_pre_synaptic_element_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="489" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="489" bodyend="492"/>
+        <references refid="classnest_1_1ConnBuilder_1a8fe6cb403532f310723183fad8154308" compoundref="conn__builder_8h" startline="212">nest::ConnBuilder::pre_synaptic_element_name_</references>
+        <referencedby refid="classnest_1_1SPManager_1a6c5563d7088a144d3b630e4ed8faee3b" compoundref="sp__manager_8cpp" startline="292" endline="368">nest::SPManager::update_structural_plasticity</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a1ff84da3b2e9b9daabb8b664d176812b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; nest::SPBuilder::get_post_synaptic_element_name</definition>
+        <argsstring>() const</argsstring>
+        <name>get_post_synaptic_element_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="495" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="495" bodyend="498"/>
+        <references refid="classnest_1_1ConnBuilder_1aabd9afd84b97864eaee4fda7d43160e4" compoundref="conn__builder_8h" startline="213">nest::ConnBuilder::post_synaptic_element_name_</references>
+        <referencedby refid="classnest_1_1SPManager_1a6c5563d7088a144d3b630e4ed8faee3b" compoundref="sp__manager_8cpp" startline="292" endline="368">nest::SPManager::update_structural_plasticity</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a354a53d31d9759a811923ee5ce01b495" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::set_name</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>set_name</name>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="501" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="501" bodyend="504"/>
+        <references refid="classnest_1_1SPBuilder_1aad5ab59156ce383392c60a99c7affdc5" compoundref="conn__builder_8h" startline="526">name_</references>
+        <referencedby refid="classnest_1_1SPManager_1a826cbcc83e2da5a24acf3345917e7921" compoundref="sp__manager_8cpp" startline="101" endline="151">nest::SPManager::set_status</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a76c2d56d8845ee8e9048ef5f0c3ce009" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string nest::SPBuilder::get_name</definition>
+        <argsstring>() const</argsstring>
+        <name>get_name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="507" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="507" bodyend="510"/>
+        <references refid="classnest_1_1SPBuilder_1aad5ab59156ce383392c60a99c7affdc5" compoundref="conn__builder_8h" startline="526">name_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1af4e927a94198bac939751636a526f353" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::update_delay</definition>
+        <argsstring>(long &amp;d) const</argsstring>
+        <name>update_delay</name>
+        <param>
+          <type>long &amp;</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+<para>Writes the default delay of the connection model, if the <ref refid="classnest_1_1SPBuilder" kindref="compound">SPBuilder</ref> only uses the default delay. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If not, the min/max_delay has to be specified explicitly with the kernel status. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="517" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1729" bodyend="1737"/>
+        <references refid="namespacenest_1_1names_1a8881fb5c6cc400d4eb90a2035d9a2df5">nest::names::d</references>
+        <references refid="namespacenest_1_1names_1ab9cc026669479769b697c033fed944aa">nest::names::delay</references>
+        <references refid="classnest_1_1ModelManager_1a4ee6b18a6bad6d272e07d838a2af7f1a" compoundref="model__manager_8cpp" startline="394" endline="410">nest::ModelManager::get_connector_defaults</references>
+        <references refid="classnest_1_1Time_1abd566804da223bdb18dd0f20bfea6f32" compoundref="nest__time_8h" startline="514" endline="528">nest::Time::get_steps</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+        <references refid="classnest_1_1KernelManager_1a3558ff4918f9a1a561a11f65ae757c76" compoundref="kernel__manager_8h" startline="334">nest::KernelManager::model_manager</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1af0b865b37b33960faaaa883bfe0877a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::sp_connect</definition>
+        <argsstring>(const std::vector&lt; size_t &gt; &amp;sources, const std::vector&lt; size_t &gt; &amp;targets)</argsstring>
+        <name>sp_connect</name>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>sources</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>targets</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Only for internal use by <ref refid="classnest_1_1SPManager" kindref="compound">SPManager</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="522" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1740" bodyend="1752"/>
+        <references refid="classnest_1_1VPManager_1a384d1f21b0b60825bc0bc12e17285071" compoundref="vp__manager_8h" startline="177" endline="180">nest::VPManager::get_num_threads</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+        <references refid="namespacenest_1_1names_1a8d0e9103ea1f8b13f4cd02e143186b8d">nest::names::targets</references>
+        <references refid="classnest_1_1KernelManager_1ae5288531d5c8bfa7d8c1f0bad6964fd2" compoundref="kernel__manager_8h" startline="327">nest::KernelManager::vp_manager</references>
+        <referencedby refid="classnest_1_1SPManager_1a52c3ee70fa6e02f46955b7c65f5e7739" compoundref="sp__manager_8cpp" startline="371" endline="404">nest::SPManager::create_synapses</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a266ad8a84e626b03f822fddebec6d74f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::connect_</definition>
+        <argsstring>() override</argsstring>
+        <name>connect_</name>
+        <reimplements refid="classnest_1_1ConnBuilder_1abbe0a9ef49761e33196033449eb409cc">connect_</reimplements>
+        <briefdescription>
+<para>Implements the actual connection algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="529" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1755" bodyend="1758"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a7fd14c92d46e3642eca834b9fcf51d64" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::connect_</definition>
+        <argsstring>(NodeCollectionPTR sources, NodeCollectionPTR targets)</argsstring>
+        <name>connect_</name>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>sources</declname>
+        </param>
+        <param>
+          <type><ref refid="namespacenest_1accbbbd2c49375cc6c2edd964cccda54e" kindref="member">NodeCollectionPTR</ref></type>
+          <declname>targets</declname>
+        </param>
+        <briefdescription>
+<para>In charge of dynamically creating the new synapses. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="530" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1764" bodyend="1767"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1a20a748794384fe408340f5aaaad38f50" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::SPBuilder::connect_</definition>
+        <argsstring>(const std::vector&lt; size_t &gt; &amp;sources, const std::vector&lt; size_t &gt; &amp;targets)</argsstring>
+        <name>connect_</name>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>sources</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; size_t &gt; &amp;</type>
+          <declname>targets</declname>
+        </param>
+        <briefdescription>
+<para>In charge of dynamically creating the new synapses. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sources</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>nodes from which synapses can be created </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>targets</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target nodes for the newly created synapses </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="538" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.cpp" bodystart="1770" bodyend="1816"/>
+        <references refid="classnest_1_1NodeManager_1afc7adba69c51cbd6aff9aacc153dfd5a" compoundref="node__manager_8cpp" startline="421" endline="433">nest::NodeManager::get_node_or_proxy</references>
+        <references refid="classnest_1_1VPManager_1ab811ad881b97f0e77878099035a67875" compoundref="vp__manager_8h" startline="167" endline="174">nest::VPManager::get_thread_id</references>
+        <references refid="namespacenest_1a07a1ad60877524927aba155299f507c5" compoundref="nest_8cpp" startline="96" endline="99">nest::get_vp_specific_rng</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+        <references refid="classnest_1_1KernelManager_1a209742409c6552dbf3923b892a594db3" compoundref="kernel__manager_8h" startline="336">nest::KernelManager::node_manager</references>
+        <references refid="namespacenest_1_1names_1a8f3b23679799316ba69b9d6c98c69e3a">nest::names::target</references>
+        <references refid="namespacenest_1_1names_1a8d0e9103ea1f8b13f4cd02e143186b8d">nest::names::targets</references>
+        <references refid="classnest_1_1KernelManager_1ae5288531d5c8bfa7d8c1f0bad6964fd2" compoundref="kernel__manager_8h" startline="327">nest::KernelManager::vp_manager</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1SPBuilder_1abbe0a9ef49761e33196033449eb409cc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void nest::ConnBuilder::connect_</definition>
+        <argsstring>()=0</argsstring>
+        <name>connect_</name>
+        <reimplements refid="classnest_1_1ConnBuilder_1abbe0a9ef49761e33196033449eb409cc">connect_</reimplements>
+        <briefdescription>
+<para>Implements the actual connection algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="528" column="3"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>nest::SPBuilder</label>
+        <link refid="classnest_1_1SPBuilder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::ConnBuilder</label>
+        <link refid="classnest_1_1ConnBuilder"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>nest::SPBuilder</label>
+        <link refid="classnest_1_1SPBuilder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::ConnBuilder</label>
+        <link refid="classnest_1_1ConnBuilder"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" line="471" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/conn_builder.h" bodystart="472" bodyend="539"/>
+    <listofallmembers>
+      <member refid="classnest_1_1ConnBuilder_1a0a0cffe24ec8a736bafc21cf376a5078" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>all_parameters_scalar_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ae4f5e56dc411af3804240dd632c4f3ec" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>allow_autapses_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a59ab20628f392f86dd5c7d739e648c66" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>allow_multapses_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a11b9a728d3951c0355f5e2db7b7f1ba8" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>allows_autapses</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a2e62a7d61def6b534b3f05a5835b1c2a" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>allows_multapses</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a0ae6db966158075f5df56e21711aac38" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>change_connected_synaptic_elements</name></member>
+      <member refid="classnest_1_1ConnBuilder_1af42b52ab310ba85be486f334b8ac508a" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>ConnBuilder</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a54828d7220c7a68e98b83529e0405208" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>connect</name></member>
+      <member refid="classnest_1_1SPBuilder_1a266ad8a84e626b03f822fddebec6d74f" prot="protected" virt="virtual"><scope>nest::SPBuilder</scope><name>connect_</name></member>
+      <member refid="classnest_1_1SPBuilder_1a7fd14c92d46e3642eca834b9fcf51d64" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>connect_</name></member>
+      <member refid="classnest_1_1SPBuilder_1a20a748794384fe408340f5aaaad38f50" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>connect_</name></member>
+      <member refid="classnest_1_1SPBuilder_1abbe0a9ef49761e33196033449eb409cc" prot="protected" virt="virtual"><scope>nest::SPBuilder</scope><name>connect_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1aacdef9d1a02f25cd6b427cf4173ade5b" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>creates_symmetric_connections_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a4fafe51332d31c75a637d4837bbaea4d" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>disconnect</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a3e48d3be487889e2af93d8bc0c428f46" prot="protected" virt="virtual"><scope>nest::SPBuilder</scope><name>disconnect_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1abba02533d1aa42c88177b68ff11dd3f7" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>exceptions_raised_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ad650895baae7bb9140f62132344305db" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>get_default_delay</name></member>
+      <member refid="classnest_1_1SPBuilder_1a76c2d56d8845ee8e9048ef5f0c3ce009" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>get_name</name></member>
+      <member refid="classnest_1_1SPBuilder_1a1ff84da3b2e9b9daabb8b664d176812b" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>get_post_synaptic_element_name</name></member>
+      <member refid="classnest_1_1SPBuilder_1a799282c1a580a02f438d48916ff1780a" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>get_pre_synaptic_element_name</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a25ae0531e7f0b141ee9a9383103f1175" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>get_synapse_model</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ac46d2f5b591f00c2e1fed3e35e6b9b35" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>is_symmetric</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a90063b4c289115d9337a4bf3bc28bff8" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>loop_over_targets_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a15a2456e42f5637e1d8001ae73fa7e52" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>make_symmetric_</name></member>
+      <member refid="classnest_1_1SPBuilder_1aad5ab59156ce383392c60a99c7affdc5" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>name_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ae6927c7fa75b13b37b25fb0851cd5faa" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>param_dicts_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a615837aeb966f6f205c4c6d04cb6d6f9" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>parameters_requiring_skipping_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1aabd9afd84b97864eaee4fda7d43160e4" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>post_synaptic_element_name_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a8fe6cb403532f310723183fad8154308" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>pre_synaptic_element_name_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a1e5a7be0ac2f6bcc77a77d3e974a8e6d" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>requires_proxies</name></member>
+      <member refid="classnest_1_1SPBuilder_1a354a53d31d9759a811923ee5ce01b495" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>set_name</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a7002cc03c1ddf4cebad728374e875250" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>set_synaptic_element_names</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a608882b51ab31d07e7744ea89048f90a" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>single_connect_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a8787dccabdc862e8de75cfff748677e5" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>single_disconnect_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ac921a907ac546969cb8fca08463bfab3" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>skip_conn_parameter_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a464b9cad4d0148634d443398c1d7d5a9" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>sources_</name></member>
+      <member refid="classnest_1_1SPBuilder_1af0b865b37b33960faaaa883bfe0877a8" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>sp_connect</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a9480e4b0e2834e4ee8a4dcd24a02106b" prot="protected" virt="virtual"><scope>nest::SPBuilder</scope><name>sp_connect_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ae0b6de2eafc3c8a10286b5420bd1068d" prot="protected" virt="virtual"><scope>nest::SPBuilder</scope><name>sp_disconnect_</name></member>
+      <member refid="classnest_1_1SPBuilder_1ad52b37546d512e5d7c9e77b2a3e0d897" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>SPBuilder</name></member>
+      <member refid="classnest_1_1ConnBuilder_1ae01b03e86e9634b7dc9f6e6b08d123c5" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>supports_symmetric</name></member>
+      <member refid="classnest_1_1ConnBuilder_1aa3d9a5a951dd63b7e064da252e8c0f54" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>synapse_model_id_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a7cabed3a9ba94e4ef4cc401019bb824d" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>targets_</name></member>
+      <member refid="classnest_1_1SPBuilder_1af4e927a94198bac939751636a526f353" prot="public" virt="non-virtual"><scope>nest::SPBuilder</scope><name>update_delay</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a07b8602ca22d18365902e798cd2555ae" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>update_param_dict_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1af814310aade0ed95f5061372325258d2" prot="protected" virt="non-virtual"><scope>nest::SPBuilder</scope><name>use_structural_plasticity_</name></member>
+      <member refid="classnest_1_1ConnBuilder_1a8f4f6f5f4e9ac3ed75dd9f0cb6467740" prot="public" virt="virtual"><scope>nest::SPBuilder</scope><name>~ConnBuilder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

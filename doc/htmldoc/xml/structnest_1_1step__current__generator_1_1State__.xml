@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1step__current__generator_1_1State__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::step_current_generator::State_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1step__current__generator_1_1State___1a2957150be84fd749de0c81f735f994a5" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nest::step_current_generator::State_::I_</definition>
+        <argsstring></argsstring>
+        <name>I_</name>
+        <briefdescription>
+<para>Instantaneous current value; used for recording current. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="175" column="12" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1State___1a5239186013e144692b5154b4c21f1edc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::step_current_generator::State_::State_</definition>
+        <argsstring>()</argsstring>
+        <name>State_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="177" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="80" bodyend="83"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="173" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="174" bodyend="178"/>
+    <listofallmembers>
+      <member refid="structnest_1_1step__current__generator_1_1State___1a2957150be84fd749de0c81f735f994a5" prot="public" virt="non-virtual"><scope>nest::step_current_generator::State_</scope><name>I_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1State___1a5239186013e144692b5154b4c21f1edc" prot="public" virt="non-virtual"><scope>nest::step_current_generator::State_</scope><name>State_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

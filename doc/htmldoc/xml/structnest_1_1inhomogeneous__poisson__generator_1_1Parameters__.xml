@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::inhomogeneous_poisson_generator::Parameters_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a5b21ebcc7a14bf6ebcb4070ac9860e3d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classnest_1_1Time" kindref="compound">Time</ref> &gt;</type>
+        <definition>std::vector&lt; Time &gt; nest::inhomogeneous_poisson_generator::Parameters_::rate_times_</definition>
+        <argsstring></argsstring>
+        <name>rate_times_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="141" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1ad5bf8c17c966cba5909c02e96e1a1c35" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::inhomogeneous_poisson_generator::Parameters_::rate_values_</definition>
+        <argsstring></argsstring>
+        <name>rate_values_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="142" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a11b472256568ffb6701ad9e7b6e137b1" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nest::inhomogeneous_poisson_generator::Parameters_::allow_offgrid_times_</definition>
+        <argsstring></argsstring>
+        <name>allow_offgrid_times_</name>
+        <briefdescription>
+<para>Allow and round up rate times not on steps;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="145" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1ac0647bd574c63b8d3c6473e625385e82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::inhomogeneous_poisson_generator::Parameters_::Parameters_</definition>
+        <argsstring>()</argsstring>
+        <name>Parameters_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="147" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.cpp" bodystart="48" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a4593b4f54c62e0d5994e68d00a795bbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::inhomogeneous_poisson_generator::Parameters_::Parameters_</definition>
+        <argsstring>(const Parameters_ &amp;, Buffers_ &amp;)</argsstring>
+        <name>Parameters_</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+        </param>
+        <param>
+          <type>Buffers_ &amp;</type>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="148" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a117bebb02eee23e9187943b3048caf42" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::inhomogeneous_poisson_generator::Parameters_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Set values from dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="151" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.cpp" bodystart="61" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1af9a61106913bd967c99586f8da40616b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::inhomogeneous_poisson_generator::Parameters_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, Buffers_ &amp;, Node *)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type>Buffers_ &amp;</type>
+          <defname>b</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+        </param>
+        <briefdescription>
+<para>Align rate time to grid if necessary and insert it into rate_times_. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="153" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.cpp" bodystart="113" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1af2c78261577f5fd83d2113c58e81fe95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::inhomogeneous_poisson_generator::Parameters_::assert_valid_rate_time_and_insert</definition>
+        <argsstring>(const double t)</argsstring>
+        <name>assert_valid_rate_time_and_insert</name>
+        <param>
+          <type>const double</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="155" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.cpp" bodystart="77" bodyend="110"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" line="139" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/inhomogeneous_poisson_generator.h" bodystart="140" bodyend="156"/>
+    <listofallmembers>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a11b472256568ffb6701ad9e7b6e137b1" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>allow_offgrid_times_</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1af2c78261577f5fd83d2113c58e81fe95" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>assert_valid_rate_time_and_insert</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a117bebb02eee23e9187943b3048caf42" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>get</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1ac0647bd574c63b8d3c6473e625385e82" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a4593b4f54c62e0d5994e68d00a795bbb" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1a5b21ebcc7a14bf6ebcb4070ac9860e3d" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>rate_times_</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1ad5bf8c17c966cba5909c02e96e1a1c35" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>rate_values_</name></member>
+      <member refid="structnest_1_1inhomogeneous__poisson__generator_1_1Parameters___1af9a61106913bd967c99586f8da40616b" prot="public" virt="non-virtual"><scope>nest::inhomogeneous_poisson_generator::Parameters_</scope><name>set</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

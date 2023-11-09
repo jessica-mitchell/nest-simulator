@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structnest_1_1step__current__generator_1_1Parameters__" kind="struct" language="C++" prot="private">
+    <compoundname>nest::step_current_generator::Parameters_</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnest_1_1step__current__generator_1_1Parameters___1ac51b39555a54175add36f13fe7515b7c" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classnest_1_1Time" kindref="compound">Time</ref> &gt;</type>
+        <definition>std::vector&lt; Time &gt; nest::step_current_generator::Parameters_::amp_time_stamps_</definition>
+        <argsstring></argsstring>
+        <name>amp_time_stamps_</name>
+        <briefdescription>
+<para>Times of amplitude changes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="145" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1step__current__generator_1_1Parameters___1a86091216c25b89d05694c5c3148c0d87" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; nest::step_current_generator::Parameters_::amp_values_</definition>
+        <argsstring></argsstring>
+        <name>amp_values_</name>
+        <briefdescription>
+<para>Amplitude values activated at given times. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="148" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structnest_1_1step__current__generator_1_1Parameters___1a4d17a3845ceaafab61f319a1b69c36de" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nest::step_current_generator::Parameters_::allow_offgrid_amp_times_</definition>
+        <argsstring></argsstring>
+        <name>allow_offgrid_amp_times_</name>
+        <briefdescription>
+<para>Allow and round up amplitude times not on steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="151" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1ada7cf5867573cd81de229bb824382c88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::step_current_generator::Parameters_::Parameters_</definition>
+        <argsstring>()</argsstring>
+        <name>Parameters_</name>
+        <briefdescription>
+<para>Sets default parameter values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="153" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="51" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1a0641f7d1807b1642dbdc790dfd014c29" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::step_current_generator::Parameters_::Parameters_</definition>
+        <argsstring>(const Parameters_ &amp;, Buffers_ &amp;)</argsstring>
+        <name>Parameters_</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+        </param>
+        <param>
+          <type>Buffers_ &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="154" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1a7a6ae37e19c562b0fc97d3bccfdca605" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::step_current_generator::Parameters_::Parameters_</definition>
+        <argsstring>(const Parameters_ &amp;)</argsstring>
+        <name>Parameters_</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="155" column="5" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="58" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1ae79fe30ad355d34890193d25ca3bfd55" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Parameters_ &amp;</type>
+        <definition>nest::step_current_generator::Parameters_ &amp; nest::step_current_generator::Parameters_::operator=</definition>
+        <argsstring>(const Parameters_ &amp;p)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const Parameters_ &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="156" column="17" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="66" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1a8a1bc6eac4bc3c725ace4f6f9da2f133" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::step_current_generator::Parameters_::get</definition>
+        <argsstring>(DictionaryDatum &amp;) const</argsstring>
+        <name>get</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <briefdescription>
+<para>Store current values in dictionary Set values from dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="158" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="104" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1abf81a243b5e960ea59cc7f707af12098" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::step_current_generator::Parameters_::set</definition>
+        <argsstring>(const DictionaryDatum &amp;, Buffers_ &amp;, Node *)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <defname>d</defname>
+        </param>
+        <param>
+          <type>Buffers_ &amp;</type>
+          <defname>b</defname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="160" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="162" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="structnest_1_1step__current__generator_1_1Parameters___1a6470eb3b8dedabc62f54f2703f32c258" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1Time" kindref="compound">Time</ref></type>
+        <definition>nest::Time nest::step_current_generator::Parameters_::validate_time_</definition>
+        <argsstring>(double, const Time &amp;)</argsstring>
+        <name>validate_time_</name>
+        <param>
+          <type>double</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1Time" kindref="compound">Time</ref> &amp;</type>
+          <defname>t_previous</defname>
+        </param>
+        <briefdescription>
+<para>Return time as <ref refid="classnest_1_1Time" kindref="compound">Time</ref> object if valid, otherwise throw <ref refid="classnest_1_1BadProperty" kindref="compound">BadProperty</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>amplitude</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time, ms </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>previous</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time stamp </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="168" column="10" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.cpp" bodystart="118" bodyend="159"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Store independent parameters of the model. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" line="142" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/step_current_generator.h" bodystart="143" bodyend="169"/>
+    <listofallmembers>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a4d17a3845ceaafab61f319a1b69c36de" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>allow_offgrid_amp_times_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1ac51b39555a54175add36f13fe7515b7c" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>amp_time_stamps_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a86091216c25b89d05694c5c3148c0d87" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>amp_values_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a8a1bc6eac4bc3c725ace4f6f9da2f133" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>get</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1ae79fe30ad355d34890193d25ca3bfd55" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>operator=</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1ada7cf5867573cd81de229bb824382c88" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a0641f7d1807b1642dbdc790dfd014c29" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a7a6ae37e19c562b0fc97d3bccfdca605" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>Parameters_</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1abf81a243b5e960ea59cc7f707af12098" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>set</name></member>
+      <member refid="structnest_1_1step__current__generator_1_1Parameters___1a6470eb3b8dedabc62f54f2703f32c258" prot="public" virt="non-virtual"><scope>nest::step_current_generator::Parameters_</scope><name>validate_time_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

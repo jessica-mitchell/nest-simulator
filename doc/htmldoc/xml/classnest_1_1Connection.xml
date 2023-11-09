@@ -1,0 +1,818 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1Connection" kind="class" language="C++" prot="public">
+    <compoundname>nest::Connection</compoundname>
+    <derivedcompoundref refid="classnest_1_1bernoulli__synapse" prot="public" virt="non-virtual">nest::bernoulli_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1clopath__synapse" prot="public" virt="non-virtual">nest::clopath_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1cont__delay__synapse" prot="public" virt="non-virtual">nest::cont_delay_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1diffusion__connection" prot="public" virt="non-virtual">nest::diffusion_connection&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1gap__junction" prot="public" virt="non-virtual">nest::gap_junction&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1ht__synapse" prot="public" virt="non-virtual">nest::ht_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1jonke__synapse" prot="public" virt="non-virtual">nest::jonke_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1quantal__stp__synapse" prot="public" virt="non-virtual">nest::quantal_stp_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1rate__connection__delayed" prot="public" virt="non-virtual">nest::rate_connection_delayed&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1rate__connection__instantaneous" prot="public" virt="non-virtual">nest::rate_connection_instantaneous&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1static__synapse" prot="public" virt="non-virtual">nest::static_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1static__synapse__hom__w" prot="public" virt="non-virtual">nest::static_synapse_hom_w&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__dopamine__synapse" prot="public" virt="non-virtual">nest::stdp_dopamine_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__facetshw__synapse__hom" prot="public" virt="non-virtual">nest::stdp_facetshw_synapse_hom&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__nn__pre__centered__synapse" prot="public" virt="non-virtual">nest::stdp_nn_pre_centered_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__nn__restr__synapse" prot="public" virt="non-virtual">nest::stdp_nn_restr_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__nn__symm__synapse" prot="public" virt="non-virtual">nest::stdp_nn_symm_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__pl__synapse__hom" prot="public" virt="non-virtual">nest::stdp_pl_synapse_hom&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__synapse" prot="public" virt="non-virtual">nest::stdp_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__synapse__hom" prot="public" virt="non-virtual">nest::stdp_synapse_hom&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1stdp__triplet__synapse" prot="public" virt="non-virtual">nest::stdp_triplet_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1tsodyks2__synapse" prot="public" virt="non-virtual">nest::tsodyks2_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1tsodyks__synapse" prot="public" virt="non-virtual">nest::tsodyks_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1tsodyks__synapse__hom" prot="public" virt="non-virtual">nest::tsodyks_synapse_hom&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1urbanczik__synapse" prot="public" virt="non-virtual">nest::urbanczik_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <derivedcompoundref refid="classnest_1_1vogels__sprekeler__synapse" prot="public" virt="non-virtual">nest::vogels_sprekeler_synapse&lt; targetidentifierT &gt;</derivedcompoundref>
+    <includes refid="connection_8h" local="no">connection.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename targetidentifierT</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classnest_1_1Connection_1a8431f234dc8bf81e675ff3bf8f748a1d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr <ref refid="namespacenest_1ada520c3662d2209c7209c5cc7dfae9a4" kindref="member">ConnectionModelProperties</ref></type>
+        <definition>constexpr ConnectionModelProperties nest::Connection&lt; targetidentifierT &gt;::properties</definition>
+        <argsstring></argsstring>
+        <name>properties</name>
+        <initializer>= ConnectionModelProperties::NONE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="120" column="46" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnest_1_1Connection_1af2b2773f69c67db7330eb1064a199af7" prot="protected" static="no" mutable="no">
+        <type>targetidentifierT</type>
+        <definition>targetidentifierT nest::Connection&lt; targetidentifierT &gt;::target_</definition>
+        <argsstring></argsstring>
+        <name>target_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="310" column="21" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="310" bodyend="-1"/>
+        <referencedby refid="classnest_1_1Connection_1a7e28a43a85110f829ff0021200beac30" compoundref="connection_8h" startline="245" endline="248">nest::Connection&lt; targetidentifierT &gt;::get_rport</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a96ea419903be36957f4e919af74534af" compoundref="connection_8h" startline="240" endline="243">nest::Connection&lt; targetidentifierT &gt;::get_target</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" prot="protected" static="no" mutable="no">
+        <type><ref refid="structnest_1_1SynIdDelay" kindref="compound">SynIdDelay</ref></type>
+        <definition>SynIdDelay nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</definition>
+        <argsstring></argsstring>
+        <name>syn_id_delay_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="312" column="14" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="312" bodyend="-1"/>
+        <referencedby refid="classnest_1_1Connection_1a811dff4d6dbbca5a8cae4de925aa9faf" compoundref="connection_8h" startline="280" endline="283">nest::Connection&lt; targetidentifierT &gt;::disable</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a859a57c02d19389a8f6a15c626214c9b" compoundref="connection_8h" startline="173" endline="176">nest::Connection&lt; targetidentifierT &gt;::get_delay</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a239230687eac7f8868b89c8a5e8fc56e" compoundref="connection_8h" startline="182" endline="185">nest::Connection&lt; targetidentifierT &gt;::get_delay_steps</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a2aca6e34443f8ef8576e23f097b199df" compoundref="connection_8h" startline="218" endline="221">nest::Connection&lt; targetidentifierT &gt;::get_syn_id</referencedby>
+        <referencedby refid="classnest_1_1Connection_1af8930ce6e4fee3c867cccac967970bd2" compoundref="connection_8h" startline="291" endline="294">nest::Connection&lt; targetidentifierT &gt;::is_disabled</referencedby>
+        <referencedby refid="classnest_1_1Connection_1abebbbd505fa36932bde4860d98eaed2e" compoundref="connection_8h" startline="191" endline="194">nest::Connection&lt; targetidentifierT &gt;::set_delay</referencedby>
+        <referencedby refid="classnest_1_1Connection_1ab67c8cbeb4173f71fbc1a364d4e91785" compoundref="connection_8h" startline="200" endline="203">nest::Connection&lt; targetidentifierT &gt;::set_delay_steps</referencedby>
+        <referencedby refid="classnest_1_1Connection_1adce5ef19844ee30d96e7d39b5fe1a7f1" compoundref="connection_8h" startline="257" endline="260">nest::Connection&lt; targetidentifierT &gt;::set_source_has_more_targets</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a7abf9bd27ab16f395112be31001bae3c" compoundref="connection_8h" startline="209" endline="212">nest::Connection&lt; targetidentifierT &gt;::set_syn_id</referencedby>
+        <referencedby refid="classnest_1_1Connection_1a0007e829af9dc39e624c5f349259a8ca" compoundref="connection_8h" startline="269" endline="272">nest::Connection&lt; targetidentifierT &gt;::source_has_more_targets</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1Connection_1acb7166410b78749a3c989e98868d1020" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nest::Connection&lt; targetidentifierT &gt;::Connection</definition>
+        <argsstring>()</argsstring>
+        <name>Connection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="122" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="122" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a9237d0912e8b9c7fbb5d32d4c7abcb8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::Connection&lt; targetidentifierT &gt;::Connection</definition>
+        <argsstring>(const Connection&lt; targetidentifierT &gt; &amp;rhs)=default</argsstring>
+        <name>Connection</name>
+        <param>
+          <type>const <ref refid="classnest_1_1Connection" kindref="compound">Connection</ref>&lt; targetidentifierT &gt; &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="128" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a48fb1882cd92d44887b93fffd606c720" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1Connection" kindref="compound">Connection</ref> &amp;</type>
+        <definition>Connection&amp; nest::Connection&lt; targetidentifierT &gt;::operator=</definition>
+        <argsstring>(const Connection&lt; targetidentifierT &gt; &amp;rhs)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classnest_1_1Connection" kindref="compound">Connection</ref>&lt; targetidentifierT &gt; &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="129" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1ab94466cbfab610e03bc440e4bb1a6a41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnest_1_1SecondaryEvent" kindref="compound">SecondaryEvent</ref> *</type>
+        <definition>SecondaryEvent * nest::Connection&lt; targetidentifierT &gt;::get_secondary_event</definition>
+        <argsstring>()</argsstring>
+        <name>get_secondary_event</name>
+        <briefdescription>
+<para>Get a pointer to an instance of a <ref refid="classnest_1_1SecondaryEvent" kindref="compound">SecondaryEvent</ref> if this connection supports secondary events. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>To prevent erronous calls of this function on primary connections, the base class implementation below just contains <computeroutput>assert(false)</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="137" column="18" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="401" bodyend="404"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a103247c0ca2e2b7528bea85fdf1db458" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::get_status</definition>
+        <argsstring>(DictionaryDatum &amp;d) const</argsstring>
+        <name>get_status</name>
+        <param>
+          <type>DictionaryDatum &amp;</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+<para>Get all properties of this connection and put them into a dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="142" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="351" bodyend="355"/>
+        <references refid="namespacenest_1_1names_1a8881fb5c6cc400d4eb90a2035d9a2df5">nest::names::d</references>
+        <references refid="namespacenest_1_1names_1ab9cc026669479769b697c033fed944aa">nest::names::delay</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1aede706c57e428cfe0831f17fa439f4fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::set_status</definition>
+        <argsstring>(const DictionaryDatum &amp;d, ConnectorModel &amp;cm)</argsstring>
+        <name>set_status</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1ConnectorModel" kindref="compound">ConnectorModel</ref> &amp;</type>
+          <declname>cm</declname>
+        </param>
+        <briefdescription>
+<para>Set properties of this connection from the values given in dictionary. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para><ref refid="classnest_1_1Target" kindref="compound">Target</ref> and Rport cannot be changed after a connection has been created. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="150" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="359" bodyend="368"/>
+        <references refid="classnest_1_1DelayChecker_1a4a0e6ca8d78a66919f2688e286bf66cb" compoundref="delay__checker_8cpp" startline="146" endline="206">nest::DelayChecker::assert_valid_delay_ms</references>
+        <references refid="classnest_1_1KernelManager_1a0e27508a351fe5c17f42aea52caedb3e" compoundref="kernel__manager_8h" startline="331">nest::KernelManager::connection_manager</references>
+        <references refid="namespacenest_1_1names_1a8881fb5c6cc400d4eb90a2035d9a2df5">nest::names::d</references>
+        <references refid="namespacenest_1_1names_1ab9cc026669479769b697c033fed944aa">nest::names::delay</references>
+        <references refid="classnest_1_1ConnectionManager_1a13545535bee9810548166d5d8606cbfc" compoundref="connection__manager_8cpp" startline="192" endline="195">nest::ConnectionManager::get_delay_checker</references>
+        <references refid="namespacenest_1a235f64c89ddf8992424ea32a13149a3e" compoundref="kernel__manager_8h" startline="356" endline="359">nest::kernel</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1ae7698c05fc210ced5bbf31b02dd6e05b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::check_synapse_params</definition>
+        <argsstring>(const DictionaryDatum &amp;d) const</argsstring>
+        <name>check_synapse_params</name>
+        <param>
+          <type>const DictionaryDatum &amp;</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+<para>Check syn_spec dictionary for parameters that are not allowed with the given connection. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Will issue warning or throw error if an illegal parameter is found. The method does nothing if no illegal parameter is found.</para>
+<para><simplesect kind="note"><para>Classes requiring checks need to override the function with their own implementation, as this base class implementation does not do anything. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="162" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="372" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a98a2af4db1c9a34d011be0c89a731c9b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::calibrate</definition>
+        <argsstring>(const TimeConverter &amp;)</argsstring>
+        <name>calibrate</name>
+        <param>
+          <type>const <ref refid="classnest_1_1TimeConverter" kindref="compound">TimeConverter</ref> &amp;</type>
+          <defname>tc</defname>
+        </param>
+        <briefdescription>
+<para>Calibrate the delay of this connection to the desired resolution. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="167" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="378" bodyend="387"/>
+        <references refid="classnest_1_1TimeConverter_1ac87d0cd883224a57f34faf424f7a6432" compoundref="nest__timeconverter_8cpp" startline="38" endline="46">nest::TimeConverter::from_old_steps</references>
+        <references refid="classnest_1_1Time_1abd566804da223bdb18dd0f20bfea6f32" compoundref="nest__time_8h" startline="514" endline="528">nest::Time::get_steps</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a859a57c02d19389a8f6a15c626214c9b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double nest::Connection&lt; targetidentifierT &gt;::get_delay</definition>
+        <argsstring>() const</argsstring>
+        <name>get_delay</name>
+        <briefdescription>
+<para>Return the delay of the connection in ms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="173" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="173" bodyend="176"/>
+        <references refid="structnest_1_1SynIdDelay_1a04f8aa49a16adbc48d96115048c1f2bd" compoundref="syn__id__delay_8h" startline="55" endline="58">nest::SynIdDelay::get_delay_ms</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a239230687eac7f8868b89c8a5e8fc56e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>long</type>
+        <definition>long nest::Connection&lt; targetidentifierT &gt;::get_delay_steps</definition>
+        <argsstring>() const</argsstring>
+        <name>get_delay_steps</name>
+        <briefdescription>
+<para>Return the delay of the connection in steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="182" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="182" bodyend="185"/>
+        <references refid="structnest_1_1SynIdDelay_1ac5588fbb27f68655030c4a243fd430fd" compoundref="syn__id__delay_8h" startline="35">nest::SynIdDelay::delay</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1abebbbd505fa36932bde4860d98eaed2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::set_delay</definition>
+        <argsstring>(const double delay)</argsstring>
+        <name>set_delay</name>
+        <param>
+          <type>const double</type>
+          <declname>delay</declname>
+        </param>
+        <briefdescription>
+<para>Set the delay of the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="191" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="191" bodyend="194"/>
+        <references refid="namespacenest_1_1names_1ab9cc026669479769b697c033fed944aa">nest::names::delay</references>
+        <references refid="structnest_1_1SynIdDelay_1ad9db4f5ce6cf00ac5a507c597ac46966" compoundref="syn__id__delay_8h" startline="64" endline="67">nest::SynIdDelay::set_delay_ms</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1ab67c8cbeb4173f71fbc1a364d4e91785" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::set_delay_steps</definition>
+        <argsstring>(const long delay)</argsstring>
+        <name>set_delay_steps</name>
+        <param>
+          <type>const long</type>
+          <declname>delay</declname>
+        </param>
+        <briefdescription>
+<para>Set the delay of the connection in steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="200" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="200" bodyend="203"/>
+        <references refid="namespacenest_1_1names_1ab9cc026669479769b697c033fed944aa">nest::names::delay</references>
+        <references refid="structnest_1_1SynIdDelay_1ac5588fbb27f68655030c4a243fd430fd" compoundref="syn__id__delay_8h" startline="35">nest::SynIdDelay::delay</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a7abf9bd27ab16f395112be31001bae3c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::set_syn_id</definition>
+        <argsstring>(synindex syn_id)</argsstring>
+        <name>set_syn_id</name>
+        <param>
+          <type><ref refid="namespacenest_1a2d283b4b36e5ee3b6f1d84b35c9ed475" kindref="member">synindex</ref></type>
+          <declname>syn_id</declname>
+        </param>
+        <briefdescription>
+<para>Set the synapse id of the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="209" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="209" bodyend="212"/>
+        <references refid="structnest_1_1SynIdDelay_1a458c24aea1b7838a7b1b079cd268974f" compoundref="syn__id__delay_8h" startline="36">nest::SynIdDelay::syn_id</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a2aca6e34443f8ef8576e23f097b199df" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespacenest_1a2d283b4b36e5ee3b6f1d84b35c9ed475" kindref="member">synindex</ref></type>
+        <definition>synindex nest::Connection&lt; targetidentifierT &gt;::get_syn_id</definition>
+        <argsstring>() const</argsstring>
+        <name>get_syn_id</name>
+        <briefdescription>
+<para>Get the synapse id of the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="218" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="218" bodyend="221"/>
+        <references refid="structnest_1_1SynIdDelay_1a458c24aea1b7838a7b1b079cd268974f" compoundref="syn__id__delay_8h" startline="36">nest::SynIdDelay::syn_id</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a7c32524ac24f7d591bd14a5cc9219618" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>long</type>
+        <definition>long nest::Connection&lt; targetidentifierT &gt;::get_label</definition>
+        <argsstring>() const</argsstring>
+        <name>get_label</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="224" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="224" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a6986ea0b704c0ed2ca4ebd71395fedb0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::trigger_update_weight</definition>
+        <argsstring>(const size_t, const std::vector&lt; spikecounter &gt; &amp;, const double, const CommonSynapseProperties &amp;)</argsstring>
+        <name>trigger_update_weight</name>
+        <param>
+          <type>const</type>
+          <declname>size_t</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; <ref refid="classnest_1_1spikecounter" kindref="compound">spikecounter</ref> &gt; &amp;</type>
+        </param>
+        <param>
+          <type>const double</type>
+        </param>
+        <param>
+          <type>const <ref refid="classnest_1_1CommonSynapseProperties" kindref="compound">CommonSynapseProperties</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Triggers an update of a synaptic weight. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is needed for neuromodulated synaptic plasticity </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="234" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="391" bodyend="397"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a96ea419903be36957f4e919af74534af" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> *</type>
+        <definition>Node* nest::Connection&lt; targetidentifierT &gt;::get_target</definition>
+        <argsstring>(const size_t tid) const</argsstring>
+        <name>get_target</name>
+        <param>
+          <type>const size_t</type>
+          <declname>tid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="240" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="240" bodyend="243"/>
+        <references refid="classnest_1_1Connection_1af2b2773f69c67db7330eb1064a199af7" compoundref="connection_8h" startline="310">nest::Connection&lt; targetidentifierT &gt;::target_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a7e28a43a85110f829ff0021200beac30" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nest::Connection&lt; targetidentifierT &gt;::get_rport</definition>
+        <argsstring>() const</argsstring>
+        <name>get_rport</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="245" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="245" bodyend="248"/>
+        <references refid="classnest_1_1Connection_1af2b2773f69c67db7330eb1064a199af7" compoundref="connection_8h" startline="310">nest::Connection&lt; targetidentifierT &gt;::target_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1adce5ef19844ee30d96e7d39b5fe1a7f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::set_source_has_more_targets</definition>
+        <argsstring>(const bool more_targets)</argsstring>
+        <name>set_source_has_more_targets</name>
+        <param>
+          <type>const bool</type>
+          <declname>more_targets</declname>
+        </param>
+        <briefdescription>
+<para>Sets a flag in the connection to signal that the following connection has the same source. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="see"><para><ref refid="classnest_1_1Connection_1a0007e829af9dc39e624c5f349259a8ca" kindref="member">source_has_more_targets</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="257" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="257" bodyend="260"/>
+        <references refid="structnest_1_1SynIdDelay_1aa6fdbd5055dbd33554593c47badd2221" compoundref="syn__id__delay_8h" startline="70" endline="73">nest::SynIdDelay::set_source_has_more_targets</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a0007e829af9dc39e624c5f349259a8ca" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nest::Connection&lt; targetidentifierT &gt;::source_has_more_targets</definition>
+        <argsstring>() const</argsstring>
+        <name>source_has_more_targets</name>
+        <briefdescription>
+<para>Returns a flag denoting whether the connection has source subsequent targets. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="see"><para><ref refid="classnest_1_1Connection_1adce5ef19844ee30d96e7d39b5fe1a7f1" kindref="member">set_source_has_more_targets</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="269" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="269" bodyend="272"/>
+        <references refid="structnest_1_1SynIdDelay_1a25fc08ad7adddab1be069bb90b986ac6" compoundref="syn__id__delay_8h" startline="76" endline="79">nest::SynIdDelay::source_has_more_targets</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1a811dff4d6dbbca5a8cae4de925aa9faf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::disable</definition>
+        <argsstring>()</argsstring>
+        <name>disable</name>
+        <briefdescription>
+<para>Disables the connection. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="see"><para><ref refid="classnest_1_1Connection_1af8930ce6e4fee3c867cccac967970bd2" kindref="member">is_disabled</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="280" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="280" bodyend="283"/>
+        <references refid="structnest_1_1SynIdDelay_1a376577aa3f24f1346393efddc5a9bc56" compoundref="syn__id__delay_8h" startline="87" endline="90">nest::SynIdDelay::disable</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1Connection_1af8930ce6e4fee3c867cccac967970bd2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nest::Connection&lt; targetidentifierT &gt;::is_disabled</definition>
+        <argsstring>() const</argsstring>
+        <name>is_disabled</name>
+        <briefdescription>
+<para>Returns a flag denoting if the connection is disabled. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="see"><para><ref refid="classnest_1_1Connection_1a811dff4d6dbbca5a8cae4de925aa9faf" kindref="member">disable</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="291" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="291" bodyend="294"/>
+        <references refid="structnest_1_1SynIdDelay_1afd0f99d2a349627c88db97dfd6ac12bb" compoundref="syn__id__delay_8h" startline="98" endline="101">nest::SynIdDelay::is_disabled</references>
+        <references refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" compoundref="connection_8h" startline="312">nest::Connection&lt; targetidentifierT &gt;::syn_id_delay_</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classnest_1_1Connection_1a1cd46e3c860c369bc8b15f3901064fe5" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::Connection&lt; targetidentifierT &gt;::check_connection_</definition>
+        <argsstring>(Node &amp;dummy_target, Node &amp;source, Node &amp;target, const size_t receptor_type)</argsstring>
+        <name>check_connection_</name>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> &amp;</type>
+          <declname>dummy_target</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="classnest_1_1Node" kindref="compound">Node</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>receptor_type</declname>
+        </param>
+        <briefdescription>
+<para>This function calls check_connection() on the sender to check if the receiver accepts the event type and receptor type requested by the sender. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source node </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target node </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>receptor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the requested receptor type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>the</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>last spike produced by the presynaptic neuron (for STDP and maturing connections) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="306" column="8" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="320" bodyend="347"/>
+        <references refid="namespacenest_1_1names_1ab48c36d5dd5d4f23066293500cf69d35">nest::names::receptor_type</references>
+        <references refid="namespacenest_1_1names_1af9fc29ade057c46d8e283df412841131">nest::names::source</references>
+        <references refid="namespacenest_1_1names_1a8f3b23679799316ba69b9d6c98c69e3a">nest::names::target</references>
+        <referencedby refid="classnest_1_1bernoulli__synapse_1a46455f1989ec2f1d86c1bb1be644a797" compoundref="bernoulli__synapse_8h" startline="144" endline="148">nest::bernoulli_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1clopath__synapse_1a346d0f3d41ebde8219bfabe019206a7b" compoundref="clopath__synapse_8h" startline="180" endline="187">nest::clopath_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1cont__delay__synapse_1ac9cb14fed06e19d7535b5e121ba62077" compoundref="cont__delay__synapse_8h" startline="194" endline="198">nest::cont_delay_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1ht__synapse_1a99cb8c5b97a994f61db6bbdb0d53e5b3" compoundref="ht__synapse_8h" startline="165" endline="169">nest::ht_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1jonke__synapse_1a70dd63613d7eeb56e0074b674120d4d2" compoundref="jonke__synapse_8h" startline="274" endline="281">nest::jonke_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1quantal__stp__synapse_1ace5e56d34c968305e29efec4256c7667" compoundref="quantal__stp__synapse_8h" startline="169" endline="173">nest::quantal_stp_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1static__synapse_1ad6b5fd0b2dbcd0cb43d26cbdda34187f" compoundref="static__synapse_8h" startline="147" endline="151">nest::static_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1static__synapse__hom__w_1a072ea26a951c096538ffc6b9bccee082" compoundref="static__synapse__hom__w_8h" startline="136" endline="140">nest::static_synapse_hom_w&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__facetshw__synapse__hom_1a47879653a21dd708eca0a54873621c9a" compoundref="stdp__facetshw__synapse__hom_8h" startline="309" endline="316">nest::stdp_facetshw_synapse_hom&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__nn__pre__centered__synapse_1afaf1ca7674234771c33a514bef52a2b5" compoundref="stdp__nn__pre__centered__synapse_8h" startline="192" endline="199">nest::stdp_nn_pre_centered_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__nn__restr__synapse_1a8b7bfa8159d3f0ec2ee1d9c77e4d09dc" compoundref="stdp__nn__restr__synapse_8h" startline="187" endline="194">nest::stdp_nn_restr_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__nn__symm__synapse_1a185261c339100f1e7dd6e5725adccf70" compoundref="stdp__nn__symm__synapse_8h" startline="189" endline="196">nest::stdp_nn_symm_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__pl__synapse__hom_1a6efeea3f854320b1685b7757dbd69123" compoundref="stdp__pl__synapse__hom_8h" startline="203" endline="210">nest::stdp_pl_synapse_hom&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__synapse_1a88d079ab88dbde5d4f34668b25d37c25" compoundref="stdp__synapse_8h" startline="179" endline="186">nest::stdp_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__synapse__hom_1a81ddfb9a82c9bf7e07695db01365726c" compoundref="stdp__synapse__hom_8h" startline="237" endline="243">nest::stdp_synapse_hom&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__triplet__synapse_1a2d5240cb27e2432d8c23c87b05f82375" compoundref="stdp__triplet__synapse_8h" startline="201" endline="208">nest::stdp_triplet_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1tsodyks2__synapse_1a488f3cb22d16ed79be22e1c55a36ed36" compoundref="tsodyks2__synapse_8h" startline="187" endline="191">nest::tsodyks2_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1tsodyks__synapse_1aa98a763a4f3a47f0fb4b843af0134bee" compoundref="tsodyks__synapse_8h" startline="205" endline="209">nest::tsodyks_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1tsodyks__synapse__hom_1a89ab664f83db214a6fd3cc5cfcddba66" compoundref="tsodyks__synapse__hom_8h" startline="238" endline="242">nest::tsodyks_synapse_hom&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1urbanczik__synapse_1a10feaebbf726caeb3e77f03661c534c1" compoundref="urbanczik__synapse_8h" startline="174" endline="181">nest::urbanczik_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1vogels__sprekeler__synapse_1a852f105c3ae9d753e49b217c90e8f187" compoundref="vogels__sprekeler__synapse_8h" startline="156" endline="163">nest::vogels_sprekeler_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+        <referencedby refid="classnest_1_1stdp__dopamine__synapse_1a9232cbe2e56f0977b1361eaaf0432de1" compoundref="stdp__dopamine__synapse_8h" startline="281" endline="292">nest::stdp_dopamine_synapse&lt; targetidentifierT &gt;::check_connection</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Base class for representing connections. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>It provides the mandatory properties receiver port and target, as well as the functions <ref refid="classnest_1_1Connection_1a103247c0ca2e2b7528bea85fdf1db458" kindref="member">get_status()</ref> and <ref refid="classnest_1_1Connection_1aede706c57e428cfe0831f17fa439f4fe" kindref="member">set_status()</ref> to read and write them. A suitable <ref refid="classnest_1_1Connector" kindref="compound">Connector</ref> containing these connections can be obtained from the template GenericConnector.</para>
+<para><simplesect kind="note"><para>Please note that the event received by the send() function is a reference to a single object that is re-used by each <ref refid="classnest_1_1Connection" kindref="compound">Connection</ref>. This means that the object must not be changed in the <ref refid="classnest_1_1Connection" kindref="compound">Connection</ref>, or if needs to be changed, everything has to be reset after sending (i.e. after Event::operator() has been called). </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="23">
+        <label>nest::tsodyks2_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1tsodyks2__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>nest::stdp_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::bernoulli_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1bernoulli__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>nest::stdp_nn_restr_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__nn__restr__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>nest::static_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1static__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>nest::tsodyks_synapse_hom&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1tsodyks__synapse__hom"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>nest::urbanczik_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1urbanczik__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>nest::cont_delay_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1cont__delay__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>nest::stdp_synapse_hom&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__synapse__hom"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>nest::stdp_nn_symm_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__nn__symm__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>nest::rate_connection_instantaneous&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1rate__connection__instantaneous"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>nest::stdp_triplet_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__triplet__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>nest::Connection&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1Connection"/>
+      </node>
+      <node id="15">
+        <label>nest::stdp_facetshw_synapse_hom&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__facetshw__synapse__hom"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>nest::stdp_pl_synapse_hom&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__pl__synapse__hom"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>nest::ht_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1ht__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>nest::diffusion_connection&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1diffusion__connection"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>nest::jonke_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1jonke__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>nest::stdp_dopamine_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__dopamine__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>nest::rate_connection_delayed&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1rate__connection__delayed"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>nest::gap_junction&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1gap__junction"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>nest::quantal_stp_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1quantal__stp__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>nest::static_synapse_hom_w&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1static__synapse__hom__w"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>nest::tsodyks_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1tsodyks__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>nest::vogels_sprekeler_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1vogels__sprekeler__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>nest::clopath_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1clopath__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>nest::stdp_nn_pre_centered_synapse&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1stdp__nn__pre__centered__synapse"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>nest::Connection&lt; targetidentifierT &gt;</label>
+        <link refid="classnest_1_1Connection"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>syn_id_delay_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nest::SynIdDelay</label>
+        <link refid="structnest_1_1SynIdDelay"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" line="115" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/connection.h" bodystart="116" bodyend="313"/>
+    <listofallmembers>
+      <member refid="classnest_1_1Connection_1a98a2af4db1c9a34d011be0c89a731c9b" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>calibrate</name></member>
+      <member refid="classnest_1_1Connection_1a1cd46e3c860c369bc8b15f3901064fe5" prot="protected" virt="non-virtual"><scope>nest::Connection</scope><name>check_connection_</name></member>
+      <member refid="classnest_1_1Connection_1ae7698c05fc210ced5bbf31b02dd6e05b" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>check_synapse_params</name></member>
+      <member refid="classnest_1_1Connection_1acb7166410b78749a3c989e98868d1020" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>Connection</name></member>
+      <member refid="classnest_1_1Connection_1a9237d0912e8b9c7fbb5d32d4c7abcb8d" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>Connection</name></member>
+      <member refid="classnest_1_1Connection_1a811dff4d6dbbca5a8cae4de925aa9faf" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>disable</name></member>
+      <member refid="classnest_1_1Connection_1a859a57c02d19389a8f6a15c626214c9b" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_delay</name></member>
+      <member refid="classnest_1_1Connection_1a239230687eac7f8868b89c8a5e8fc56e" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_delay_steps</name></member>
+      <member refid="classnest_1_1Connection_1a7c32524ac24f7d591bd14a5cc9219618" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_label</name></member>
+      <member refid="classnest_1_1Connection_1a7e28a43a85110f829ff0021200beac30" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_rport</name></member>
+      <member refid="classnest_1_1Connection_1ab94466cbfab610e03bc440e4bb1a6a41" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_secondary_event</name></member>
+      <member refid="classnest_1_1Connection_1a103247c0ca2e2b7528bea85fdf1db458" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_status</name></member>
+      <member refid="classnest_1_1Connection_1a2aca6e34443f8ef8576e23f097b199df" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_syn_id</name></member>
+      <member refid="classnest_1_1Connection_1a96ea419903be36957f4e919af74534af" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>get_target</name></member>
+      <member refid="classnest_1_1Connection_1af8930ce6e4fee3c867cccac967970bd2" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>is_disabled</name></member>
+      <member refid="classnest_1_1Connection_1a48fb1882cd92d44887b93fffd606c720" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>operator=</name></member>
+      <member refid="classnest_1_1Connection_1a8431f234dc8bf81e675ff3bf8f748a1d" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>properties</name></member>
+      <member refid="classnest_1_1Connection_1abebbbd505fa36932bde4860d98eaed2e" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>set_delay</name></member>
+      <member refid="classnest_1_1Connection_1ab67c8cbeb4173f71fbc1a364d4e91785" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>set_delay_steps</name></member>
+      <member refid="classnest_1_1Connection_1adce5ef19844ee30d96e7d39b5fe1a7f1" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>set_source_has_more_targets</name></member>
+      <member refid="classnest_1_1Connection_1aede706c57e428cfe0831f17fa439f4fe" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>set_status</name></member>
+      <member refid="classnest_1_1Connection_1a7abf9bd27ab16f395112be31001bae3c" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>set_syn_id</name></member>
+      <member refid="classnest_1_1Connection_1a0007e829af9dc39e624c5f349259a8ca" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>source_has_more_targets</name></member>
+      <member refid="classnest_1_1Connection_1a27f971c956034918da99deb971949a26" prot="protected" virt="non-virtual"><scope>nest::Connection</scope><name>syn_id_delay_</name></member>
+      <member refid="classnest_1_1Connection_1af2b2773f69c67db7330eb1064a199af7" prot="protected" virt="non-virtual"><scope>nest::Connection</scope><name>target_</name></member>
+      <member refid="classnest_1_1Connection_1a6986ea0b704c0ed2ca4ebd71395fedb0" prot="public" virt="non-virtual"><scope>nest::Connection</scope><name>trigger_update_weight</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

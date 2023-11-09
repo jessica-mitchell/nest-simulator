@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classnest_1_1ModelsModule" kind="class" language="C++" prot="public">
+    <compoundname>nest::ModelsModule</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">SLIModule</basecompoundref>
+    <includes refid="modelsmodule_8h" local="no">modelsmodule.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnest_1_1ModelsModule_1a118ce7a6a2e345038b719871db283b1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::ModelsModule::ModelsModule</definition>
+        <argsstring>()</argsstring>
+        <name>ModelsModule</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" line="48" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ModelsModule_1aeeb3fcabf552b0e72be589a6e613a5ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nest::ModelsModule::~ModelsModule</definition>
+        <argsstring>() override</argsstring>
+        <name>~ModelsModule</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" line="49" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ModelsModule_1aaecea44044f9fb427884a67aae5ebc46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void nest::ModelsModule::init</definition>
+        <argsstring>(SLIInterpreter *) override</argsstring>
+        <name>init</name>
+        <param>
+          <type>SLIInterpreter *</type>
+        </param>
+        <briefdescription>
+<para>Initialize module by registering models with the network. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>SLIInterpreter*</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SLI interpreter </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" line="55" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="classnest_1_1ModelsModule_1a163ce8ca41b2bafd4597f09a1afd0a96" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string</type>
+        <definition>const std::string nest::ModelsModule::name</definition>
+        <argsstring>() const override</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" line="57" column="21"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Module supplying all models that are included in the NEST release. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>First Version: June 2006</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>SLIModule</label>
+      </node>
+      <node id="1">
+        <label>nest::ModelsModule</label>
+        <link refid="classnest_1_1ModelsModule"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>SLIModule</label>
+      </node>
+      <node id="1">
+        <label>nest::ModelsModule</label>
+        <link refid="classnest_1_1ModelsModule"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" line="45" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/models/modelsmodule.h" bodystart="46" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classnest_1_1ModelsModule_1aaecea44044f9fb427884a67aae5ebc46" prot="public" virt="non-virtual"><scope>nest::ModelsModule</scope><name>init</name></member>
+      <member refid="classnest_1_1ModelsModule_1a118ce7a6a2e345038b719871db283b1c" prot="public" virt="non-virtual"><scope>nest::ModelsModule</scope><name>ModelsModule</name></member>
+      <member refid="classnest_1_1ModelsModule_1a163ce8ca41b2bafd4597f09a1afd0a96" prot="public" virt="non-virtual"><scope>nest::ModelsModule</scope><name>name</name></member>
+      <member refid="classnest_1_1ModelsModule_1aeeb3fcabf552b0e72be589a6e613a5ee" prot="public" virt="non-virtual"><scope>nest::ModelsModule</scope><name>~ModelsModule</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
