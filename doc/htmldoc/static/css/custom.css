@@ -100,12 +100,15 @@ section#kernel-attributes-nest-nestmodule dd {
 }
 
 dl.cpp.class {
-  border-style: dashed;
-  border-color: var(--nest-blue);
+  background-color: whitesmoke;
 }
 dl.cpp.function {
   border-style: dotted;
   border-color: lightgray;
+}
+dt.sig.sig-object.cpp {
+   background-color: #313131;
+   color: white;
 }
 
 

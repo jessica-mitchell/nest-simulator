@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="56" column="3"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="61" column="3"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a9889d8ee2a6bd5f1799e86aed555db5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -47,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="57" column="8"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="62" column="8"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1af07ff595521c144ddb81899fec66e251" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -60,7 +60,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="60" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="60" bodyend="62"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="65" column="3" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="65" bodyend="67"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1ac60a79d2ba0a48f1b039ab1f9d502ec4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type></type>
@@ -73,7 +73,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="64" column="11" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="64" bodyend="66"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="69" column="11" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="69" bodyend="71"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a43f881ab34500bff012a2514ad99ad79" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -106,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="81" column="16"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="86" column="16"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a329d00818a7c57d2c7f9e83dbed56606" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -139,7 +139,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="98" column="16"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="103" column="16"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1aa88c28844a59b4791eab4b7930fc62b0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -160,7 +160,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="108" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="108" bodyend="108"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="113" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="113" bodyend="113"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1ad940557204d456c167f541dd72c81193" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -189,7 +189,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="110" column="16"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="115" column="16"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a0935d5415eafd0bc54d2c01294595a80" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -218,7 +218,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="111" column="16"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="116" column="16"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a7a0e8989a48de50b52631e87ed3f2745" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -233,7 +233,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="113" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="113" bodyend="113"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="118" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="118" bodyend="118"/>
       </memberdef>
       <memberdef kind="function" id="classnest_1_1ManagerInterface_1a883efc8a7266a9bc62d43e30cdd87147" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -248,7 +248,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="114" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="114" bodyend="114"/>
+        <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="119" column="16" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="119" bodyend="119"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -349,7 +349,7 @@
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="53" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="54" bodyend="115"/>
+    <location file="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" line="58" column="1" bodyfile="/home/mitchell/Work/repo/nest-simulator/nestkernel/manager_interface.h" bodystart="59" bodyend="120"/>
     <listofallmembers>
       <member refid="classnest_1_1ManagerInterface_1aa88c28844a59b4791eab4b7930fc62b0" prot="public" virt="virtual"><scope>nest::ManagerInterface</scope><name>change_number_of_threads</name></member>
       <member refid="classnest_1_1ManagerInterface_1a883efc8a7266a9bc62d43e30cdd87147" prot="public" virt="virtual"><scope>nest::ManagerInterface</scope><name>cleanup</name></member>
