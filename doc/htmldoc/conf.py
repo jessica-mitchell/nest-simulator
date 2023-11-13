@@ -73,10 +73,11 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-breathe_projects = {"NEST Simulator": "xml"}
+breathe_projects = {"NEST Simulator": "/home/mitchell/Work/build-repo/doc/xml/xml"}
 breathe_default_project = "NEST Simulator"
 
 plantuml = "java -jar /tmp/plantuml.jar"
+plantuml_output_format = "svg_img"
 
 mermaid_output_format = "raw"
 mermaid_version = "10.2.0"

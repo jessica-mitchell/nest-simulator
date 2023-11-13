@@ -12,7 +12,7 @@ Component(nesth, "nest.h/cpp")
 Component_Ext(libmpi, "libMPI")
 Component_Ext(libmusic, "libMUSIC")
 Boundary(nestmanagers, "kernel") {
-    Component(conn, "Connection Manager")
+    Component(conn, "Connection Manager", $link="https://nest-simulator.readthedocs.io/en/latest/connection_manager.html")
     Component(model, "Model Manager")
     Component(sim, "Simulation Manager")
     Component(mpi, "MPI Manager")

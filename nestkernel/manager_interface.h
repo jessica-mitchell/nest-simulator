@@ -43,10 +43,7 @@ namespace nest
  * @note Each manager shall be instantiated only once. Therefore, copy
  * constructor and assignment operator are declared private and not implemented.
  *
- *\verbatim embed:rst:leading-asterisk
  *
- * .. uml:: diagram.uml
- *\endverbatim
  *
  * @ingroup KernelManagers
  */
