@@ -82,11 +82,18 @@ See also
 
 ac_generator, noise_generator, step_current_generator
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: dc_generator
+
 EndUserDocs */
 
 /**
  *  @noop DocKeywords: io, stimulation device, stimulation, device, continuous
  */
+void register_dc_generator( const std::string& name );
+
 class dc_generator : public StimulationDevice
 {
 

@@ -139,11 +139,18 @@ See also
 
 step_current_generator
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: noise_generator
+
 EndUserDocs */
 
 /**
  * @noop DocKeywords: io, stimulation device, stimulation, device, continuous
  */
+void register_noise_generator( const std::string& name );
+
 class noise_generator : public StimulationDevice
 {
 

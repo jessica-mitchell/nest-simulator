@@ -124,6 +124,11 @@ interval
 See also
 ++++++++
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: multimeter
+
 EndUserDocs */
 
 namespace nest
@@ -132,6 +137,9 @@ namespace nest
 /**
  * @noop DocKeywords: io, recording device, recording, device, continuous
  */
+void register_multimeter( const std::string& name );
+void register_voltmeter( const std::string& name );
+
 class multimeter : public RecordingDevice
 {
 

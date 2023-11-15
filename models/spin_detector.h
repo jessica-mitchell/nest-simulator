@@ -82,6 +82,11 @@ Receives
 
 SpikeEvent
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: spin_detector
+
 EndUserDocs */
 
 /**
@@ -94,6 +99,8 @@ EndUserDocs */
  * stores them via its RecordingDevice.
  *
  */
+void register_spin_detector( const std::string& name );
+
 class spin_detector : public RecordingDevice
 {
 

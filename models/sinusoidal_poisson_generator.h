@@ -119,11 +119,19 @@ See also
 
 poisson_generator, sinusoidal_gamma_generator
 
+
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: sinusoidal_poisson_generator
+
 EndUserDocs */
 
 /**
  * @noop DocKeywords: io, stimulation device, stimulation, device, spike
  */
+void register_sinusoidal_poisson_generator( const std::string& name );
+
 class sinusoidal_poisson_generator : public StimulationDevice
 {
 

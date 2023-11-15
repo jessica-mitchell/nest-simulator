@@ -76,6 +76,12 @@ synapses that fulfill the given criteria.
 See also
 ++++++++
 
+
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: weight_recorder
+
 EndUserDocs */
 
 namespace nest
@@ -84,6 +90,8 @@ namespace nest
 /**
  * @noop DocKeywords: io, recording device, recording, device, connection
  */
+void register_weight_recorder( const std::string& name );
+
 class weight_recorder : public RecordingDevice
 {
 

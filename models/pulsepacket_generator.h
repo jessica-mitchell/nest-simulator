@@ -93,11 +93,18 @@ See also
 
 spike_generator
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: pulsepacket_generator
+
 EndUserDocs */
 
 /**
  * @noop DocKeywords: io, stimulation device, stimulation, device, spike
  */
+void register_pulsepacket_generator( const std::string& name );
+
 class pulsepacket_generator : public StimulationDevice
 {
 

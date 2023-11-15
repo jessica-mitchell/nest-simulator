@@ -98,6 +98,11 @@ See also
 
 poisson_generator
 
+Examples using this model
++++++++++++++++++++++++++
+
+.. listexamples:: mip_generator
+
 EndUserDocs */
 
 /**
@@ -106,6 +111,8 @@ EndUserDocs */
  *  Class mip_generator generates spike trains as described
  *  in the MIP model.
  */
+void register_mip_generator( const std::string& name );
+
 class mip_generator : public StimulationDevice
 {
 
