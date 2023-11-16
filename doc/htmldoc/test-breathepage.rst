@@ -1,6 +1,12 @@
 Breathe test
 ============
 
+.. doxygenfile:: iaf_psc_alpha.h
+   :sections: detaileddescription
+
+
+
+
 Managers
 --------
 
@@ -17,9 +23,11 @@ All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, `
 {% for item in cpp_list %}
 {% if "Interface" not in item %}
 
- 
 
-.. doxygenclass:: {{ item }}
+
+.. .. doxygenclass::
+
+{{ item }}
 
 
 .. .. dropdown:: Members of {{item}}
