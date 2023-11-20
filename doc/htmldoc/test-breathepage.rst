@@ -1,9 +1,6 @@
 Breathe test
 ============
 
-.. doxygenfile:: iaf_psc_alpha.h
-   :sections: detaileddescription
-
 
 
 
