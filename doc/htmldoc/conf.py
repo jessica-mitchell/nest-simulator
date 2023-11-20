@@ -38,8 +38,14 @@ repo_root_dir = os.path.abspath("../..")
 pynest_dir = os.path.join(repo_root_dir, "pynest")
 # Add the NEST Python module to the path (just the py files, the binaries are mocked)
 sys.path.append(pynest_dir)
+read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
+
+if read_the_docs_build:
+    subprocess.call("cd ..; doxygen Doxyfile", shell=True)
+
 
 # -- General configuration ------------------------------------------------
+
 source_suffix = ".rst"
 master_doc = "index"
 extensions = [
