@@ -17,14 +17,14 @@ All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, `
 .. doxygenclass:: nest::ManagerInterface
 
 
-{% for item in cpp_list %}
-{% if "Interface" not in item %}
+{ for item in cpp_list %}
+{ if "Interface" not in item %}
 
 
 
 .. .. doxygenclass::
 
-{{ item }}
+{ item }}
 
 
 .. .. dropdown:: Members of {{item}}
@@ -34,8 +34,8 @@ All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, `
       :members:
       :members-only:
 
-{% endif %}
-{% endfor %}
+{ endif %}
+{ endfor %}
 
 :cpp:class:`nest::ConnectionManager`
 :cpp:class:`nest::KernelManager`

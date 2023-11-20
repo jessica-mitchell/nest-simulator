@@ -64,7 +64,6 @@ extensions = [
     "IPython.sphinxext.ipython_console_highlighting",
     "sphinxcontrib.plantuml",
     "sphinxcontrib.mermaid",
-    "new_xml",
     "breathe",
     "nbsphinx",
     "extract_api_functions",
