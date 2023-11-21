@@ -80,7 +80,7 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-breathe_projects = {"NEST Simulator": "xml"}
+breathe_projects = {"NEST Simulator": "doxygen/xml"}
 breathe_default_project = "NEST Simulator"
 
 # To run plantuml locally see the user documentation workflow
