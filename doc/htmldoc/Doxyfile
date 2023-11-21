@@ -8,7 +8,7 @@ PROJECT_NAME           = "NEST Simulator"
 PROJECT_NUMBER         =
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
-OUTPUT_DIRECTORY       = /home/mitchell/Work/repo/nest-simulator/doc/htmldoc/doxygen
+OUTPUT_DIRECTORY       = doxygen
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
@@ -118,7 +118,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = /home/mitchell/Work/repo/nest-simulator/nestkernel
+INPUT                  = ../../nestkernel
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cpp \
