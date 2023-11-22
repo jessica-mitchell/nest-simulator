@@ -41,7 +41,7 @@ sys.path.append(pynest_dir)
 read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
 
 if read_the_docs_build:
-    subprocess.call("doxygen", shell=True)
+    subprocess.call("which dot; doxygen", shell=True)
 
 
 # -- General configuration ------------------------------------------------
@@ -55,6 +55,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
+    "sphinx.ext.graphviz",
     "sphinx.ext.intersphinx",
     "sphinxcontrib.mermaid",
     "sphinx.ext.mathjax",
