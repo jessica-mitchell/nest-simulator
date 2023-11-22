@@ -41,7 +41,7 @@ sys.path.append(pynest_dir)
 read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
 
 if read_the_docs_build:
-    subprocess.call("which dot; doxygen", shell=True)
+    subprocess.call("doxygen", shell=True)
 
 
 # -- General configuration ------------------------------------------------

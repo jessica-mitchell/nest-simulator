@@ -11,7 +11,7 @@ Managers
 All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, ``getstatus``, ``cleanup``).
 
 
-.. uml::
+.. .. uml::
 
   !include <C4/C4_Component>
   !define TUPADR https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/
@@ -56,6 +56,8 @@ All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, `
 
 .. doxygenclass:: nest::ManagerInterface
 
+.. doxygenclass:: nest::SimulationManager
+   :members:
 
 { for item in cpp_list %}
 { if "Interface" not in item %}
