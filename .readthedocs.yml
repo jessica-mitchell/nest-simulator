@@ -6,6 +6,7 @@ build:
     python: "3.10"
   apt_packages:
     - default-jre-headless
+    - graphviz
   jobs:
     pre_install:
       - wget "https://github.com/plantuml/plantuml/releases/download/v1.2023.10/plantuml.jar" -O "/tmp/plantuml.jar"
