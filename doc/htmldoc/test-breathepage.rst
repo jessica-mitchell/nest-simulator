@@ -1,73 +1,38 @@
-Breathe test
-============
+Managers in NEST
+================
 
-
-
-
-Managers
---------
 
 
 All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, ``getstatus``, ``cleanup``).
 
 
-.. .. uml::
+Manager Interface
+-----------------
 
-  !include <C4/C4_Component>
-  !define TUPADR https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/
-  !include TUPADR/devicons2/bash.puml
-  !include TUPADR/devicons2/jupyter.puml
-  !include TUPADR/devicons2/git.puml
-  !include TUPADR/font-awesome-5/users.puml
-
-  HIDE_STEREOTYPE()
-  Person(user, "user")
-  Component(nesth, "nest.h/cpp")
-  Component_Ext(libmpi, "libMPI")
-  Component_Ext(libmusic, "libMUSIC")
-  Boundary(nestmanagers, "kernel") {
-      Component(conn, "Connection Manager", $link="https://nest-simulator.readthedocs.io/en/latest/connection_manager.html")
-      Component(model, "Model Manager")
-      Component(sim, "Simulation Manager")
-      Component(mpi, "MPI Manager")
-      Component(ed, "EventDelivery Manager")
-      Component(kernel, "Kernel Manager")
-      Component(music, "MUSIC Manager")
-
-      BiRel(conn, model, "calls")
-      BiRel(conn, sim, "calls")
-      BiRel(conn, mpi, "calls")
-      BiRel(conn, ed, "calls")
-      BiRel(conn, kernel, "calls")
-      BiRel(model, sim, "calls")
-      BiRel(model, mpi, "calls")
-      BiRel(model, ed, "calls")
-      BiRel(model, kernel, "calls")
-      BiRel(sim, mpi, "calls")
-      BiRel(sim, ed, "calls")
-      BiRel(sim, kernel, "calls")
-      BiRel(mpi, ed, "calls")
-      BiRel(mpi, kernel, "calls")
-  }
-  Rel(user, nesth, "calls nest.connect()")
-  Rel(nesth, conn, "ConnectionManager.connect()")
-  Rel(mpi, libmpi, "calls")
-  Rel(music, libmusic, "calls")
 
 .. doxygenclass:: nest::ManagerInterface
+   :no-link:
 
-.. doxygenclass:: nest::SimulationManager
-   :members:
-
-{ for item in cpp_list %}
-{ if "Interface" not in item %}
-
+.. doxygenclass:: nest::ManagerInterface
+    :members:
+    :members-only:
 
 
-.. .. doxygenclass::
+Kernel Manager
+--------------
 
-{ item }}
+.. doxygenclass:: nest::KernelManager
 
+
+
+{% for item in cpp_list %}
+{% if "Manager" in item and "Interface" not in item and "Kernel" not in item  %}
+
+
+{{ item }}
+-------------------------------
+
+.. doxygenclass:: {{ item }}
 
 .. .. dropdown:: Members of {{item}}
    :color: light
@@ -76,8 +41,13 @@ All managers implement the ``ManagerInterface`` (``initialize``, ``finalize``, `
       :members:
       :members-only:
 
-{ endif %}
-{ endfor %}
+{% endif %}
+{% endfor %}
 
-:cpp:class:`nest::ConnectionManager`
-:cpp:class:`nest::KernelManager`
+
+{% for item in cpp_list %}
+{% if "Manager" not in item %}
+
+{{ item }}
+{% endif %}
+{% endfor %}
