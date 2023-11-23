@@ -1,10 +1,11 @@
-from sphinx.application import Sphinx
-from docutils import nodes
 import xml.etree.ElementTree as ET
+
+from docutils import nodes
+from sphinx.application import Sphinx
 
 
 def getClassXML():
-    xml_index = "xml/index.xml"
+    xml_index = "doxygen/xml/index.xml"
 
     tree2 = ET.parse(xml_index)
     root2 = tree2.getroot()

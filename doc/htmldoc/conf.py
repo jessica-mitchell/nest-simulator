@@ -67,6 +67,7 @@ extensions = [
     "breathe",
     "nbsphinx",
     "extract_api_functions",
+    "new_xml",
     "sphinx_design",
     "HoverXTooltip",
     "VersionSyncRole",
