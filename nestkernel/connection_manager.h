@@ -61,6 +61,28 @@ class DelayChecker;
 class GrowthCurve;
 class SpikeData;
 
+/**
+ * Currently has a multitude of responsibilities:
+ *
+ *  - construct connections
+ *  - inquire connectivity
+ *  - conn builder management (registration)
+ *  - handling of synaptic data strucutres
+ *
+ * \verbatim embed:rst:leading-asterisk
+ *
+ * .. uml:: connectionManager.uml
+ *
+ * .. seealso::
+ *
+ *    :ref:`Connection related cpp docs <connect_cpp>`
+ * \endverbatim
+ *
+ * On user level we always use “Synapse”. In code
+ * this is always a “connection” since it is not necessarily
+ * the biological entity, but may be an abstract learning
+ * rule or device connection.
+ */
 class ConnectionManager : public ManagerInterface
 {
   friend class SimulationManager; // update_delay_extrema_

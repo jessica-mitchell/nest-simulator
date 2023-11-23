@@ -43,7 +43,7 @@ namespace nest
  * for error streams.
  *
  *\verbatim embed:rst:leading-asterisk
-*
+ *
  *
  * .. mermaid::
  *
@@ -58,7 +58,7 @@ namespace nest
  *     John-->Alice: Great!
  *     John->Bob: How about you?
  *     Bob-->John: Jolly good!
-* \endverbatim
+ * \endverbatim
  */
 class IOManager : public ManagerInterface
 {

@@ -40,13 +40,13 @@ namespace nest
  * This class defines the common interface for all manager classes
  * in the NEST kernel.
  *
- * @note Each manager shall be instantiated only once. Therefore, copy
- * constructor and assignment operator are declared private and not implemented.
- *
  *\verbatim embed:rst:leading-asterisk
  *.. uml:: diagram.uml
  *
  *\endverbatim
+ *
+ * @note Each manager shall be instantiated only once. Therefore, copy
+ * constructor and assignment operator are declared private and not implemented.
  *
  * @ingroup KernelManagers
  */
