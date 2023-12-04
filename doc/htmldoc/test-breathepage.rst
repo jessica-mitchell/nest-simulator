@@ -10,10 +10,10 @@ Manager Interface
 -----------------
 
 
-.. doxygenclass:: nest::ManagerInterface
+.. .. doxygenclass:: nest::ManagerInterface
    :no-link:
 
-.. doxygenclass:: nest::ManagerInterface
+.. .. doxygenclass:: nest::ManagerInterface
     :members:
     :members-only:
 
@@ -21,18 +21,17 @@ Manager Interface
 Kernel Manager
 --------------
 
-.. doxygenclass:: nest::KernelManager
 
 
 
-{% for item in cpp_list %}
-{% if "Manager" in item and "Interface" not in item and "Kernel" not in item  %}
+.. {% for item in cpp_list %}
+.. {% if "Manager" in item and "Interface" not in item and "Kernel" not in item  %}
 
 
 {{ item }}
 -------------------------------
 
-.. doxygenclass:: {{ item }}
+.. .. doxygenclass:: {{ item }}
 
 .. .. dropdown:: Members of {{item}}
    :color: light
@@ -41,13 +40,11 @@ Kernel Manager
       :members:
       :members-only:
 
-{% endif %}
-{% endfor %}
+.. {% endif %}
+.. {% endfor %}
 
 
 {% for item in cpp_list %}
-{% if "Manager" not in item %}
 
 {{ item }}
-{% endif %}
 {% endfor %}
