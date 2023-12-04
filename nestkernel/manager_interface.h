@@ -48,7 +48,7 @@ namespace nest
  * @note Each manager shall be instantiated only once. Therefore, copy
  * constructor and assignment operator are declared private and not implemented.
  *
- * @ingroup KernelManagers
+ * @defgroup KernelManagers
  */
 class ManagerInterface
 {

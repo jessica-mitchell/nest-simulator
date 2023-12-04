@@ -48,6 +48,9 @@ struct AssignedRanks
   size_t max_size;
 };
 
+/**
+ * @ingroup KernelManagers
+ */
 class VPManager : public ManagerInterface
 {
 public:

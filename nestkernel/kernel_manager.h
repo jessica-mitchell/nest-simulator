@@ -62,7 +62,7 @@ namespace nest
 // Disable clang-formatting for documentation due to over-wide table.
 // clang-format off
 /**
- *
+ * @ingroup KernelManagers
  *
  * **kernel - Global properties of the simulation kernel**
  *

@@ -62,6 +62,7 @@ class GrowthCurve;
 class SpikeData;
 
 /**
+ * @ingroup KernelManagers
  * Currently has a multitude of responsibilities:
  *
  *  - construct connections
@@ -71,7 +72,7 @@ class SpikeData;
  *
  * \verbatim embed:rst:leading-asterisk
  *
- * .. uml:: connectionManager.uml
+ * .. uml:: ../../connectionManager.uml
  *
  * .. seealso::
  *

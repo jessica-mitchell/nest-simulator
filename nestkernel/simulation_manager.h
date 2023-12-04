@@ -44,6 +44,9 @@ namespace nest
 {
 class Node;
 
+/**
+ * @ingroup KernelManagers
+ */
 class SimulationManager : public ManagerInterface
 {
 public:
