@@ -41,7 +41,7 @@ sys.path.append(pynest_dir)
 read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
 
 if read_the_docs_build:
-    subprocess.call("pwd; doxygen; breathe-apidoc -o cpp_classes -m -g class /doxgyen/xml", shell=True)
+    subprocess.call("doxygen; breathe-apidoc -o cpp_classes -m -g class doxygen/xml", shell=True)
 
 
 # -- General configuration ------------------------------------------------
