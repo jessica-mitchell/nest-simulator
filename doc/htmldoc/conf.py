@@ -72,7 +72,8 @@ panels_add_bootstrap_css = False
 templates_path = ["templates"]
 
 # To run plantuml locally see the user documentation workflow
-plantuml = "java -jar /tmp/plantuml.jar"
+# plantuml = "java -jar /tmp/plantuml.jar"
+plantuml = "java -cp /tmp/jlatexmath.jar:/tmp/plantuml.jar net.sourceforge.plantuml.Run"
 sphinx_gallery_conf = {
     # path to your examples scripts
     "examples_dirs": "../../pynest/examples",
