@@ -1,0 +1,24 @@
+---
+name: "Push a file to another repository"
+# set this to push on specific branch or tag like release candidate
+on:
+  push
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Push examples
+      uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+
+      with:
+        source_file: "pynest/examples"
+        destination_repo: "nest/nest-simulator-examples"
+        destination_folder: "copies"
+        user_email: "mitchell20j@gmail.com"
+        user_name: "jessica-mitchell"
+        commit_message: "Copy examples to repo"
