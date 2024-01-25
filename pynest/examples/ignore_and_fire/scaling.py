@@ -1,10 +1,11 @@
 """
-Example scaling
-===============
+Example: Exact network scaling experiments using the `ignore_and_fire` neuron
+===============================================================================
 
 * demonstrate scaling experiments with the Two population STDP network testcase,
 * illustrate the problems arising with the standard ``integrate-and-fire`` dynamics, and
 * describe how to perform exact scaling experiments by using ``ignore_and_fire`` neurons.
+
 """
 
 import sys
@@ -21,10 +22,7 @@ from matplotlib import gridspec
 ##########################################################
 ## parameters
 neuron_models = ["iaf_psc_alpha", "ignore_and_fire"]
-# neuron_models = ["iaf_psc_alpha"]
-# neuron_models = ["ignore_and_fire"]
 Ns = numpy.arange(1250, 15000, 1250)
-# Ns = numpy.arange(13750,15000,1250)
 
 data_path_root = "./data"
 
