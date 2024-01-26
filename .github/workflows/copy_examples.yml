@@ -3,22 +3,52 @@ name: "Push a file to another repository"
 # set this to push on specific branch or tag like release candidate
 on:
   push
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-filters
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+    # if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    # alternatively
+    # on:
+    # release:
+    # types: [published]
+
 jobs:
-  copy-file:
+  convert_examples:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: "Checkout repository content"
+        uses: actions/checkout@v4
 
-    - name: Push examples
-      uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: "Set up Python 3.x"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-      with:
-        source_file: "pynest/examples"
-        destination_repo: "nest/nest-simulator-examples"
-        destination_folder: "copies"
-        user_email: "mitchell20j@gmail.com"
-        user_name: "jessica-mitchell"
-        commit_message: "Copy examples to repo"
+      - name: "Install Linux system dependencies"
+        run: |
+          sudo apt-get update
+      - name: "Install Python dependencies"
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install sphinx sphinx-gallery
+      - name: "Convert to notebooks"
+        run: |
+          mkdir pynest/notebooks
+          cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
+          sphx_glr_python_to_jupyter.py $(find pynest/notebooks -iname "*.py")
+          grep -rl '"display_name": "Python 3"'pynest/notebooks | xargs sed -i 's/"display_name": "Python 3"/"display_name": "EBRAINS-23.09"/g'
+          grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i 's/"name": "python3"/"name": "ebrains-23.09"/g'
+
+
+      - name: Push examples
+        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+
+        with:
+          source_file: "pynest/notebooks"
+          destination_repo: "nest/nest-simulator-examples"
+          destination_folder: "test-copies"
+          user_email: "mitchell20j@gmail.com"
+          user_name: "jessica-mitchell"
+          commit_message: "Copy examples to repo"
