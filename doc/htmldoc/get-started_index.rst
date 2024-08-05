@@ -77,6 +77,8 @@ Next steps: Create your own network model
          * :ref:`Get data from simulations <record_simulations>`: How to record data from neurons
            and synapses
 
+.. grid:: 1 1 3 3
+    :gutter: 1
 
     .. grid-item-card::
          :class-header: sd-d-flex-row sd-align-minor-center sd-bg-dark sd-text-white
@@ -108,6 +110,9 @@ Next steps: Create your own network model
 
          * Explore our :ref:`PyNEST example networks <pynest_examples>` that showcase the numerous features and models
            in NEST
+
+.. grid:: 1 1 3 3
+    :gutter: 1
 
     .. grid-item-card::
          :class-header: sd-d-flex-row sd-align-minor-center sd-bg-success sd-text-white

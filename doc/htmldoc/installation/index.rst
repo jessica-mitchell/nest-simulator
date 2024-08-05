@@ -4,7 +4,7 @@ Install NEST
 ============
 
 
-.. grid:: 2
+.. grid:: 1 1 3 3
    :gutter: 1
 
    .. grid-item-card:: |user|  Install a pre-built NEST package using
@@ -45,7 +45,7 @@ Install NEST
 Install related tools
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. grid:: 2
+.. grid:: 1 1 3 3
    :gutter: 1
 
    .. grid-item-card:: |desktop|
