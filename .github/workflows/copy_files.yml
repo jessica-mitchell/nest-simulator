@@ -40,7 +40,7 @@ jobs:
           cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
           jupytext --to notebook $(find pynest/notebooks -iname "*.py")
           python -m ipykernel install --user --name "$NAME" --display-name "$DISPLAY_NAME"
-          jupytext --set-kernel - $(find pynest/examples -iname "*.ipynb")
+          jupytext --set-kernel "$NAME"  $(find pynest/notebooks -iname "*.ipynb")
 
           # sphx_glr_python_to_jupyter.py $(find pynest/notebooks -iname "*.py")
           # grep -rl '"display_name": "Python 3"' pynest/notebooks | xargs sed -i
