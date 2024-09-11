@@ -48,7 +48,7 @@ jobs:
           # grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i
           # 's/"name": "python3"/"name": "ebrains-23.09"/g'
       - name: Push examples
-        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
+        uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
 
