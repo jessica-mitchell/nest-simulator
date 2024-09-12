@@ -9,6 +9,7 @@ on:
         required: true
         type: choice
         options:
+          - test
           - nest_3.8
           - nest_3.9
           - master
@@ -40,6 +41,11 @@ jobs:
     steps:
       - name: "Checkout repository content"
         uses: actions/checkout@v4
+      - name: "check directory"
+        run: |
+          ls -la
+          pwd
+          env
 
       - name: "Set up Python 3.x"
         uses: actions/setup-python@v5
@@ -58,9 +64,10 @@ jobs:
           # mkdir pynest/notebooks
           # cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
 
-          jupytext --to notebook "pynest/examples/balancedneuron.py"
+          jupytext --to notebook  $(find test_worklow -iname "*.py")
           python -m ipykernel install --user --name "$NAME" --display-name "$DISPLAY_NAME"
-          jupytext --set-kernel "$NAME"  "pynest/examples/balancedneuron*.ipynb"
+          jupytext --set-kernel "$NAME"  $(find test_workflow -iname "*.ipynb"
+          env
 
       - name: "Checkout new branch in examples repo"
         uses: GuillaumeFalourd/create-other-repo-branch-action@v1.5
@@ -81,7 +88,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
 
         with:
-          source_file: "pynest/examples/balancedneuron*"
+          source_file: "test_workflow/"
           destination_repo: "nest/nest-simulator-examples"
           destination_folder: "delme-examples"
           user_email: "mitchell20j@gmail.com"
