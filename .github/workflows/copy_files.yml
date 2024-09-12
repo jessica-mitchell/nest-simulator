@@ -4,8 +4,16 @@ name: "Test workflow dispatch"
 on:
   workflow_dispatch:
     inputs:
+      nest_version:
+        description: 'NEST version'
+        required: true
+        type: choice
+        options:
+          - nest_3.8
+          - nest_3.9
+          - master
       ebrains_kernel:
-        description: 'EBRAINS kernel'
+        description: 'choose EBRAINS kernel'
         required: true
         default: 'ebrains-24.04'
         type: choice
@@ -28,6 +36,7 @@ jobs:
     env:
       NAME: ${{inputs.ebrains_kernel }}
       DISPLAY_NAME: "EBRAINS-24.04"
+      NEST_VERSION: ${{ inputs.nest_version }}
     steps:
       - name: "Checkout repository content"
         uses: actions/checkout@v4
@@ -50,24 +59,32 @@ jobs:
           # cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
           echo "kernel name $NAME"
 
-          jupytext --to notebook $(find pynest/examples -iname "*.py")
+          jupytext --to notebook "pynest/examples/balancedneuron.py"
           python -m ipykernel install --user --name "$NAME" --display-name "$DISPLAY_NAME"
-          jupytext --set-kernel "$NAME"  $(find pynest/examples -iname "*.ipynb")
+          jupytext --set-kernel "$NAME"  "pynest/examples/balancedneuron*.ipynb"
 
-          # sphx_glr_python_to_jupyter.py $(find pynest/notebooks -iname "*.py")
-          # grep -rl '"display_name": "Python 3"' pynest/notebooks | xargs sed -i
-          # 's/"display_name": "Python 3"/"display_name": "EBRAINS-23.09"/g'
-          # grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i
-          # 's/"name": "python3"/"name": "ebrains-23.09"/g'
-          #      - name: Push examples
-          #        uses: dmnemec/copy_file_to_another_repo_action@main
-          #        env:
-          #          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-          #
-          #        with:
-          #          source_file: "pynest/examples"
-          #          destination_repo: "nest/nest-simulator-examples"
-          #          destination_folder: "24-04-examples"
-          #          user_email: "mitchell20j@gmail.com"
-          #          user_name: "jessica-mitchell"
-          #          commit_message: "Copy examples to repo"
+      - name: "Checkout new branch in examples repo"
+        uses: GuillaumeFalourd/create-other-repo-branch-action@v1.5
+        with:
+          repository_owner: nest
+          repository_name: nest-simulator-examples
+          new_branch_name: $NEST_VERSION
+          access_token: ${{ secrets.API_TOKEN_GITHUB}}
+
+# sphx_glr_python_to_jupyter.py $(find pynest/notebooks -iname "*.py")
+# grep -rl '"display_name": "Python 3"' pynest/notebooks | xargs sed -i
+# 's/"display_name": "Python 3"/"display_name": "EBRAINS-23.09"/g'
+# grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i
+# 's/"name": "python3"/"name": "ebrains-23.09"/g'
+      - name: "Push examples"
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+
+        with:
+          source_file: "pynest/examples"
+          destination_repo: "nest/nest-simulator-examples"
+          destination_folder: "delme-examples"
+          user_email: "mitchell20j@gmail.com"
+          user_name: "jessica-mitchell"
+          commit_message: "Copy examples to repo"
