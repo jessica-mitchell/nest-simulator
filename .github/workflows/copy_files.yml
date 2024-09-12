@@ -1,5 +1,5 @@
 ---
-name: "Push a file to another repository"
+name: "Test workflow dispatch"
 # set this to push on specific branch or tag like release candidate
 on:
   workflow_dispatch:
