@@ -2,21 +2,31 @@
 name: "Push a file to another repository"
 # set this to push on specific branch or tag like release candidate
 on:
-  push
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-filters
-    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
-    # if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    # alternatively
-    # on:
-    # release:
-    # types: [published]
+  workflow_dispatch:
+    inputs:
+      ebrains_kernel:
+        description: 'EBRAINS kernel'
+        required: true
+        default: 'ebrains-24.04'
+        type: choice
+        options:
+          - ebrains-23.09
+          - ebrains-24.04
+          - experimental
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#using-filters
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+# if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+# alternatively
+# on:
+# release:
+# types: [published]
 
 jobs:
   convert_examples:
     runs-on: ubuntu-latest
 
     env:
-      NAME: "ebrains-24.04"
+      NAME: ${{inputs.ebrains_kernel }}
       DISPLAY_NAME: "EBRAINS-24.04"
     steps:
       - name: "Checkout repository content"
@@ -38,6 +48,8 @@ jobs:
         run: |
           # mkdir pynest/notebooks
           # cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
+          echo "kernel name $NAME"
+
           jupytext --to notebook $(find pynest/examples -iname "*.py")
           python -m ipykernel install --user --name "$NAME" --display-name "$DISPLAY_NAME"
           jupytext --set-kernel "$NAME"  $(find pynest/examples -iname "*.ipynb")
@@ -47,15 +59,15 @@ jobs:
           # 's/"display_name": "Python 3"/"display_name": "EBRAINS-23.09"/g'
           # grep -rl '"name": "python3"' pynest/notebooks | xargs sed -i
           # 's/"name": "python3"/"name": "ebrains-23.09"/g'
-      - name: Push examples
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-
-        with:
-          source_file: "pynest/examples"
-          destination_repo: "nest/nest-simulator-examples"
-          destination_folder: "24-04-examples"
-          user_email: "mitchell20j@gmail.com"
-          user_name: "jessica-mitchell"
-          commit_message: "Copy examples to repo"
+          #      - name: Push examples
+          #        uses: dmnemec/copy_file_to_another_repo_action@main
+          #        env:
+          #          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+          #
+          #        with:
+          #          source_file: "pynest/examples"
+          #          destination_repo: "nest/nest-simulator-examples"
+          #          destination_folder: "24-04-examples"
+          #          user_email: "mitchell20j@gmail.com"
+          #          user_name: "jessica-mitchell"
+          #          commit_message: "Copy examples to repo"
