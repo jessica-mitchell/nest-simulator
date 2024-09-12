@@ -57,7 +57,6 @@ jobs:
         run: |
           # mkdir pynest/notebooks
           # cp -r $(find pynest/examples/ -iname "*.py") pynest/notebooks
-          echo "kernel name $NAME"
 
           jupytext --to notebook "pynest/examples/balancedneuron.py"
           python -m ipykernel install --user --name "$NAME" --display-name "$DISPLAY_NAME"
@@ -82,7 +81,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
 
         with:
-          source_file: "pynest/examples"
+          source_file: "pynest/examples/balancedneuron*"
           destination_repo: "nest/nest-simulator-examples"
           destination_folder: "delme-examples"
           user_email: "mitchell20j@gmail.com"
