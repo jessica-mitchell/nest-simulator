@@ -1,0 +1,31 @@
+name: Source Workflow
+  # on:
+  #   release:
+  #     types: [prereleased]
+on:
+  workflow_dispatch:
+    inputs:
+      nest_version:
+        description: 'NEST version'
+        required: true
+        type: choice
+        options:
+          - test
+          - nest_3.8
+          - nest_3.9
+          - master
+
+run-name: ${{ github.actor }} is testing out GitHub Actions  🚀
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: trigger the automated test in another repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: '${{ secrets.API_TOKEN_GITHUB }}'
+          repository: nest/nest-simulator-examples
+          event-type: Integration-with-Automation
+      - name: my-step
+        run: 'echo ${{ github.actor }} Hello !'
