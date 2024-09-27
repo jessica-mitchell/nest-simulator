@@ -1,19 +1,9 @@
 name: Source Workflow
-  # on:
-  #   release:
-  #     types: [prereleased]
+
 on:
   workflow_dispatch:
-    inputs:
-      nest_version:
-        description: 'NEST version'
-        required: true
-        type: choice
-        options:
-          - test
-          - nest_3.8
-          - nest_3.9
-          - master
+  release:
+    types: [prereleased]
 
 run-name: ${{ github.actor }} is testing out GitHub Actions  🚀
 
