@@ -67,38 +67,78 @@ Current-based exponential integrate-and-fire neuron model
 Description
 +++++++++++
 
-``aeif_psc_alpha`` is the adaptive exponential integrate and fire neuron according
-to Brette and Gerstner (2005).
+``aeif_psc_alpha`` is the adaptive exponential integrate-and-fire neuron according to Brette and Gerstner (2005).
 Synaptic currents are modelled as alpha-functions.
-
-This implementation uses the embedded 4th order Runge-Kutta-Fehlberg solver with
-adaptive step size to integrate the differential equation.
 
 The membrane potential is given by the following differential equation:
 
 .. math::
 
- C dV/dt= -g_L(V-E_L)+g_L\cdot\Delta_T\cdot\exp((V-V_T)/\Delta_T) - w(t) + I_syn(t) + I_e
+   C \frac{dV}{dt}= -g_L(V-E_L)+g_L\cdot\Delta_T\cdot\exp((V-V_T)/\Delta_T) - w(t) + I_{syn}(t) + I_e
 
 and
 
 .. math::
 
- \tau_w \cdot dw/dt= a(V-E_L) - w
+   \tau_w \cdot \frac{dw}{dt}= a(V-E_L) - w
 
 .. math::
 
- I_{syn}(t) ~ \sum_k (t-t^k) \exp((t-t^k)/\tau_{syn})H(t - t^k) .
+   I_{syn}(t) = \sum_k (t-t^k) \exp(-(t-t^k)/\tau_{syn})H(t - t^k)
 
 Here :math:`H(t)` is the Heaviside step function and `k` indexes incoming spikes.
 
-For implementation details see the
+**Numerical integration and event handling**
+
+This implementation uses an embedded 4th order Runge-Kutta-Fehlberg solver with adaptive step size (via GSL) to
+integrate the system of differential equations for the membrane potential, adaptation variable, and synaptic currents.
+
+**Threshold crossing and spike emission**
+
+- The membrane potential is continuously monitored during ODE integration.
+- A spike is emitted immediately when the membrane potential :math:`V_m` reaches or exceeds the spike detection
+threshold :math:`V_{\text{peak}}` (or :math:`V_{\text{th}}` if :math:`\Delta_T = 0`), as determined by the ODE solver.
+This can occur at any point within a simulation step, not just at the end of a step.
+- Upon spike emission:
+  - The membrane potential is reset to :math:`V_{\text{reset}}`.
+  - The adaptation variable :math:`w` is incremented by the spike-triggered adaptation parameter :math:`b`.
+  - The neuron enters a refractory period, during which the membrane potential is clamped to :math:`V_{\text{reset}}`.
+  - The refractory period is managed by a counter, and its duration is set by the parameter ``t_ref``. If ``t_ref`` is
+zero, the neuron can emit multiple spikes in a single simulation step.
+
+**Refractory period**
+
+- While refractory, the membrane potential is held at :math:`V_{\text{reset}}` and the ODEs are not integrated for
+:math:`V_m`.
+- The refractory counter is decremented at each simulation step until it reaches zero, after which normal integration
+resumes.
+
+**Synaptic and external input**
+
+- Incoming spikes and currents are buffered and applied at the start of each simulation step.
+- Synaptic currents are updated according to alpha-function dynamics, and their derivatives are included in the ODE
+system.
+
+**Initial conditions and state setting**
+
+- All state variables (membrane potential, adaptation, synaptic currents) can be set via the status dictionary.
+- When a spike occurs, the state is updated immediately within the ODE integration loop, not just at the end of a
+simulation step.
+
+**Numerical caveats**
+
+- Because the ODE solver uses adaptive step sizes, the exact timing of spikes and resets may not align with the
+simulation step boundaries.
+- Users should be aware that this can lead to differences in spike timing and adaptation dynamics compared to
+event-driven models with fixed time steps.
+
+For further implementation details, see the
 `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
 
 .. note::
 
     The default refractory period for ``aeif`` models is zero, consistent with the model definition in
-    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
+    Brette & Gerstner [1]_. Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
     time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
 
     To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
@@ -108,56 +148,66 @@ Parameters
 
 The following parameters can be set in the status dictionary.
 
-======== ======= =======================================
-**Dynamic state variables:**
---------------------------------------------------------
- V_m     mV      Membrane potential
- I_ex    pA      Excitatory synaptic current
- dI_ex   pA/ms   First derivative of I_ex
- I_in    pA      Inhibitory synaptic current
- dI_in   pA/ms   First derivative of I_in
- w       pA      Spike-adaptation current
- g       pA      Spike-adaptation current
-======== ======= =======================================
 
-======== ======= =======================================
-**Membrane Parameters**
---------------------------------------------------------
- C_m     pF      Capacity of the membrane
- t_ref   ms      Duration of refractory period
- V_reset mV      Reset value for V_m after a spike
- E_L     mV      Leak reversal potential
- g_L     nS      Leak conductance
- I_e     pA      Constant external input current
-======== ======= =======================================
+**Dynamic state variables**
 
-======== ======= ==================================
+================== ================== ========================== =================================
+**State variable** **Initial value**  **Math equivalent**        **Description**
+================== ================== ========================== =================================
+``V_m``            -70.6 mV           :math:`V_{\text{m}}`       Membrane potential
+``I_ex``           0.0 pA             :math:`I_{\text{syn, ex}}` Excitatory synaptic current
+``dI_ex``          0.0 pA/ms          :math:`\frac{dI_{\text{syn, ex}}}{dt}` First derivative of I_ex
+``I_in``           0.0 pA             :math:`I_{\text{syn, in}}` Inhibitory synaptic current
+``dI_in``          0.0 pA/ms          :math:`\frac{dI_{\text{syn, in}}}{dt}` First derivative of I_in
+``w``              0.0 pA             :math:`w`                  Spike-adaptation current
+================== ================== ========================== =================================
+
+**Membrane parameters**
+
+=============== ================== ===============================
+========================================================================
+**Parameter**   **Default**        **Math equivalent**             **Description**
+=============== ================== ===============================
+========================================================================
+``C_m``         281.0 pF           :math:`C_{\text{m}}`            Capacity of the membrane
+``t_ref``       0.0 ms             :math:`t_{\text{ref}}`          Duration of refractory period
+``V_reset``     -60.0 mV           :math:`V_{\text{reset}}`        Reset value for :math:`V_m` after a spike
+``E_L``         -70.6 mV           :math:`E_{\text{L}}`            Leak reversal potential
+``g_L``         30.0 nS            :math:`g_{\text{L}}`            Leak conductance
+``I_e``         0.0 pA             :math:`I_{\text{e}}`            Constant external input current
+=============== ================== ===============================
+========================================================================
+
 **Spike adaptation parameters**
----------------------------------------------------
- a       nS      Subthreshold adaptation
- b       pA      Spike-triggered adaptation
- Delta_T mV      Slope factor
- tau_w   ms      Adaptation time constant
- V_th    mV      Spike initiation threshold
- V_peak  mV      Spike detection threshold
-======== ======= ==================================
 
-=========== ======= ===========================================================
+=============== ================== ===============================
+========================================================================
+**Parameter**   **Default**        **Math equivalent**             **Description**
+=============== ================== ===============================
+========================================================================
+``a``           4.0 nS             :math:`a`                        Subthreshold adaptation
+``b``           80.5 pA            :math:`b`                        Spike-triggered adaptation
+``Delta_T``     2.0 mV             :math:`\Delta_T`                 Slope factor
+``tau_w``       144.0 ms           :math:`\tau_w`                   Adaptation time constant
+``V_th``        -50.4 mV           :math:`V_{\text{th}}`            Spike initiation threshold
+``V_peak``      0.0 mV             :math:`V_{\text{peak}}`          Spike detection threshold
+=============== ================== ===============================
+========================================================================
+
 **Synaptic parameters**
--------------------------------------------------------------------------------
- tau_syn_ex ms      Rise time of excitatory synaptic conductance (alpha
-                    function)
- tau_syn_in ms      Rise time of the inhibitory synaptic conductance
-                    (alpha function)
-=========== ======= ===========================================================
 
-============= ======= =========================================================
-**Integration parameters**
--------------------------------------------------------------------------------
-gsl_error_tol real    This parameter controls the admissible error of the
-                      GSL integrator. Reduce it if NEST complains about
-                      numerical instabilities
-============= ======= =========================================================
+=============== ================== ===============================
+========================================================================
+**Parameter**   **Default**        **Math equivalent**             **Description**
+=============== ================== ===============================
+========================================================================
+``tau_syn_ex``  0.2 ms             :math:`\tau_{\text{syn, ex}}`    Rise time of excitatory synaptic conductance (alpha
+function)
+``tau_syn_in``  2.0 ms             :math:`\tau_{\text{syn, in}}`    Rise time of inhibitory synaptic conductance (alpha
+function)
+=============== ================== ===============================
+========================================================================
+
 
 Sends
 +++++
