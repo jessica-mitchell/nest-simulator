@@ -1,11 +1,29 @@
 :orphan:
 
-404 - Page not found
---------------------
+Oops, something went wrong!
+---------------------------
+
+This page doesn't exist because
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* The version of the documentation may be outdated and no longer supported,
+* The page has moved or never existed, or
+* A typo was made
+
+Solution:
+~~~~~~~~~
+
+Use the sidebar navigation or the search box to find what you're looking for in the most recent stable release.
 
 
-Sorry, it looks like the page you were looking for doesn't exist in this version or has moved.
+Need further help?
+~~~~~~~~~~~~~~~~~~~
 
-Try the search bar or the navigation sidebar.
+Note that NEST only maintains the current and previous 2 releases, this includes documentation.
 
+If you think the page should exist, you can `create a GitHub issue <https://github.com/nest/nest-simulator/issues/new/choose>`_.
 
+If you really need an older version, you can look at the `GitHub repository <https://github.com/nest/nest-simulator/tags>`_  for previous
+tags of our releases for that versioned documentation.
+
+You can also :ref:`contact the developer team <mail_guidelines>` for support.
