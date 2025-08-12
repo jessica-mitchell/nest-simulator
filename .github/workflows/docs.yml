@@ -39,25 +39,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
 
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz cmake build-essential
 
-      - name: Clone NEST simulator
-        run: |
-          git clone --depth 1 --branch ${{ matrix.branch }} https://github.com/nest/nest-simulator.git nest-simulator-${{ matrix.version }}
-
       - name: Configure with CMake
         run: |
-          mkdir -p build
-          cd build
-          cmake -Dwith-devdoc=ON -Dwith-python=OFF nest-simulator-${{ matrix.version }}
+          mkdir -p build-${{ matrix.version }}
+          cd build-${{ matrix.version }}
+          cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
 
       - name: Generate Doxygen documentation
         run: |
-          cd nest-simulator-${{ matrix.version }}/build
+          cd build-${{ matrix.version }}
           ls -la
           doxygen fulldoc.conf
 
@@ -65,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docs-${{ matrix.version }}
-          path: nest-simulator-${{ matrix.version }}/build/doc/doxygen/html/
+          path: build-${{ matrix.version }}/doc/doxygen/html/
           retention-days: 7
 
   deploy:
