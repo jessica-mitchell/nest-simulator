@@ -55,11 +55,13 @@ jobs:
           mkdir -p build
           cd build
           cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
-          ls
 
       - name: Generate Doxygen documentation
         run: |
           cd doc
+          ls
+          cd ../
+          ls
           doxygen fulldoc.conf
 
       - name: Upload docs artifact
