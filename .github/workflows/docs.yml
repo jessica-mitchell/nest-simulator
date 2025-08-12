@@ -51,10 +51,9 @@ jobs:
 
       - name: Configure with CMake
         run: |
-          cd nest-simulator-${{ matrix.version }}
           mkdir -p build
           cd build
-          cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
+          cmake -Dwith-devdoc=ON -Dwith-python=OFF nest-simulator-${{ matrix.version }}
 
       - name: Generate Doxygen documentation
         run: |
