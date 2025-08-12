@@ -1,0 +1,188 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build docs for'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - v3.7
+          - v3.8
+          - master
+  repository_dispatch:
+    types: [build_docs]
+
+env:
+  DOXYGEN_VERSION: 1.9.8
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [v3.7, v3.8, master]
+        include:
+          - version: v3.7
+            branch: v3.7
+          - version: v3.8
+            branch: v3.8
+          - version: master
+            branch: master
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz cmake build-essential
+
+      - name: Clone NEST simulator
+        run: |
+          git clone --depth 1 --branch ${{ matrix.branch }} https://github.com/nest/nest-simulator.git nest-simulator-${{ matrix.version }}
+
+      - name: Configure with CMake
+        run: |
+          cd nest-simulator-${{ matrix.version }}
+          mkdir -p build
+          cd build
+          cmake -Dwith-devdoc=ON ..
+
+      - name: Generate Doxygen documentation
+        run: |
+          cd nest-simulator-${{ matrix.version }}/build
+          doxygen fulldoc.conf
+
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-${{ matrix.version }}
+          path: nest-simulator-${{ matrix.version }}/build/doc/doxygen/html/
+          retention-days: 7
+
+  deploy:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all docs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Create public directory structure
+        run: |
+          mkdir -p public/v3.7
+          mkdir -p public/v3.8
+          mkdir -p public/master
+
+      - name: Copy documentation files
+        run: |
+          # Copy v3.7 docs
+          if [ -d "artifacts/docs-v3.7" ]; then
+            cp -r artifacts/docs-v3.7/* public/v3.7/ || echo "v3.7 docs not available"
+          fi
+
+          # Copy v3.8 docs
+          if [ -d "artifacts/docs-v3.8" ]; then
+            cp -r artifacts/docs-v3.8/* public/v3.8/ || echo "v3.8 docs not available"
+          fi
+
+          # Copy master docs
+          if [ -d "artifacts/docs-master" ]; then
+            cp -r artifacts/docs-master/* public/master/ || echo "master docs not available"
+          fi
+
+      - name: Create version selector page
+        run: |
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>NEST Simulator Documentation</title>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                      margin: 0;
+                      padding: 40px;
+                      background: #f6f8fa;
+                      color: #24292f;
+                  }
+                  .container {
+                      max-width: 800px;
+                      margin: 0 auto;
+                      background: white;
+                      padding: 40px;
+                      border-radius: 8px;
+                      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                  }
+                  .version-link {
+                      display: inline-block;
+                      margin: 10px;
+                      padding: 15px 25px;
+                      background: #0969da;
+                      color: white;
+                      text-decoration: none;
+                      border-radius: 6px;
+                      font-weight: 500;
+                      transition: background-color 0.2s;
+                  }
+                  .version-link:hover {
+                      background: #0858b9;
+                      text-decoration: none;
+                  }
+                  h1 {
+                      color: #24292f;
+                      margin-bottom: 20px;
+                      text-align: center;
+                  }
+                  p {
+                      text-align: center;
+                      color: #656d76;
+                      margin-bottom: 30px;
+                  }
+                  .links {
+                      text-align: center;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>NEST Simulator Documentation</h1>
+                  <p>Select a version to view the documentation:</p>
+                  <div class="links">
+                      <a href="v3.7/" class="version-link">v3.7</a>
+                      <a href="v3.8/" class="version-link">v3.8</a>
+                      <a href="master/" class="version-link">Master (Development)</a>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
