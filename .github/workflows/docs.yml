@@ -2,7 +2,7 @@ name: Build and Deploy Documentation
 
 on:
   push:
-    branches: [ ghpages-dev  ]
+    branches: [ghpages-dev, master]
     paths-ignore:
       - '**.md'
       - '.github/**'
