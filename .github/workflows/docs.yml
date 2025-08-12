@@ -59,6 +59,7 @@ jobs:
 
       - name: Generate Doxygen documentation
         run: |
+          cd doc
           doxygen fulldoc.conf
 
       - name: Upload docs artifact
