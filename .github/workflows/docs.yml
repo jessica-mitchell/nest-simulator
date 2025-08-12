@@ -5,7 +5,6 @@ on:
     branches: [ghpages-dev, master]
     paths-ignore:
       - '**.md'
-      - '.github/**'
   workflow_dispatch:
     inputs:
       version:
@@ -55,7 +54,7 @@ jobs:
           cd nest-simulator-${{ matrix.version }}
           mkdir -p build
           cd build
-          cmake -Dwith-devdoc=ON ..
+          cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
 
       - name: Generate Doxygen documentation
         run: |
