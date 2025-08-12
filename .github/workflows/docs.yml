@@ -58,7 +58,7 @@ jobs:
 
       - name: Generate Doxygen documentation
         run: |
-          cd build
+          cd nest-simulator-${{ matrix.version }}/build/doc
           ls
           doxygen fulldoc.conf
 
