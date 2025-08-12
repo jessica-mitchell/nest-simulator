@@ -58,9 +58,7 @@ jobs:
 
       - name: Generate Doxygen documentation
         run: |
-          cd doc
-          ls
-          cd ../
+          cd build/doc
           ls
           doxygen fulldoc.conf
 
