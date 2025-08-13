@@ -46,7 +46,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz cmake build-essential
-          ls
 
       - name: Configure with CMake
         run: |
@@ -58,7 +57,7 @@ jobs:
         run: |
           cd build-${{ matrix.version }}
           ls -la
-          doxygen fulldoc.conf
+          doxygen doc/fulldoc.conf
 
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4
