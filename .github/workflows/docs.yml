@@ -76,41 +76,41 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download all docs artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          pattern: docs-*
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Create public directory structure
-        run: |
-          mkdir -p public/v3.7
-          mkdir -p public/v3.8
-          mkdir -p public/master
-
-      - name: Copy documentation files
-        run: |
-          # Copy v3.7 docs
-          if [ -d "artifacts/docs-v3.7" ]; then
-            cp -r artifacts/docs-v3.7/* public/v3.7/ || echo "v3.7 docs not available"
-          fi
-
-          # Copy v3.8 docs
-          if [ -d "artifacts/docs-v3.8" ]; then
-            cp -r artifacts/docs-v3.8/* public/v3.8/ || echo "v3.8 docs not available"
-          fi
-
-          # Copy master docs
-          if [ -d "artifacts/docs-master" ]; then
-            cp -r artifacts/docs-master/* public/master/ || echo "master docs not available"
-          fi
-
+      #      - name: Checkout repository
+      #        uses: actions/checkout@v4
+      #
+      #      - name: Download all docs artifacts
+      #        uses: actions/download-artifact@v4
+      #        with:
+      #          path: artifacts
+      #          pattern: docs-*
+      #
+      #      - name: Setup Pages
+      #        uses: actions/configure-pages@v4
+      #
+      #      - name: Create public directory structure
+      #        run: |
+      #          mkdir -p public/v3.7
+      #          mkdir -p public/v3.8
+      #          mkdir -p public/master
+      #
+      #      - name: Copy documentation files
+      #        run: |
+      #          # Copy v3.7 docs
+      #          if [ -d "artifacts/docs-v3.7" ]; then
+      #            cp -r artifacts/docs-v3.7/* public/v3.7/ || echo "v3.7 docs not available"
+      #          fi
+      #
+      #          # Copy v3.8 docs
+      #          if [ -d "artifacts/docs-v3.8" ]; then
+      #            cp -r artifacts/docs-v3.8/* public/v3.8/ || echo "v3.8 docs not available"
+      #          fi
+      #
+      #          # Copy master docs
+      #          if [ -d "artifacts/docs-master" ]; then
+      #            cp -r artifacts/docs-master/* public/master/ || echo "master docs not available"
+      #          fi
+      #
       - name: Create version selector page
         run: |
           cat > public/index.html << 'EOF'
