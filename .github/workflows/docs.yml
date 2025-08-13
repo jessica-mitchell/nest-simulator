@@ -63,14 +63,14 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Upload docs artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docs-${{ matrix.version }}
           path: build-${{ matrix.version }}/doc/doxygen/html/
           retention-days: 7
 
   deploy:
-    needs: build-docs
+    #  needs: build-docs
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -185,4 +185,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4
