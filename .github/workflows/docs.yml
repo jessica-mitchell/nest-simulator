@@ -111,74 +111,74 @@ jobs:
       #            cp -r artifacts/docs-master/* public/master/ || echo "master docs not available"
       #          fi
       #
-      - name: Create version selector page
-        run: |
-          cat > public/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>NEST Simulator Documentation</title>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <style>
-                  body {
-                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                      margin: 0;
-                      padding: 40px;
-                      background: #f6f8fa;
-                      color: #24292f;
-                  }
-                  .container {
-                      max-width: 800px;
-                      margin: 0 auto;
-                      background: white;
-                      padding: 40px;
-                      border-radius: 8px;
-                      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                  }
-                  .version-link {
-                      display: inline-block;
-                      margin: 10px;
-                      padding: 15px 25px;
-                      background: #0969da;
-                      color: white;
-                      text-decoration: none;
-                      border-radius: 6px;
-                      font-weight: 500;
-                      transition: background-color 0.2s;
-                  }
-                  .version-link:hover {
-                      background: #0858b9;
-                      text-decoration: none;
-                  }
-                  h1 {
-                      color: #24292f;
-                      margin-bottom: 20px;
-                      text-align: center;
-                  }
-                  p {
-                      text-align: center;
-                      color: #656d76;
-                      margin-bottom: 30px;
-                  }
-                  .links {
-                      text-align: center;
-                  }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1>NEST Simulator Documentation</h1>
-                  <p>Select a version to view the documentation:</p>
-                  <div class="links">
-                      <a href="v3.7/" class="version-link">v3.7</a>
-                      <a href="v3.8/" class="version-link">v3.8</a>
-                      <a href="master/" class="version-link">Master (Development)</a>
-                  </div>
-              </div>
-          </body>
-          </html>
-          EOF
+      #- name: Create version selector page
+      #  run: |
+      #    cat > public/index.html << 'EOF'
+      #    <!DOCTYPE html>
+      #    <html>
+      #    <head>
+      #        <title>NEST Simulator Documentation</title>
+      #        <meta charset="utf-8">
+      #        <meta name="viewport" content="width=device-width, initial-scale=1">
+      #        <style>
+      #            body {
+      #                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      #                margin: 0;
+      #                padding: 40px;
+      #                background: #f6f8fa;
+      #                color: #24292f;
+      #            }
+      #            .container {
+      #                max-width: 800px;
+      #                margin: 0 auto;
+      #                background: white;
+      #                padding: 40px;
+      #                border-radius: 8px;
+      #                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      #            }
+      #            .version-link {
+      #                display: inline-block;
+      #                margin: 10px;
+      #                padding: 15px 25px;
+      #                background: #0969da;
+      #                color: white;
+      #                text-decoration: none;
+      #                border-radius: 6px;
+      #                font-weight: 500;
+      #                transition: background-color 0.2s;
+      #            }
+      #            .version-link:hover {
+      #                background: #0858b9;
+      #                text-decoration: none;
+      #            }
+      #            h1 {
+      #                color: #24292f;
+      #                margin-bottom: 20px;
+      #                text-align: center;
+      #            }
+      #            p {
+      #                text-align: center;
+      #                color: #656d76;
+      #                margin-bottom: 30px;
+      #            }
+      #            .links {
+      #                text-align: center;
+      #            }
+      #        </style>
+      #    </head>
+      #    <body>
+      #        <div class="container">
+      #            <h1>NEST Simulator Documentation</h1>
+      #            <p>Select a version to view the documentation:</p>
+      #            <div class="links">
+      #                <a href="v3.7/" class="version-link">v3.7</a>
+      #                <a href="v3.8/" class="version-link">v3.8</a>
+      #                <a href="master/" class="version-link">Master (Development)</a>
+      #            </div>
+      #        </div>
+      #    </body>
+      #    </html>
+      #    EOF
 
       - name: Deploy to GitHub Pages
         id: deployment
