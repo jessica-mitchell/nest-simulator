@@ -70,7 +70,7 @@ jobs:
           retention-days: 7
 
   deploy:
-    #  needs: build-docs
+    needs: build-docs
     runs-on: ubuntu-latest
     permissions:
       pages: write
