@@ -77,6 +77,7 @@ jobs:
       - name: Upload artifact for ${{ matrix.version }}
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ matrix.version }}
           path: ./_site/${{ matrix.version }}
 
             #      - name: Upload docs artifact ${{ matrix.version }}
