@@ -48,6 +48,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz cmake build-essential
 
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+
       - name: Configure with CMake
         run: |
           #mkdir -p build-master
@@ -63,14 +68,26 @@ jobs:
           cat doc/fulldoc.conf
           doxygen doc/fulldoc.conf
 
-      - name: Upload docs artifact
+      - name: Copy version ${{ matrix.version }}
+        run: |
+          mkdir -p ./_site/${{ matrix.version }}
+          cp -r build-${{ matrix.version }}/doc/doxygen/html/ ./_site/${{ matrix.version }}/
+          #echo "Building version ${{ matrix.version }}" > ./_site/${{ matrix.version }}/index.html
+
+      - name: Upload artifact for ${{ matrix.version }}
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          #name: docs-${{ matrix.version }}
-            #path: build-master/doc/doxygen/html/
-          path: build-${{ matrix.version }}/doc/doxygen/html/
-          retention-days: 7
+          path: ./_site/${{ matrix.version }}
+
+            #      - name: Upload docs artifact ${{ matrix.version }}
+            #        uses: actions/upload-pages-artifact@v3
+            #        with:
+            #          name: github-pages
+            #          #name: docs-${{ matrix.version }}
+            #            #path: build-master/doc/doxygen/html/
+            #          path: build-${{ matrix.version }}/doc/doxygen/html/
+            #          retention-days: 7
+            #
 
   deploy:
     needs: build-docs
@@ -80,7 +97,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+        #      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       #      - name: Checkout repository
       #        uses: actions/checkout@v4
