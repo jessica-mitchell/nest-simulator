@@ -1,4 +1,4 @@
-name: Build and Deploy Documentation
+name: Build and Deploy C++ Documentation
 
 on:
   push:
@@ -26,22 +26,22 @@ env:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-      #strategy:
-      #  matrix:
-      #    version: [v3.7, v3.8, master]
-      #    include:
-      #      - version: v3.7
-      #        branch: v3.7
-      #      - version: v3.8
-      #        branch: v3.8
-      #      - version: master
-      #        branch: master
+    strategy:
+      matrix:
+        version: [v3.7, v3.8, master]
+        include:
+          - version: v3.7
+            branch: v3.7
+          - version: v3.8
+            branch: v3.8
+          - version: master
+            branch: master
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: master
-            #ref: ${{ matrix.branch }}
+          #ref: ghpages-dev
+          ref: ${{ matrix.branch }}
 
       - name: Install dependencies
         run: |
@@ -50,26 +50,26 @@ jobs:
 
       - name: Configure with CMake
         run: |
-          mkdir -p build-master
-          #mkdir -p build-${{ matrix.version }}
-          cd build-master
-          #cd build-${{ matrix.version }}
+          #mkdir -p build-master
+          mkdir -p build-${{ matrix.version }}
+          #cd build-master
+          cd build-${{ matrix.version }}
           cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
 
       - name: Generate Doxygen documentation
         run: |
-          cd build-master
-          #cd build-${{ matrix.version }}
-          ls -la
+          #cd build-master
+          cd build-${{ matrix.version }}
+          cat doc/fulldoc.conf
           doxygen doc/fulldoc.conf
 
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-            #name: docs-${{ matrix.version }}
-          path: build-master/doc/doxygen/html/
-            #path: build-${{ matrix.version }}/doc/doxygen/html/
+          #name: github-pages
+          name: docs-${{ matrix.version }}
+            #path: build-master/doc/doxygen/html/
+          path: build-${{ matrix.version }}/doc/doxygen/html/
           retention-days: 7
 
   deploy:
