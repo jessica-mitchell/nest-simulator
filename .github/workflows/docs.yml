@@ -46,6 +46,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz cmake build-essential
+          ls
 
       - name: Configure with CMake
         run: |
