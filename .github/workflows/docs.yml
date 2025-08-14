@@ -48,7 +48,7 @@ jobs:
         run: |
           git fetch origin master
           git show origin/master:doc/fulldoc.conf.in > doc/fulldoc.conf.in.master
-          git show origin/master:doc/doxygen-awesome.css > doc/doxygen-awesome.css.master
+          git show origin/master:doc/htmldoc/static/css/doxygen-awesome.css > doc/htmldoc/static/css/doxygen-awesome.css.master
 
       - name: Install dependencies
         run: |
@@ -70,7 +70,7 @@ jobs:
           if [ "${{ matrix.version }}" != "master" ]; then
             # Use master config files for non-master versions
             cp ../doc/fulldoc.conf.in.master ../doc/fulldoc.conf.in
-            cp ../doc/doxygen-awesome.css.master ../doc/doxygen-awesome.css
+            cp ../doc/htmldoc/static/css/doxygen-awesome.css.master ../doc/htmldoc/static/css/doxygen-awesome.css
           fi
           doxygen doc/fulldoc.conf
 
