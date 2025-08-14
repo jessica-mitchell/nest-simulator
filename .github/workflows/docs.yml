@@ -48,11 +48,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz cmake build-essential
 
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v5
-
-
       - name: Configure with CMake
         run: |
           #mkdir -p build-master
@@ -65,20 +60,14 @@ jobs:
         run: |
           #cd build-master
           cd build-${{ matrix.version }}
-          cat doc/fulldoc.conf
+          #          cat doc/fulldoc.conf
           doxygen doc/fulldoc.conf
 
-      - name: Copy version ${{ matrix.version }}
-        run: |
-          mkdir -p ./_site/${{ matrix.version }}
-          cp -r build-${{ matrix.version }}/doc/doxygen/html/ ./_site/${{ matrix.version }}/
-          #echo "Building version ${{ matrix.version }}" > ./_site/${{ matrix.version }}/index.html
-
-      - name: Upload artifact for ${{ matrix.version }}
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload docs artifact ${{ matrix.version }}
+        uses: actions/upload-artifact@v4
         with:
-          name: github-pages-${{ matrix.version }}
-          path: ./_site/${{ matrix.version }}
+          name: docs-${{ matrix.version }}
+          path: build-${{ matrix.version }}/doc/doxygen/html/
 
             #      - name: Upload docs artifact ${{ matrix.version }}
             #        uses: actions/upload-pages-artifact@v3
@@ -90,8 +79,59 @@ jobs:
             #          retention-days: 7
             #
 
-  deploy:
+  prepare-pages:
     needs: build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all docs artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: docs-*
+
+      - name: Prepare combined site directory
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          shopt -s nullglob
+          for d in artifacts/docs-*; do
+            version=${d#artifacts/docs-}
+            mkdir -p "_site/${version}"
+            cp -r "${d}"/* "_site/${version}/"
+          done
+          # Optional lightweight index
+          cat > _site/index.html << 'EOF'
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>NEST Simulator C++ Doxygen</title>
+              <style>
+                body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 40px; }
+                a { display:inline-block; margin: 8px 12px; padding: 10px 14px; background:#0969da; color:#fff; border-radius:6px; text-decoration:none; }
+                a:hover { background:#0858b9; }
+              </style>
+            </head>
+            <body>
+              <h1>NEST Simulator C++ Doxygen</h1>
+              <p>Select a version:</p>
+              <div>
+                <a href="v3.7/">v3.7</a>
+                <a href="v3.8/">v3.8</a>
+                <a href="master/">master</a>
+              </div>
+            </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact (combined)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: prepare-pages
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -100,6 +140,10 @@ jobs:
       name: github-pages
         #      url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       #      - name: Checkout repository
       #        uses: actions/checkout@v4
       #
