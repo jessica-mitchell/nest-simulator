@@ -52,7 +52,6 @@ jobs:
         run: |
           #mkdir -p build-master
           mkdir -p build-${{ matrix.version }}
-          #cd build-master
           cd build-${{ matrix.version }}
           cmake -Dwith-devdoc=ON -Dwith-python=OFF ..
 
