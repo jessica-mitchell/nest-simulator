@@ -51,7 +51,7 @@ Types of synapses
      :columns: 12
 
      In the following section, we introduce the different types of synapses implemented in NEST. This page focuses on the
-     type of signal transmission and plasticity for each synapse model. For details on the dynamics of synapses
+     type of signal transmission and plasticity for each synapse model. For details on the post-synaptic response dynamics of synapses
      see :ref:`synapse_dynamics`.
 
 .. _chemical_synapses:
@@ -59,9 +59,13 @@ Types of synapses
 Chemical synapses
 -----------------
 
-- transmitted signal type: spike
-- only chemical synapses have plasticity
+The majority of synapse models in NEST implement chemical synapses.
 
+**Key characteristics:**
+- **Signal transmission:** Unidirectional spike transmission from pre-synaptic to post-synaptic neuron
+- **Weight and delay:** Characterized by a (plastic) weight and (static) delay
+  - **Delay:** Represents electrochemical signal conversion and signal propagation from synapse to postsynaptic soma
+- **Plasticity:** Various mechanisms can change the synaptic weight over time
 
 Types of plasticity
 ~~~~~~~~~~~~~~~~~~~
@@ -116,11 +120,11 @@ Functional plasticity
         .. tab-item:: General info
           :selected:
 
-          - Connection changes over time
+          - Connection weight changes over time
 
-          - Spike timing dependent plasticity
-          - Short-term plasticity
-          - Spike timing dependent plascticity and stdp-like models with 3rd factors
+          - Spike timing dependent plasticity (STDP)
+          - Short-term plasticity (STP)
+          - Spike timing dependent plasticity and STDP-like models with third factors
 
         .. tab-item:: **STDP**
 
@@ -135,7 +139,8 @@ Functional plasticity
              .. grid-item::
                :columns: 8
 
-               Spike timing dependent plascticity
+               Spike timing dependent plasticity (STDP)
+               Depends on the relative timing of pre- and post-synaptic spikes. The effect can be either additive or multiplicative, depending on the specific implementation. Different window functions determine the temporal dependence of plasticity. The time scale is typically on the order of a few milliseconds.
 
                .. dropdown:: STDP synapses
 
@@ -160,8 +165,8 @@ Functional plasticity
              .. grid-item::
                :columns: 8
 
-               Short-term plasticity
-
+               Short-term plasticity (STP)
+               Depends on presynaptic neuron spiking activity. Can exhibit either facilitation (increased response) or depression (decreased response). The time scale is typically tens of milliseconds.
 
                .. dropdown:: STP synapses
 
@@ -173,7 +178,7 @@ Functional plasticity
                     {% endif %}
                     {% endfor %}
 
-        .. tab-item:: **STDP (-like) + 3rd factor**
+        .. tab-item:: **3 factor rules**
 
           .. grid::
             :gutter: 1
@@ -186,7 +191,9 @@ Functional plasticity
             .. grid-item::
                :columns: 8
 
-               Spike timing dependent plasticity and STDP-like models with 3rd factors
+               Spike timing dependent plasticity and STDP-like models with third factors
+               The third factor modulates the effectiveness of synaptic weight changes. This third factor can be a neuromodulation signal or a local signal from the postsynaptic neuron, such as membrane potential or dendritic voltage. The time scale is similar to standard STDP (a few milliseconds).
+
 
                .. dropdown:: Synapses with 3rd factors
 
@@ -236,10 +243,12 @@ Structural plasticity
 
           * empty
 
-Stochastic vs Deterministic synapses
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Stochasticity
+~~~~~~~~~~~~~
 
 * bernoulli_synapse - chemical, static, stochastic
+
+  Spike transmission in chemical synapses is not always reliable due to diffusion of neurotransmitters and stochastic neurotransmitter release. Most synapse models in NEST use deterministic signal transmission, however bernoulli_synapse implements stochastic spike transmission.
 
 .. _electrical_synapses:
 
@@ -247,36 +256,49 @@ Stochastic vs Deterministic synapses
 Electrical Synapses
 -------------------
 
-transmitted signal type: voltage
+**Signal transmission type:** Voltage
 
-* gap_junction - electrical
+Electrical synapses provide direct electrical coupling between pre- and post-synaptic neuron membranes, resulting in instantaneous signal transmission. The strength of coupling is determined by the conductance. Unlike chemical synapses, signal transmission is bidirectional. These synapses are typically considered static and deterministic.
+
+**Technical details:**
+- Instantaneous coupling requires waveform relaxation
+- Implemented by: gap_junction - electrical
 
 .. _abstract_synapses:
 
 Abstract Synapses
 -----------------
 
-transmitted signal type: [firing rates, learning signals . . .]
+**Signal transmission type:** Firing rates, learning signals, and other continuous signals
 
+Abstract synapses represent all synapses that do not transmit discrete spikes. These are auxiliary models without direct biological counterparts, typically used with abstract neuron models like rate models or complex plasticity models requiring learning signals between neurons (e.g., e-prop). They typically submit arrays of continuous signals.
 
-* cont_delay_synapse - abstract, rate
-* diffusion_connection - abstract, rate
-* eprop_learning_signal_connection - abstract, learning
-* eprop_learning_signal_connection_bsshslm_2020 - abstract, learning
-* eprop_synapse - abstract, learning
-* erate_connection_delayed - abstract, rate
-* rate_connection_instantaneous - abstract, rate
-* prop_synapse_bsshslm_2020 - abstract, learning
-* weight_optimizer
+**Technical details:**
+- Rate connections with delay buffer information during the minimum delay period and send it as a packet
+- Other connections submit single values instantaneously
+
+**Available models:**
+- cont_delay_synapse - abstract, rate
+- diffusion_connection - abstract, rate
+- eprop_learning_signal_connection - abstract, learning
+- eprop_learning_signal_connection_bsshslm_2020 - abstract, learning
+- eprop_synapse - abstract, learning
+- erate_connection_delayed - abstract, rate
+- rate_connection_instantaneous - abstract, rate
+- prop_synapse_bsshslm_2020 - abstract, learning
+- weight_optimizer
 
 .. _astrocyte_synapses:
 
 Astrocytes
 ----------
 
-transmitted signal type: current
+**Signal transmission type:** Current
 
-sic_connection - astrocyte
+Astrocytes modulate neuronal activity by producing slow inward currents to neurons, which in turn are affected by neuronal activity. This creates a bidirectional interaction between astrocytes and neurons.
+
+**Available models:**
+- sic_connection - astrocyte
 
 ----
 
