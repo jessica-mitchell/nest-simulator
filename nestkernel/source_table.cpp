@@ -29,6 +29,7 @@
 #include "kernel_manager.h"
 #include "mpi_manager_impl.h"
 #include "source_table.h"
+#include "stopwatch_impl.h"
 #include "vp_manager_impl.h"
 
 nest::SourceTable::SourceTable()
@@ -229,7 +230,9 @@ nest::SourceTable::compute_buffer_pos_for_unique_secondary_sources( const size_t
       }
     }
   }
+  kernel().get_omp_synchronization_construction_stopwatch().start();
 #pragma omp barrier
+  kernel().get_omp_synchronization_construction_stopwatch().stop();
 
 #pragma omp single
   {
@@ -243,7 +246,7 @@ nest::SourceTable::compute_buffer_pos_for_unique_secondary_sources( const size_t
           ++cit )
     {
       const size_t source_rank = kernel().mpi_manager.get_process_id_of_node_id( cit->first );
-      const size_t event_size = kernel().model_manager.get_secondary_event_prototype( cit->second, tid ).size();
+      const size_t event_size = kernel().model_manager.get_secondary_event_prototype( cit->second, tid )->size();
 
       buffer_pos_of_source_node_id_syn_id.insert(
         std::make_pair( pack_source_node_id_and_syn_id( cit->first, cit->second ),

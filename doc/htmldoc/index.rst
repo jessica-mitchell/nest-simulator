@@ -22,6 +22,7 @@ Welcome to the NEST Simulator documentation!
           ranging from algorithmically determined connections to data-driven connectivity.
           Create connections between neurons using numerous synapse models from STDP to gap junctions.
 
+
        .. grid-item::
 
           .. button-ref:: tutorials_guides
@@ -45,31 +46,29 @@ Welcome to the NEST Simulator documentation!
               :data-bs-ride: carousel
 
                 .. figure:: static/img/network_model_sketch_mesocircuit.png
+                  :target: networks/index.html
 
-
-                  Create spatially structured networks
-
+                  Create large network models
 
                 .. figure:: static/img/astrocyte_interaction.png
-
+                  :target: auto_examples/astrocytes/index.html
 
                   Inspect neuron and astrocyte interactions
 
-
                 .. figure:: static/img/hpc_benchmark_connectivity.svg
-
+                  :target: auto_examples/hpc_benchmark.html
 
                   Test perfomance and benchmarks
 
                 .. figure:: static/img/pong_sim.gif
-
+                  :target: auto_examples/pong/run_simulations.html
 
                   Simulate a game of PONG with NEST
 
-                .. figure:: static/img/gapjunctions.png
+                .. figure:: static/img/pynest/eprop_supervised_classification_infrastructure.png
+                  :target: auto_examples/eprop_plasticity/index.html
 
-
-                  Explore synapse types like gap junctions
+                  Explore eligibility propagation plasticity
 
        .. grid-item::
 
@@ -99,10 +98,10 @@ How NEST works --- The Big Picture
     .. grid-item::
 
 
-        A NEST simulation is created with input from :doc:`stimulation devices </models/index_generator>`,
-        :doc:`neuron models </models/index_neuron>`, and :doc:`synapse models </models/index_synapse>`,
+        A NEST simulation is created with input from :doc:`stimulation devices </devices/index>`,
+        :doc:`neuron models </neurons/index>`, and :doc:`synapse models </synapses/index>`,
         along with  :ref:`connection rules <connectivity_concepts>`.
-        You can choose what data to record with :doc:`recording devices </models/index_recorder>`.
+        You can choose what data to record with :doc:`recording devices </devices/index>`.
         After simulation, the output is ready for analysis with NEST's built in :py:mod:`.raster_plot` and :py:mod:`.voltage_trace`
         modules or external tools such as :doc:`Elephant <elephant:index>`.
 
@@ -146,3 +145,4 @@ How NEST works --- The Big Picture
    NEST Desktop <https://nest-desktop.readthedocs.io/en/latest/>
    NESTML <https://nestml.readthedocs.io/en/latest/>
    NESTGPU <https://nest-gpu.readthedocs.io/en/latest/>
+   NEST NEAT <https://nest-neat.readthedocs.io/en/latest/>

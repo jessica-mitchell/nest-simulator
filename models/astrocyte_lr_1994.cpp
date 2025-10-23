@@ -123,7 +123,7 @@ nest::astrocyte_lr_1994::Parameters_::Parameters_()
   , Km_SERCA_( 0.1 )    // µM
   , SIC_scale_( 1.0 )
   , SIC_th_( 0.19669 )    // µM
-  , delta_IP3_( 5.0 )     // µM
+  , delta_IP3_( 0.0002 )  // µM
   , k_IP3R_( 0.0002 )     // 1/(µM*ms)
   , rate_IP3R_( 0.006 )   // 1/ms
   , rate_L_( 0.00011 )    // 1/ms
@@ -328,7 +328,7 @@ nest::astrocyte_lr_1994::Buffers_::Buffers_( const Buffers_&, astrocyte_lr_1994&
  * ---------------------------------------------------------------- */
 
 nest::astrocyte_lr_1994::astrocyte_lr_1994()
-  : StructuralPlasticityNode()
+  : Node()
   , P_()
   , S_( P_ )
   , B_( *this )
@@ -337,7 +337,7 @@ nest::astrocyte_lr_1994::astrocyte_lr_1994()
 }
 
 nest::astrocyte_lr_1994::astrocyte_lr_1994( const astrocyte_lr_1994& n )
-  : StructuralPlasticityNode( n )
+  : Node( n )
   , P_( n.P_ )
   , S_( n.S_ )
   , B_( n.B_, *this )

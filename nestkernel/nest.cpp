@@ -63,12 +63,6 @@ reset_kernel()
 }
 
 void
-enable_dryrun_mode( const size_t n_procs )
-{
-  kernel().mpi_manager.set_num_processes( n_procs );
-}
-
-void
 register_logger_client( const deliver_logging_event_ptr client_callback )
 {
   kernel().logging_manager.register_logging_client( client_callback );
@@ -192,9 +186,11 @@ connect_tripartite( NodeCollectionPTR sources,
   NodeCollectionPTR targets,
   NodeCollectionPTR third,
   const DictionaryDatum& connectivity,
+  const DictionaryDatum& third_connectivity,
   const std::map< Name, std::vector< DictionaryDatum > >& synapse_specs )
 {
-  kernel().connection_manager.connect_tripartite( sources, targets, third, connectivity, synapse_specs );
+  kernel().connection_manager.connect_tripartite(
+    sources, targets, third, connectivity, third_connectivity, synapse_specs );
 }
 
 void
@@ -225,6 +221,9 @@ get_connections( const DictionaryDatum& dict )
 void
 disconnect( const ArrayDatum& conns )
 {
+  // probably not strictly necessary here, but does nothing if all is up to date
+  kernel().node_manager.update_thread_local_node_data();
+
   for ( size_t conn_index = 0; conn_index < conns.size(); ++conn_index )
   {
     const auto conn_datum = getValue< ConnectionDatum >( conns.get( conn_index ) );
