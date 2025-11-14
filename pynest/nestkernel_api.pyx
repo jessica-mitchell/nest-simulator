@@ -186,7 +186,8 @@ cdef object any_to_pyobj(any operand):
         obj = NodeCollectionObject()
         obj._set_nc(any_cast[NodeCollectionPTR](operand))
         return nest.NodeCollection(obj)
-
+    if is_type[VerbosityLevel](operand):
+        return any_cast[VerbosityLevel](operand)
 
 cdef object dictionary_to_pydict(dictionary cdict):
     cdef tmp = {}
@@ -256,6 +257,8 @@ cdef dictionary pydict_to_dictionary(object py_dict) except *:  # Adding "except
             cdict[pystr_to_string(key)] = (<ParameterObject>(value._datum)).thisptr
         elif type(value) is ParameterObject:
             cdict[pystr_to_string(key)] = (<ParameterObject>value).thisptr
+        elif type(value) is type(nest.VerbosityLevel.ALL):  # ALL will always exist
+            cdict[pystr_to_string(key)] = <VerbosityLevel>(value)
         else:
             typename = type(value)
             if type(value) is list:
@@ -331,57 +334,12 @@ cdef string pystr_to_string(object s):
     return s.encode('utf-8')
 
 
-def llapi_init_nest(argv):
-    cdef int argc = len(argv)
-    if argc <= 0:
-        raise NotImplementedError
-
-
-    # Create c-style argv arguments from sys.argv
-    cdef int size = argc + 1
-    cdef char** argv_chars = <char**> malloc((size) * sizeof(char*))
-    if argv_chars is NULL:
-        raise NotImplementedError
-    try:
-        # argv must be null terminated. openmpi depends on this
-        argv_chars[argc] = NULL
-
-        # Need to keep a reference to encoded bytes issue #377
-        # argv_bytes = [byte...] which internally holds a reference
-        # to the c string in argv_char = [c-string... NULL]
-        # the `byte` is the utf-8 encoding of sys.argv[...]
-        argv_bytes = [argvi.encode() for argvi in argv]
-        for i, argvi in enumerate(argv_bytes):
-            argv_chars[i] = argvi # c-string ref extracted
-
-        init_nest(&argc, &argv_chars)
-
-        # TODO-PYNEST-NG
-        # nest::kernel().model_manager.get_modeldict()
-        # nest::kernel().model_manager.get_synapsedict()
-        # nest::kernel().connection_manager.get_connruledict()
-        # nest::kernel().sp_manager.get_growthcurvedict()
-
-        # If using MPI, argv might now have changed, so rebuild it
-        del argv[:]
-        # Convert back from utf8 char* to utf8 str
-        argv.extend(str(argvi.decode()) for argvi in argv_chars[:argc])
-    finally:
-        free(argv_chars)
-
-    return True
+def llapi_shutdown_nest( exitcode ):
+    shutdown_nest( exitcode )
 
 
 def llapi_reset_kernel():
     reset_kernel()
-
-
-def llapi_get_verbosity():
-    return severity_t(get_verbosity())
-
-
-def llapi_set_verbosity(severity_t s):
-    set_verbosity(s)
 
 
 def llapi_enable_structural_plasticity():

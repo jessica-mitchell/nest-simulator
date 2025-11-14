@@ -209,11 +209,11 @@ nest::correlomatrix_detector::State_::reset( const Parameters_& p )
   count_covariance_.clear();
   count_covariance_.resize( p.N_channels_ );
 
-  for ( long i = 0; i < p.N_channels_; ++i )
+  for ( auto i = 0; i < p.N_channels_; ++i )
   {
     covariance_[ i ].resize( p.N_channels_ );
     count_covariance_[ i ].resize( p.N_channels_ );
-    for ( long j = 0; j < p.N_channels_; ++j )
+    for ( auto j = 0; j < p.N_channels_; ++j )
     {
       covariance_[ i ][ j ].resize( 1 + p.tau_max_.get_steps() / p.delta_tau_.get_steps(), 0 );
       count_covariance_[ i ][ j ].resize( 1 + p.tau_max_.get_steps() / p.delta_tau_.get_steps(), 0 );
@@ -330,8 +330,9 @@ nest::correlomatrix_detector::handle( SpikeEvent& e )
       for ( SpikelistType::const_iterator spike_j = otherSpikes.begin(); spike_j != otherSpikes.end(); ++spike_j )
       {
         size_t bin;
-        long other = spike_j->receptor_channel_;
-        long sender_ind, other_ind;
+        size_t other = spike_j->receptor_channel_;
+        size_t sender_ind = 0;
+        size_t other_ind = 0;
 
         if ( spike_i < spike_j->timestep_ )
         {
@@ -391,7 +392,7 @@ nest::correlomatrix_detector::calibrate_time( const TimeConverter& tc )
     const double old = P_.delta_tau_.get_ms();
     P_.delta_tau_ = P_.get_default_delta_tau();
     std::string msg = String::compose( "Default for delta_tau changed from %1 to %2 ms", old, P_.delta_tau_.get_ms() );
-    LOG( M_INFO, get_name(), msg );
+    LOG( VerbosityLevel::INFO, get_name(), msg );
   }
 
   P_.tau_max_ = tc.from_old_tics( P_.tau_max_.get_tics() );

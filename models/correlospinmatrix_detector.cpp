@@ -376,7 +376,7 @@ nest::correlospinmatrix_detector::handle( SpikeEvent& e )
       // yet every impulse in the queue that is further in the past than
       // this minimum - tau_max cannot contribute to the count covariance
       long t_min_on = t_i_on;
-      for ( int n = 0; n < P_.N_channels_; n++ )
+      for ( auto n = 0; n < P_.N_channels_; n++ )
       {
         if ( S_.curr_state_[ n ] )
         {
@@ -483,7 +483,7 @@ nest::correlospinmatrix_detector::calibrate_time( const TimeConverter& tc )
     const double old = P_.delta_tau_.get_ms();
     P_.delta_tau_ = P_.get_default_delta_tau();
     std::string msg = String::compose( "Default for delta_tau changed from %1 to %2 ms", old, P_.delta_tau_.get_ms() );
-    LOG( M_INFO, get_name(), msg );
+    LOG( VerbosityLevel::INFO, get_name(), msg );
   }
 
   P_.tau_max_ = tc.from_old_tics( P_.tau_max_.get_tics() );

@@ -29,10 +29,13 @@
 // Includes from libnestutil:
 #include "logging_event.h"
 
+// Includes from thirdparty:
+#include "compose.hpp"
+
 
 nest::LoggingManager::LoggingManager()
   : client_callbacks_()
-  , logging_level_( M_ALL )
+  , logging_level_( VerbosityLevel::INFO )
   , dict_miss_is_error_( true )
 {
 }
@@ -59,12 +62,14 @@ void
 nest::LoggingManager::set_status( const dictionary& dict )
 {
   dict.update_value( names::dict_miss_is_error, dict_miss_is_error_ );
+  dict.update_value( names::verbosity, logging_level_ ); // safe, because entry must be VerbosityLevel
 }
 
 void
 nest::LoggingManager::get_status( dictionary& dict )
 {
   dict[ names::dict_miss_is_error ] = dict_miss_is_error_;
+  dict[ names::verbosity ] = logging_level_;
 }
 
 
@@ -94,7 +99,7 @@ nest::LoggingManager::default_logging_callback_( const LoggingEvent& event ) con
 {
   std::ostream* out;
 
-  if ( event.severity < M_WARNING )
+  if ( event.severity < VerbosityLevel::WARNING )
   {
     out = &std::cout;
   }
@@ -107,7 +112,7 @@ nest::LoggingManager::default_logging_callback_( const LoggingEvent& event ) con
 }
 
 void
-nest::LoggingManager::publish_log( const nest::severity_t s,
+nest::LoggingManager::publish_log( const VerbosityLevel s,
   const std::string& fctn,
   const std::string& msg,
   const std::string& file,
@@ -121,19 +126,4 @@ nest::LoggingManager::publish_log( const nest::severity_t s,
       deliver_logging_event_( e );
     }
   }
-}
-
-void
-nest::LoggingManager::set_logging_level( const nest::severity_t level )
-{
-  assert( level >= M_ALL );
-  assert( level <= M_QUIET );
-
-  logging_level_ = level;
-}
-
-nest::severity_t
-nest::LoggingManager::get_logging_level() const
-{
-  return logging_level_;
 }

@@ -89,8 +89,12 @@ init_nest( int* argc, char** argv[] )
 }
 
 void
-fail_exit( int )
+shutdown_nest( int exitcode )
 {
+  // We must MPI_Finalize before the KernelManager() destructor runs, because
+  // both MusicManager and MPIManager may be involved, with mpi_finalize()
+  // delegating to MusicManager, which is deleted long before MPIManager.
+  kernel().mpi_manager.mpi_finalize( exitcode );
 }
 
 void
@@ -104,24 +108,11 @@ reset_kernel()
   kernel().reset();
 }
 
-severity_t
-get_verbosity()
-{
-  return kernel().logging_manager.get_logging_level();
-}
-
-void
-set_verbosity( severity_t s )
-{
-  kernel().logging_manager.set_logging_level( s );
-}
-
 void
 enable_structural_plasticity()
 {
   kernel().sp_manager.enable_structural_plasticity();
 }
-
 
 void
 disable_structural_plasticity()
@@ -501,6 +492,9 @@ get_connections( const dictionary& dict )
 void
 disconnect( const std::deque< ConnectionID >& conns )
 {
+  // probably not strictly necessary here, but does nothing if all is up to date
+  kernel().node_manager.update_thread_local_node_data();
+
   for ( auto& conn : conns )
   {
     const auto target_node = kernel().node_manager.get_node_or_proxy( conn.get_target_node_id() );

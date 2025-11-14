@@ -39,17 +39,10 @@ from .hl_api_helper import (
 )
 from .hl_api_types import to_json
 
-__all__ = [
-    "GetStatus",
-    "get_verbosity",
-    "help",
-    "helpdesk",
-    "SetStatus",
-    "set_verbosity",
-    "verbosity",
-]
+__all__ = ["GetStatus", "help", "helpdesk", "SetStatus", "VerbosityLevel"]
 
-verbosity = nestkernel.severity_t
+
+VerbosityLevel = nestkernel.VerbosityLevel
 
 
 def helpdesk():
@@ -115,53 +108,6 @@ def help(obj=None, return_text=False):
             )
     else:
         print(nest.__doc__)
-
-
-def get_verbosity():
-    """Return verbosity level of NEST's messages.
-
-    - M_ALL=0,  display all messages
-    - M_INFO=10, display information messages and above
-    - M_DEPRECATED=18, display deprecation warnings and above
-    - M_WARNING=20, display warning messages and above
-    - M_ERROR=30, display error messages and above
-    - M_FATAL=40, display failure messages and above
-
-    Returns
-    -------
-    severity_t:
-        The current verbosity level
-    """
-
-    return nestkernel.llapi_get_verbosity()
-
-
-def set_verbosity(level):
-    """Change verbosity level for NEST's messages.
-
-    - M_ALL=0,  display all messages
-    - M_INFO=10, display information messages and above
-    - M_DEPRECATED=18, display deprecation warnings and above
-    - M_WARNING=20, display warning messages and above
-    - M_ERROR=30, display error messages and above
-    - M_FATAL=40, display failure messages and above
-
-    .. note::
-
-       To suppress the usual output when NEST starts up (e.g., the welcome message and
-       version information), you can run ``export PYNEST_QUIET=1`` on the command
-       line before executing your simulation script.
-
-    Parameters
-    ----------
-    level : severity_t, default: 'M_ALL'
-        Can be one of the values of the nest.verbosity enum.
-    """
-
-    if type(level) is not verbosity:
-        raise TypeError('"level" must be a value of the nest.verbosity enum.')
-
-    nestkernel.llapi_set_verbosity(level)
 
 
 @deprecated("get", "Instead of GetStatus(nrns|conns, args), use nrns|conns.get(args).")
