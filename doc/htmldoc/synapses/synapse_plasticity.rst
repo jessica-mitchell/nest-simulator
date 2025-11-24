@@ -94,7 +94,7 @@ Static synapses
         .. tab-item:: General info
           :selected:
 
-          - Connection does not change over time
+          Connection does not change over time.
 
 
             .. dropdown:: Static synapses
@@ -102,9 +102,6 @@ Static synapses
                - static_synapse - chemical, static
                - static_synapse_hom_w - chemical, static
 
-        .. tab-item:: Technical details
-
-          * empty
 
 Functional plasticity
 ^^^^^^^^^^^^^^^^^^^^^
@@ -125,11 +122,7 @@ Functional plasticity
         .. tab-item:: General info
           :selected:
 
-          - Connection weight changes over time
-
-          - Spike timing dependent plasticity (STDP)
-          - Short-term plasticity (STP)
-          - Models with three factors
+          Connection weight changes over time.
 
         .. tab-item:: **STDP**
 
@@ -237,22 +230,10 @@ Structural plasticity
         .. tab-item:: General info
           :selected:
 
-          - Synapses are dynamically created or deleted
-          - NEST does not have any models that specifically support structural plasticity.
+          Synapses are dynamically created or deleted.
 
-            .. dropdown:: Synapses with structural plasticity
+          :doc:`Example using structural plasticity in NEST <auto_examples/structural_plasticity>`
 
-               {% for items in tag_dict %}
-               {% if items.tag == "structural" %}
-               {% for item in items.models | sort %}
-               * :doc:`/models/{{ item | replace(".html", "") }}`
-               {% endfor %}
-               {% endif %}
-               {% endfor %}
-
-        .. tab-item:: Technical details
-
-          * empty
 
 Stochasticity
 ~~~~~~~~~~~~~
@@ -276,7 +257,7 @@ Electrical Synapses
 
     **Signal transmission type:** Voltage
 
-    Electrical synapses provide direct electrical coupling between pre- and post-synaptic neuron membranes, resulting
+    Electrical synapses provide direct electrical coupling between the membranes of two neurons, resulting
     in instantaneous signal transmission. The strength of coupling is determined by the conductance. Unlike chemical
     synapses, signal transmission is bidirectional. These synapses are typically considered static and deterministic.
 
@@ -292,9 +273,10 @@ Astrocytes
 **Signal transmission type:** Current
 
 Astrocytes modulate neuronal activity by producing slow inward currents to neurons, which in turn are affected by
-neuronal activity. This creates a bidirectional interaction between astrocytes and neurons.
+neuronal activity. This creates a recurrent interaction between astrocytes and neurons.
 
 **Available models:**
+
 - sic_connection - astrocyte
 
 .. _abstract_synapses:
@@ -342,15 +324,15 @@ Abstract Synapses
 * quantal_stp_synapse - chemical, functional, stp
 * stdp_dopamine_synapse - chemical, functional, stdp+3rd
 * stdp_facetshw_synapse_hom - chemical, functional, stdp
-* stdp_nn_pre_centered_synapse- chemical, functional, stdp
-* stdp_nn_restr_synapse- chemical, functional, stdp
-* stdp_nn_symm_synapse- chemical, functional, stdp
-* stdp_pl_synapse_hom- chemical, functional, stdp
-* stdp_synapse- chemical, functional, stdp
-* stdp_synapse_hom- chemical, functional, stdp
-* stdp_triplet_synapse- chemical, functional, stdp
+* stdp_nn_pre_centered_synapse - chemical, functional, stdp
+* stdp_nn_restr_synapse - chemical, functional, stdp
+* stdp_nn_symm_synapse - chemical, functional, stdp
+* stdp_pl_synapse_hom - chemical, functional, stdp
+* stdp_synapse - chemical, functional, stdp
+* stdp_synapse_hom - chemical, functional, stdp
+* stdp_triplet_synapse - chemical, functional, stdp
 * tsodyks2_synapse - chemical, functional, stp
-* tsodyks_synapse- chemical, functional, stp
-* tsodyks_synapse_hom- chemical, functional, stp
-* urbanczik_synapse- chemical, functional, stdp+3rd
+* tsodyks_synapse - chemical, functional, stp
+* tsodyks_synapse_hom - chemical, functional, stp
+* urbanczik_synapse - chemical, functional, stdp+3rd
 * vogels_sprekeler_synapse - chemical, functional, stdp+3rd
