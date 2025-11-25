@@ -30,7 +30,7 @@ potential dynamics (:math:`V(t)`) of neurons:
 .. math:: \tau_\textrm{m}\frac{dV(t)}{dt}=f(V(t))+\frac{1}{C_\textrm{m}}\,I_\textrm{syn}(t)\,.
 
 The effect of the synaptic input therefore does not depend on the state
-(membrane potential) of the neuron. :math:`C_{m}` is the neuronal
+(membrane potential) of the neuron. :math:`C_\textrm{m}` is the neuronal
 capacitance, and the function :math:`f(V(t))` summarizes internal
 membrane properties, such as leak potentials.
 
@@ -40,11 +40,11 @@ Conductance-based synapses
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Conductance-based synapses model input currents indirectly via the
-dynamics of a conductance :math:`g_{syn}(t)`. This conductance is
+dynamics of a conductance :math:`g_\textrm{syn}(t)`. This conductance is
 multiplied with the distance of the membrane potential :math:`V(t)` from the reversal (Nernst) potential
-:math:`V_\mathsf{r}` to yield the current :math:`g_{syn}(t)\,(V(t)-V_{r})`:
+:math:`V_\mathsf{r}` to yield the current :math:`g_\textrm{syn}(t)\,(V(t)-V_{r})`:
 
-.. math:: \tau_\textrm{m}\frac{dV(t)}{dt}=f(V(t))+\frac{1}{C_{m}}\,g_{syn}(t)\,(V(t)-V_{r})\,.
+.. math:: \tau_\textrm{m}\frac{dV(t)}{dt}=f(V(t))+\frac{1}{C_\textrm{m}}\,g_\textrm{syn}(t)\,(V(t)-V_{r})\,.
 
 The input therefore has a multiplicative effect that depends on the
 state (membrane potential distance from reversal potential
@@ -69,7 +69,7 @@ The dynamics in general is given by
 .. math::
 
    \begin{aligned}
-   \{I_{syn}(t),g_{syn}(t)\} & \ni x(t)=\sum_{j}w_{j}\,(k\ast s_{j})(t)\end{aligned}
+   \{I_\textrm{syn}(t),g_\textrm{syn}(t)\} & \ni x(t)=\sum_{j}w_{j}\,(k\ast s_{j})(t)\end{aligned}
 
 where :math:`\ast` denotes a temporal convolution with presynaptic spike
 trains :math:`s_{j}(t)=\sum_{k}\delta(t-t_{j}^{k})` defined by spike
@@ -129,11 +129,11 @@ Exponential kernel
 
           with Heaviside function :math:`\Theta(t)=0` for :math:`t<0` and
           :math:`\Theta(t)=1` for :math:`t\geq0`, and synaptic time constant
-          :math:`\tau_{syn}`. The kernel is normalized to have a peak value
+          :math:`\tau_\textrm{syn}`. The kernel is normalized to have a peak value
           :math:`k(0)=1`\. The kernel corresponds to the
           solution of the ordinary first-order differential equation
 
-          .. math:: \tau_{syn}\frac{dk(t)}{dt}=-k(t)+\tau_{syn}\delta(t)
+          .. math:: \tau_\textrm{syn}\frac{dk(t)}{dt}=-k(t)+\tau_\textrm{syn}\delta(t)
 
           with Dirac input at :math:`t=0` and initial condition
           :math:`k(-\infty)=0`.
@@ -143,7 +143,9 @@ Exponential kernel
           The synaptic filtering is implemented with an additional state variable
           for the synaptic current or conductance that follows the dynamics:
 
-          .. math:: \tau_{syn}\frac{dk(t)}{dt}=-k(t)+\tau_{syn}\delta(t)
+          .. math::
+
+            \tau_\textrm{syn}\frac{dk(t)}{dt}=-k(t)+\tau_\textrm{syn}\delta(t)
 
           with spiking input from all presynaptic
           neurons. This dynamics is solved using exact integration (link to exact
@@ -172,12 +174,12 @@ Alpha-function kernel
 
           Alpha synapses (alpha) are defined by the filter kernel
 
-          .. math:: k(t)=\frac{e}{\tau_{syn}}t\exp(-t/\tau_{syn})\Theta(t)
+          .. math:: k(t)=\frac{e}{\tau_\textrm{syn}}t\exp(-t/\tau_\textrm{syn})\Theta(t)
 
           with Euler number :math:`e`, Heaviside function :math:`\Theta(t)=0` for
           :math:`t<0` and :math:`\Theta(t)=1` for :math:`t\geq0`, and synaptic
-          time constant :math:`\tau_{syn}`. The kernel is normalized to have a
-          peak value :math:`k(\tau_{syn})=1`.
+          time constant :math:`\tau_\textrm{syn}`. The kernel is normalized to have a
+          peak value :math:`k(\tau_\textrm{syn})=1`.
            The kernel corresponds to the solution of the
           system of ordinary differential equations
 
@@ -194,9 +196,9 @@ Alpha-function kernel
           Note that the above system of differential equations is equivalent to
           the second-order differential equation
 
-          .. math:: \frac{d^{2}k(t)}{dt^{2}}+(a+b)\frac{dk(t)}{dt}+(ab)k(t)=\frac{e}{\tau_{syn}}\,\delta(t)
+          .. math:: \frac{d^{2}k(t)}{dt^{2}}+(a+b)\frac{dk(t)}{dt}+(ab)k(t)=\frac{e}{\tau_\textrm{syn}}\,\delta(t)
 
-          with :math:`a=b=1/\tau_{syn}` and initial condition :math:`k(-\infty)=0`
+          with :math:`a=b=1/\tau_\textrm{syn}` and initial condition :math:`k(-\infty)=0`
           and :math:`\frac{dk}{dt}(-\infty)=0` (ref Rotter Diesmann 1999). The
           solution to this equation for :math:`a=b` is called alpha function which
           gives rise to the name alpha synapse.
@@ -231,72 +233,40 @@ Beta-function kernel
 
        .. tab-item:: General info
 
-          Beta synapses are defined by a kernel that is the difference of two
-          exponentials.
 
-          The maximum of the beta kernel
+          Beta synapses are defined by a kernel that is the difference of two exponentials :
 
           .. math::
 
-            k(t) = \alpha ( \mathsf{exp}(-at) - \mathsf{exp}(-bt)) \Theta(t)
-
-          is at
-
-          .. math::
-
-            t^* = \frac{\mathsf{ln}(a)-\mathsf{ln}(b)}{a-b}
-
-          and not at :math:`t=a` as said in ``iaf_cond_beta``.
-
-          Note that the time constant of the first term in the difference of exponentials
-          determines the duration of the decay, not of the rise. If using the subscripts "rise" and "decay",
-          then :math:`\tau_\mathsf{rise}=1/b` and :math:`\tau_\mathsf{decay}=1/a`.
-
-          .. math:: k(t)=\frac{\tau_{syn,decay}}{\tau_{syn,rise}-\tau_{syn,decay}}\left[\exp(-t/\tau_{syn,decay})-\exp(-t/\tau_{syn,rise})\right]\Theta(t)
+             k(t)=\frac{\tau_{\textrm{syn,rise}}}{\tau_{\textrm{syn,decay}}-\tau_{\textrm{syn,rise}}}\left[\exp(-t/\tau_{\textrm{syn,decay}})-\exp(-t/\tau_{\textrm{syn,rise}})\right]\Theta(t)\label{eq:beta_kernel}
 
           This function allows for independent rise and decay times, as quantified
-          by :math:`\tau_{syn,rise}` and :math:`\tau_{syn,decay}`, respectively.
-          The kernel corresponds to the solution of the system of ordinary
-          differential equations. The maximum of the kernel is at
+          by :math:`\tau_{\textrm{syn,rise}}` and :math:`\tau_{\textrm{syn,decay}}`, respectively.
+          The kernel corresponds to the solution of the system of ordinary differential
+          equations
 
           .. math::
 
-            t^* = \frac{\mathsf{ln}\left(\frac{1}{\tau_{syn,decay}}\right)-\mathsf{ln}\left(\frac{1}{\tau_{syn,rise}}\right)}{\frac{1}{\tau_{syn,decay}}-\frac{1}{\tau_{syn,rise}}}
+            \tau_{\textrm{syn,decay}}\frac{dk(t)}{dt} & =-k(t)+\kappa(t)\label{eq:beta1}\\
+            \tau_{\textrm{syn,rise}}\frac{d\kappa(t)}{dt} & =-\kappa(t)+\tau_{\textrm{syn,rise}}\delta(t)\label{eq:beta2}
 
-
-          Alternatively, the system can be written as:
-
-          .. math::
-
-            \kappa' = -a \kappa + \beta \delta(t) \\
-            k' = \kappa - b k
-
-          with :math:`\beta = \alpha (b-a)`.
-
-          The system can also be expressed as:
+          with Dirac input at :math:`t=0` and initial conditions :math:`\kappa(-\infty)=k(-\infty)=0`.
+          Note that this system of differential equations is equivalent to the
+          second-order differential equation
 
           .. math::
 
-             \begin{aligned}
-             \tau_{syn,rise}\frac{dk(t)}{dt} & =-k(t)+\kappa(t)\label{eq:beta1}\\
-             \tau_{syn,decay}\frac{d\kappa(t)}{dt} & =-\kappa(t)+\tau_{syn,decay}\delta(t)\label{eq:beta2}\end{aligned}
+            \frac{d^{2}k(t)}{dt^{2}}+(a+b)\frac{dk(t)}{dt}+(ab)k(t)=a\delta(t)
 
-          with Dirac input at :math:`t=0` and initial conditions
-          :math:`\kappa(-\infty)=k(-\infty)=0`. Note that this system of
-          differential equations is equivalent to the second-order differential
-          equation
+          with :math:`a=1/\tau_{\textrm{syn,decay}}\neq b=1/\tau_{\textrm{syn,rise}}`
+          and initial condition :math:`k(-\infty)=0` and :math:`\frac{dk}{dt}(-\infty)=0`
+          (ref Rotter Diesmann 1999). For the case :math:`\tau_{\textrm{syn,rise}}=\tau_{\textrm{syn,decay}}`
+          please use the alpha synapse model instead. Even though the limit
+          :math:`\tau_{\textrm{syn,rise}}\rightarrow\tau_{\textrm{syn,decay}}` is
+          well defined and coincides with the alpha synapse, there can be numerical
+          issues as both numerator and denominator in the kernel \eqref{beta_kernel} vanish in this limit.
 
-          .. math:: \frac{d^{2}k(t)}{dt^{2}}+(a+b)\frac{dk(t)}{dt}+(ab)k(t)=\frac{1}{\tau_{syn,rise}}\delta(t)
 
-          with :math:`a=1/\tau_{syn,rise}\neq b=1/\tau_{syn,decay}` and initial
-          condition :math:`k(-\infty)=0` and :math:`\frac{dk}{dt}(-\infty)=0` (ref
-          Rotter Diesmann 1999). For the case
-          :math:`\tau_{syn,rise}=\tau_{syn,decay}` please use the alpha synapse
-          model instead. Even though the limit
-          :math:`\tau_{syn,rise}\rightarrow\tau_{syn,decay}` is well defined and
-          coincides with the alpha synapse, there can be numerical issues as both
-          numerator and denominator in the kernel equation above
-          vanish in this limit.
 
 
        .. tab-item:: Technical details
