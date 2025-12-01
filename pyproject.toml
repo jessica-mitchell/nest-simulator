@@ -1,21 +1,27 @@
-# [build-system]
-# requires = ["scikit-build-core", "cython<=3.0.12"]
-# build-backend = "scikit_build_core.build"
-
 [build-system]
-requires = [
-    "hatchling",
-    "scikit-build-core",
-    "pybind11",
-    "cmake",
-    "ninja",
-    "cython<=3.0.12"
-]
-build-backend = "hatchling.build"
+requires = ["scikit-build-core",
+    "cython<=3.0.12",
+    "setuptools>=61",
+    "wheel"
+    ]
+build-backend = "scikit_build_core.build"
+
+#[build-system]
+#requires = [
+#    "setuptools>=61",
+#    "wheel",
+#    "scikit-build-core",
+#    "pybind11",
+#    "cmake",
+#    "ninja",
+#    "cython<=3.0.12"
+#]
+#build-backend = "setuptools.build_meta"
 
 [project]
 name = "pynest-ng"
-version = "3.8.post0.dev8"
+# version = "3.8.post0.dev8"
+dynamic = ["version"]
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
 readme = "README.md"
@@ -57,12 +63,6 @@ dependencies = [
   "setuptools",
   "pytest"
 ]
-
-[tool.hatch.build.targets.wheel.hooks.scikit-build]
-experimental = true
-
-# [tool.hatch.build.hooks.custom]
-# path = "build_support/pip_post-install.py"
 
 [project.optional-dependencies]
 nestml = [
@@ -122,7 +122,7 @@ before-all =  """
     echo "Build OS"
     echo $OSTYPE
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake
-    brew link --force ncurses libomp 
+    brew link --force ncurses libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
       LDFLAGS="-L/opt/homebrew/lib"
@@ -193,4 +193,3 @@ known_third_party = "nest"
 
 [tool.black]
 line-length = 120
-
