@@ -134,6 +134,7 @@ cdef extern from "nest.h" namespace "nest":
     void init_nest( int* argc, char** argv[] )
     void shutdown_nest( int exitcode )
     void reset_kernel()
+    void install_module( const string& module_name ) except +custom_exception_handler
 
     void enable_structural_plasticity() except +custom_exception_handler
     void disable_structural_plasticity() except +custom_exception_handler
@@ -183,6 +184,7 @@ cdef extern from "nest.h" namespace "nest":
     void prepare() except +custom_exception_handler
     void run( const double& t ) except +custom_exception_handler
     void cleanup() except +custom_exception_handler
+    void synchronize() except +custom_exception_handler
     void copy_model( const string&, const string&, const dictionary& ) except +custom_exception_handler
     ParameterPTR create_parameter( const dictionary& param_dict ) except +custom_exception_handler
     double get_value( const ParameterPTR param ) except +custom_exception_handler
@@ -197,7 +199,7 @@ cdef extern from "nest.h" namespace "nest":
     vector[double] apply( const ParameterPTR param, const dictionary& positions ) except +custom_exception_handler
 
 
-# PYNEST-NG: Move these global functions to nest.h?
+# PYNEST-NG-FUTURE: Move these global functions to nest.h?
 cdef extern from "spatial.h" namespace "nest":
     vector[vector[double]] get_position( NodeCollectionPTR layer_nc ) except +custom_exception_handler
     vector[double] distance( NodeCollectionPTR layer_to_nc, NodeCollectionPTR layer_from_nc ) except +custom_exception_handler
@@ -210,6 +212,9 @@ cdef extern from "spatial.h" namespace "nest":
     MaskPTR create_mask( const dictionary& mask_dict ) except +custom_exception_handler
     NodeCollectionPTR select_nodes_by_mask( const NodeCollectionPTR layer_nc, const vector[double]& anchor, const MaskPTR mask ) except +custom_exception_handler
     cbool inside(const vector[double]& point, const MaskPTR mask ) except +custom_exception_handler
+    MaskPTR intersect_mask( const MaskPTR mask1, const MaskPTR mask2 ) except +custom_exception_handler
+    MaskPTR union_mask( const MaskPTR mask1, const MaskPTR mask2 ) except +custom_exception_handler
+    MaskPTR minus_mask( const MaskPTR mask1, const MaskPTR mask2 ) except +custom_exception_handler
 
     void dump_layer_nodes(const NodeCollectionPTR layer_nc, const string& filename)
     void dump_layer_connections(const NodeCollectionPTR source_layer,

@@ -36,13 +36,8 @@ from .hl_api_helper import (
     is_iterable,
     restructure_data,
 )
-from .hl_api_parallel_computing import Rank
+from .hl_api_parallel_computing import NumProcesses, Rank
 from .hl_api_simulation import GetKernelStatus
-
-
-def sli_func(*args, **kwargs):
-    raise RuntimeError(f"Called sli_func with\nargs: {args}\nkwargs: {kwargs}")
-
 
 try:
     import pandas
@@ -201,11 +196,10 @@ class NodeCollection:
             6 in new_nc
     """
 
-    _datum = None  # PYNEST-NG: Why defined at class level?
-
     def __init__(self, data=None):
         if data is None:
             data = []
+
         if isinstance(data, nestkernel.NodeCollectionObject):
             self._datum = data
         else:
@@ -406,10 +400,10 @@ class NodeCollection:
                 result = Receptors(self, result)
         else:
             # Hierarchical addressing
-            # TODO-PYNEST-NG: Drop this? Not sure anyone ever used it...
+            # PYNEST-NG-FUTURE: Drop this? Not sure anyone ever used it...
             result = get_parameters_hierarchical_addressing(self, params)
 
-        # TODO-PYNEST-NG: Decide if the behavior should be the same
+        # PYNEST-NG-FUTURE: Decide if the behavior should be the same
         # for single-node node collections or different.
         if isinstance(result, dict) and len(self) == 1:
             new_result = {}
@@ -576,9 +570,10 @@ class NodeCollection:
         """Converts the NodeCollection to a bool. False if it is empty, True otherwise."""
         return len(self) > 0
 
-    def __array__(self, dtype=None):
+    def __array__(self, dtype=None, copy=None):
         """Convert the NodeCollection to a NumPy array."""
-        return numpy.array(self.tolist(), dtype=dtype)
+
+        return numpy.array(self.tolist(), dtype=dtype, copy=copy)
 
     def __getattr__(self, attr):
         if not self:
@@ -945,13 +940,18 @@ class SynapseCollection:
             raise TypeError("must either provide params or kwargs, but not both.")
 
         if isinstance(params, dict):
-            node_params = self[0].get()
+            conn_params = self[0].get()
             contains_list = [
-                is_iterable(vals) and key in node_params and not is_iterable(node_params[key])
+                is_iterable(vals) and key in conn_params and not is_iterable(conn_params[key])
                 for key, vals in params.items()
             ]
 
             if any(contains_list):
+                if NumProcesses() > 1:
+                    raise NotImplementedError(
+                        "Passing lists of synapse parameter values is not supported in MPI-parallel simulations."
+                    )
+
                 temp_param = [{} for _ in range(self.__len__())]
 
                 for key, vals in params.items():
@@ -1013,8 +1013,6 @@ class Mask:
     the :py:func:`.CreateMask` command.
     """
 
-    _datum = None
-
     # The constructor should not be called by the user
     def __init__(self, data):
         """Masks must be created using the CreateMask command."""
@@ -1022,21 +1020,20 @@ class Mask:
             raise TypeError("Expected MaskObject.")
         self._datum = data
 
-    # TODO-PYNEST-NG: Convert operators
-    # Generic binary operation
-    def _binop(self, op, rhs):
-        if not isinstance(rhs, Mask):
-            raise NotImplementedError()
-        return sli_func(op, self._datum, rhs._datum)
-
     def __or__(self, rhs):
-        return self._binop("or", rhs)
+        if not isinstance(rhs, Mask):
+            raise NotImplementedError("Both operands of | must be masks.")
+        return nestkernel.llapi_union_mask(self._datum, rhs._datum)
 
     def __and__(self, rhs):
-        return self._binop("and", rhs)
+        if not isinstance(rhs, Mask):
+            raise NotImplementedError("Both operands of & must be masks.")
+        return nestkernel.llapi_intersect_mask(self._datum, rhs._datum)
 
     def __sub__(self, rhs):
-        return self._binop("sub", rhs)
+        if not isinstance(rhs, Mask):
+            raise NotImplementedError("Both operands of - must be masks.")
+        return nestkernel.llapi_minus_mask(self._datum, rhs._datum)
 
     def Inside(self, point):
         """
@@ -1055,7 +1052,7 @@ class Mask:
         return nestkernel.llapi_inside_mask(point, self._datum)
 
 
-# TODO-PYNEST-NG: We may consider moving the entire (or most of) Parameter class to the cython level.
+# PYNEST-NG-FUTURE: We may consider moving the entire (or most of) Parameter class to the cython level.
 class Parameter:
     """
     Class for parameters

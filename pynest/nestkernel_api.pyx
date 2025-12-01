@@ -24,28 +24,21 @@
 
 # import cython
 
-# PYNEST-NG: for all libc* imports, prefix names in python with std_ to avoid collisions, also in pxd
 from cython.operator cimport dereference as deref
 from cython.operator cimport preincrement as inc
+from libc.stdint cimport int64_t, uint64_t
 from libc.stdlib cimport free, malloc
-from libcpp.deque cimport deque
+from libcpp.deque cimport deque as std_deque
 from libcpp.map cimport map as std_map
-from libcpp.string cimport string
-from libcpp.vector cimport vector
-
-# from libc.string cimport memcpy
+from libcpp.string cimport string as std_string
+from libcpp.vector cimport vector as std_vector
 
 import numbers
 
 import nest
 import numpy
 
-# cimport numpy
-
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-
-from libc.stdint cimport int64_t, uint64_t
-from libc.stdlib cimport free, malloc
 
 NESTErrors = None
 
@@ -154,32 +147,33 @@ cdef object any_to_pyobj(any operand):
         return any_cast[double](operand)
     if is_type[cbool](operand):
         return any_cast[cbool](operand)
-    if is_type[string](operand):
-        return string_to_pystr(any_cast[string](operand))
-    if is_type[vector[int]](operand):
-        return numpy.array(any_cast[vector[int]](operand))
-    if is_type[vector[long]](operand):
-        return numpy.array(any_cast[vector[long]](operand))
-    if is_type[vector[size_t]](operand):
-        return numpy.array(any_cast[vector[size_t]](operand))
-    if is_type[vector[double]](operand):
-        return numpy.array(any_cast[vector[double]](operand))
-    if is_type[vector[vector[double]]](operand):
-        return numpy.array(any_cast[vector[vector[double]]](operand))
-    if is_type[vector[vector[vector[double]]]](operand):
-        return numpy.array(any_cast[vector[vector[vector[double]]]](operand))
-    if is_type[vector[vector[vector[long]]]](operand):
-        return numpy.array(any_cast[vector[vector[vector[long]]]](operand))
-    if is_type[vector[string]](operand):
-        # PYNEST-NG: Do we want to have this or are bytestrings fine?
-        # return any_cast[vector[string]](operand)
-        return list(map(lambda x: x.decode("utf-8"), any_cast[vector[string]](operand)))
-    if is_type[vector[dictionary]](operand):
-        return dict_vector_to_list(any_cast[vector[dictionary]](operand))
-    if is_type[vector[any]](operand):
-        # PYNEST-NG: This will create a Python list first and then convert to
+    if is_type[std_string](operand):
+        return string_to_pystr(any_cast[std_string](operand))
+    if is_type[std_vector[int]](operand):
+        return numpy.array(any_cast[std_vector[int]](operand))
+    if is_type[std_vector[long]](operand):
+        return numpy.array(any_cast[std_vector[long]](operand))
+    if is_type[std_vector[size_t]](operand):
+        return numpy.array(any_cast[std_vector[size_t]](operand))
+    if is_type[std_vector[double]](operand):
+        return numpy.array(any_cast[std_vector[double]](operand))
+    if is_type[std_vector[std_vector[double]]](operand):
+        return numpy.array(any_cast[std_vector[std_vector[double]]](operand))
+    if is_type[std_vector[std_vector[std_vector[double]]]](operand):
+        return numpy.array(any_cast[std_vector[std_vector[std_vector[double]]]](operand))
+    if is_type[std_vector[std_vector[std_vector[long]]]](operand):
+        return numpy.array(any_cast[std_vector[std_vector[std_vector[long]]]](operand))
+    if is_type[std_vector[std_string]](operand):
+        # PYNEST-NG-FUTURE: Do we want to have this or are bytestrings fine?
+        # return any_cast[std_vector[std_string]](operand)
+        return list(map(lambda x: x.decode("utf-8"), any_cast[std_vector[std_string]](operand)))
+    if is_type[std_vector[dictionary]](operand):
+        return dict_vector_to_list(any_cast[std_vector[dictionary]](operand))
+    if is_type[std_vector[any]](operand):
+        # PYNEST-NG-FUTURE: This will create a Python list first and then convert to
         # either tuple or numpy array, which will copy the data element-wise.
-        return make_tuple_or_ndarray(any_vector_to_list(any_cast[vector[any]](operand)))
+        # Could we do this more effienctly?
+        return make_tuple_or_ndarray(any_vector_to_list(any_cast[std_vector[any]](operand)))
     if is_type[dictionary](operand):
         return dictionary_to_pydict(any_cast[dictionary](operand))
     if is_type[NodeCollectionPTR](operand):
@@ -285,15 +279,15 @@ cdef vector[any] empty_any_vec():
 
 cdef vector[dictionary] list_of_dict_to_vec(object pylist):
     cdef vector[dictionary] vec
-    # PYNEST-NG: reserve the correct size and use index-based
-    # assignments instead of pushing back
+    # PYNEST-NG-FUTURE: For efficiency, reserve the correct size and use index-based
+    # assignments instead of pushing back. Applies also to other vector conversions below.
     for pydict in pylist:
         vec.push_back(pydict_to_dictionary(pydict))
     return vec
 
 
-cdef vector[vector[double]] list_of_list_to_doublevec(object pylist):
-    cdef vector[vector[double]] vec
+cdef vector[std_vector[double]] list_of_list_to_doublevec(object pylist):
+    cdef vector[std_vector[double]] vec
     for val in pylist:
         vec.push_back(val)
     return vec
@@ -312,8 +306,8 @@ cdef vector[double] pylist_or_ndarray_to_doublevec(object pylist):
     return vec
 
 
-cdef vector[string] pylist_to_stringvec(object pylist):
-    cdef vector[string] vec
+cdef vector[std_string] pylist_to_stringvec(object pylist):
+    cdef vector[std_string] vec
     for val in pylist:
         vec.push_back(<string>pystr_to_string(val))
     return vec
@@ -342,6 +336,9 @@ def llapi_reset_kernel():
     reset_kernel()
 
 
+def llapi_install_module( module_name ):
+    install_module( pystr_to_string(module_name) )
+
 def llapi_enable_structural_plasticity():
     enable_structural_plasticity()
 
@@ -367,7 +364,7 @@ def llapi_create_spatial(object layer_params):
 
 
 def llapi_get_position(NodeCollectionObject layer):
-    cdef vector[vector[double]] result = get_position(layer.thisptr)
+    cdef vector[std_vector[double]] result = get_position(layer.thisptr)
     if nc_size(layer.thisptr) == 1:
         return result[0]
     else:
@@ -378,7 +375,7 @@ def llapi_node_collection_to_array( NodeCollectionObject nc, selection):
     return result
 
 def llapi_spatial_distance(object from_arg, to_arg):
-    cdef vector[vector[double]] from_vec
+    cdef vector[std_vector[double]] from_vec
     if isinstance(from_arg, nest.NodeCollection):
         return distance((<NodeCollectionObject>(to_arg._datum)).thisptr, (<NodeCollectionObject>(from_arg._datum)).thisptr)
     elif isinstance(from_arg, (list, tuple)):
@@ -389,7 +386,7 @@ def llapi_spatial_distance(object from_arg, to_arg):
 
 
 def llapi_displacement(object from_arg, to_arg):
-    cdef vector[vector[double]] from_vec
+    cdef vector[std_vector[double]] from_vec
     if isinstance(from_arg, nest.NodeCollection):
         return displacement((<NodeCollectionObject>(to_arg._datum)).thisptr, (<NodeCollectionObject>(from_arg._datum)).thisptr)
     elif isinstance(from_arg, (list, tuple)):
@@ -399,19 +396,13 @@ def llapi_displacement(object from_arg, to_arg):
         raise TypeError("from_arg must be either a NodeCollection or a list/tuple of positions")
 
 
-def llapi_distance(object conn):  # PYNEST-NG: should there be a SynapseCollectionObject?
+def llapi_distance(object conn):  # PYNEST-NG-FUTURE: should there be a SynapseCollectionObject?
     cdef vector[ConnectionID] conn_vec
     for c in conn:
         conn_vec.push_back((<ConnectionObject>(c)).thisobj)
     cdef vector[double] result = distance(conn_vec)
     return result
 
-# PYNEST-NG:
-#
-# inside
-# or (aka union_mask)
-# and (aka intersect_mask)
-# sub (aka minus_mask)
 
 def llapi_make_nodecollection(object node_ids):
     cdef NodeCollectionPTR gids
@@ -445,11 +436,9 @@ def llapi_connect(NodeCollectionObject pre, NodeCollectionObject post, object co
 
 def llapi_connect_tripartite(NodeCollectionObject pre, NodeCollectionObject post, NodeCollectionObject third,
                              object conn_params, object third_factor_conn_params, object synapse_params):
-    # PYNEST-NG: See if we should add some more checks as in llapi_connect above (rule)
-
-
+    # PYNEST-NG-FUTURE: See if we should add some more checks as in llapi_connect above (rule)
     # We are guaranteed that syn_param_vec is a dict {'primary': sc_p, 'third_in': sc_i, 'third_out': sc_o}
-    # where all sc_* are SynapseCollection objects
+    # where all sc_* are SynapseCollection objects (guaranteed by whom?)
 
     cdef std_map[string, vector[dictionary]] syn_param_map
     for k, colloc_syns in synapse_params.items():
@@ -484,7 +473,7 @@ def llapi_disconnect(NodeCollectionObject pre, NodeCollectionObject post, object
 
 
 def llapi_disconnect_syncoll(object conns):
-    cdef deque[ConnectionID] conn_deque
+    cdef std_deque[ConnectionID] conn_deque
     cdef ConnectionObject conn_object
     for conn_object in conns:
         conn_deque.push_back(conn_object.thisobj)
@@ -518,6 +507,30 @@ def llapi_select_nodes_by_mask(NodeCollectionObject layer, vector[double] anchor
 
 def llapi_inside_mask(vector[double] point, MaskObject mask):
     return inside(point, mask.thisptr)
+
+
+def llapi_intersect_mask(MaskObject first, MaskObject second):
+    cdef MaskPTR new_mask
+    new_mask = intersect_mask(first.thisptr, second.thisptr)
+    obj = MaskObject()
+    obj._set_mask(new_mask)
+    return nest.Mask(obj)
+
+
+def llapi_union_mask(MaskObject first, MaskObject second):
+    cdef MaskPTR new_mask
+    new_mask = union_mask(first.thisptr, second.thisptr)
+    obj = MaskObject()
+    obj._set_mask(new_mask)
+    return nest.Mask(obj)
+
+
+def llapi_minus_mask(MaskObject first, MaskObject second):
+    cdef MaskPTR new_mask
+    new_mask = minus_mask(first.thisptr, second.thisptr)
+    obj = MaskObject()
+    obj._set_mask(new_mask)
+    return nest.Mask(obj)
 
 
 def llapi_dump_layer_nodes(NodeCollectionObject layer, object filename):
@@ -589,6 +602,9 @@ def llapi_run(double t):
 def llapi_cleanup():
     cleanup()
 
+def llapi_synchronize():
+    synchronize()
+
 
 def llapi_copy_model(oldmodname, newmodname, object params):
     cdef dictionary params_dict = pydict_to_dictionary(params)
@@ -603,7 +619,7 @@ def llapi_get_nc_status(NodeCollectionObject nc, object key=None):
         if not statuses.known(pystr_to_string(key)):
             raise KeyError(key)
         value = any_to_pyobj(statuses[pystr_to_string(key)])
-        # PYNEST-NG: This is backwards-compatible, but makes it harder
+        # PYNEST-NG-FUTURE: This is backwards-compatible, but makes it harder
         # to write scalable code. Maybe just return value as is?
         return value[0] if len(value) == 1 else value
     else:
@@ -816,12 +832,12 @@ def llapi_dimension_parameter(object list_of_pos_params):
 
 def llapi_get_connections(object params):
     cdef dictionary params_dictionary = pydict_to_dictionary(params)
-    cdef deque[ConnectionID] connections
+    cdef std_deque[ConnectionID] connections
 
     connections = get_connections(params_dictionary)
 
     cdef connections_list = []
-    cdef deque[ConnectionID].iterator it = connections.begin()
+    cdef std_deque[ConnectionID].iterator it = connections.begin()
     while it != connections.end():
         obj = ConnectionObject()
         obj._set_connection_id(deref(it))
@@ -833,7 +849,7 @@ def llapi_get_connections(object params):
 def llapi_get_connection_status(object conns):
     cdef vector[dictionary] connection_statuses
     # Convert the list of connections to a deque
-    cdef deque[ConnectionID] conn_deque
+    cdef std_deque[ConnectionID] conn_deque
     cdef ConnectionObject conn_object
     for conn_object in conns:
         conn_deque.push_back(conn_object.thisobj)
@@ -845,7 +861,7 @@ def llapi_get_connection_status(object conns):
 
 def llapi_set_connection_status(object conns, object params):
     # Convert the list of connections to a deque
-    cdef deque[ConnectionID] conn_deque
+    cdef std_deque[ConnectionID] conn_deque
     cdef ConnectionObject conn_object
     for conn_object in conns:
         conn_deque.push_back(conn_object.thisobj)
@@ -912,7 +928,7 @@ def llapi_connect_arrays(sources, targets, weights, delays, synapse_model, syn_p
         delays_ptr = &delays_mv[0]
 
     # Storing parameter keys in a vector of strings
-    cdef vector[string] param_keys_ptr
+    cdef vector[std_string] param_keys_ptr
     if syn_param_keys is not None:
         for key in syn_param_keys:
             param_keys_ptr.push_back(pystr_to_string(key))

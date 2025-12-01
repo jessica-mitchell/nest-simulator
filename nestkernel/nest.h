@@ -219,19 +219,23 @@ void prepare();
 void cleanup();
 
 /**
+ * Force synchronization of MPI processes.
+ */
+void synchronize();
+
+/**
  * Create a new Mask object using the mask factory.
  * @param name Mask type to create.
  * @param d    Dictionary with parameters specific for this mask type.
  * @returns dynamically allocated new Mask object.
  */
-static MaskPTR create_mask( const std::string& name, const dictionary& d );
+MaskPTR create_mask( const std::string& name, const dictionary& d );
 
 void copy_model( const std::string& oldmodname, const std::string& newmodname, const dictionary& dict );
 
 void set_model_defaults( const std::string& model_name, const dictionary& );
 dictionary get_model_defaults( const std::string& model_name );
 
-// TODO-PYNEST-NG: static functions?
 ParameterPTR create_parameter( const boost::any& );
 ParameterPTR create_parameter( const double );
 ParameterPTR create_parameter( const long );
@@ -277,12 +281,15 @@ register_mask( const std::string& name, MaskCreatorFunction creator )
   return mask_factory_().register_subtype( name, creator );
 }
 
-inline static MaskPTR
+inline MaskPTR
 create_mask( const std::string& name, const dictionary& d )
 {
-  return MaskPTR( mask_factory_().create( name, d ) );
-}
+  d.init_access_flags();
+  auto mask = MaskPTR( mask_factory_().create( name, d ) );
+  d.all_entries_accessed( "CreateMask", "specs" );
+  return mask;
 }
 
+} // namespace nest
 
 #endif /* NEST_H */

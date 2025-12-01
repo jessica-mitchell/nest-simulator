@@ -83,12 +83,12 @@ struct DictEntry_
 
 class dictionary : public std::map< std::string, DictEntry_ >
 {
-  // TODO-PYNEST-NG: Meta-information about entries:
+  // PYNEST-NG-FUTURE: Meta-information about entries:
   //                   * Value type (enum?)
   //                   * Whether value is writable
   //                   * Docstring for each entry
 private:
-  // TODO: PYNEST-NG: maybe change to unordered map, as that provides
+  // PYNEST-NG-FUTURE: maybe change to unordered map, as that provides
   // automatic hashing of keys (currently strings) which might make
   // lookups more efficient
   using maptype_ = std::map< std::string, DictEntry_ >;
@@ -165,12 +165,19 @@ private:
    * @throws TypeMismatch if the value is not an integer.
    * @return value cast to an integer.
    */
-  size_t // TODO: or template?
+  long
   cast_to_integer_( const boost::any& value, const std::string& key ) const
   {
     if ( is_type< size_t >( value ) )
     {
-      return cast_value_< size_t >( value, key );
+      const size_t val = cast_value_< size_t >( value, key );
+      if ( val < std::numeric_limits< long >::min() or val > std::numeric_limits< long >::max() )
+      {
+        const std::string msg =
+          String::compose( "Failed to cast '%1' because %2 is too large to be stored as long.", key, val );
+        throw nest::BadProperty( msg );
+      }
+      return static_cast< long >( val );
     }
     else if ( is_type< long >( value ) )
     {
@@ -181,7 +188,7 @@ private:
       return cast_value_< int >( value, key );
     }
     // Not an integer type
-    std::string msg =
+    const std::string msg =
       std::string( "Failed to cast '" ) + key + "' from " + debug_type( at( key ) ) + " to an integer type ";
     throw nest::TypeMismatch( msg );
   }
@@ -211,11 +218,30 @@ public:
    * @throws TypeMismatch if the value is not an integer.
    * @return the value at key cast to the specified type.
    */
-  size_t // TODO: or template?
+  long
   get_integer( const std::string& key ) const
   {
     return cast_to_integer_( at( key ), key );
   }
+
+  /**
+   * Return reference to vector of type T stored under key.
+   *
+   * If key does not exist in dict, create empty vector<T> and return it.
+   */
+  template < typename T >
+  std::vector< T >&
+  get_vector( const std::string& key )
+  {
+    if ( not this->known( key ) )
+    {
+      // We need to insert empty vector explicitly. Relying on dict/map access
+      // to create a new element would result in an empty boost::any, not an
+      // empty vector<T>.
+      ( *this )[ key ] = std::vector< T >();
+    }
+    return boost::any_cast< std::vector< T >& >( ( *this )[ key ] );
+  };
 
   /**
    * @brief Update the specified non-vector value if there exists a value at key.
@@ -224,6 +250,9 @@ public:
    * @param value object to update if there exists a value at key.
    * @throws TypeMismatch if the value at key is not the same type as the value argument.
    * @return Whether value was updated.
+   *
+   * @note Only use this where the user is not allowed to use random or spatial parameters.
+   *       Otherwise, use update_value_param().
    */
   template < typename T >
   bool
@@ -375,11 +404,24 @@ public:
 
 std::ostream& operator<<( std::ostream& os, const dictionary& dict );
 
+//! Specialization that allows passing long where double is expected
 template <>
 double dictionary::cast_value_< double >( const boost::any& value, const std::string& key ) const;
 
+/**
+ * Specialization that allows passing long vectors where double vectors are expected.
+ *
+ * @note This specialization forwards to cast_vector_value_<double>, but is required explicitly,
+ *       because, e.g., get(), calls cast_value_() directly even if the argument is a vector.
+ */
 template <>
 std::vector< double > dictionary::cast_value_< std::vector< double > >( const boost::any& value,
   const std::string& key ) const;
+
+/**
+ * Specialization that allows passing long vectors where double vectors are expected and handles empty vectors.
+ */
+template <>
+std::vector< double > dictionary::cast_vector_value_< double >( const boost::any& value, const std::string& key ) const;
 
 #endif /* DICTIONARY_H_ */

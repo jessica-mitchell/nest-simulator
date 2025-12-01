@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 #
-# list_examples.sh
+# test_issue_3659.py
 #
 # This file is part of NEST.
 #
@@ -19,21 +19,25 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-# set bash strict mode
-set -euo pipefail
-IFS=$' \n\t'
 
-echo ">>> Longest running examples:"
-grep -Eo "real: [^,]+" example_logs/*/meta.yaml | sed -e 's/:real://' | sort -k2 -r | head -n 20 || true;
+import nest
+import pytest
 
-echo ">>> multiple run statistics"
-for x in example_logs/*/meta.yaml; do
-	name="$(basename "$(dirname "$x")")"
-	res="$(grep "result:" "$x" | sort | uniq -c | tr "\n" "\t" | sed -e 's/failed/\x1b[1;31m\0\x1b[0m/g' -e 's/success/\x1b[1;32m\0\x1b[0m/g')"
-	warn=""
-	if grep "fail" <<<"$res" >/dev/null && grep "success" <<<"$res" >/dev/null; then
-		warn='\033[01;33m'
-	fi
-	echo -e "$res\t$warn$name\033[0m"
-done
-echo "<<< done"
+"""
+Preliminary regression tests for issue #3659.
+"""
+
+
+def test_ensure_parallel_conn_array_weight_blocked():
+    """
+    Since setting connection parameters with arrays works incorrectly under MPI, it must be blocked for now.
+    """
+
+    assert nest.NumProcesses() > 1, "Test is only relevant if we use multiple MPI ranks."
+
+    nrns = nest.Create("iaf_psc_alpha", 2)
+    nest.Connect(nrns, nrns)
+    conns = nest.GetConnections()
+
+    with pytest.raises(NotImplementedError):
+        conns.set({"weight": [21.0, 22.0, 23.0, 24.0]})

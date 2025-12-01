@@ -80,7 +80,7 @@ def SetAcceptableLatency(port_name, latency):
         Latency in ms
     """
 
-    # PYNEST-NG
+    # TODO-PYNEST-NG
     # sps(kernel.SLILiteral(port_name))
     # sps(latency)
     # sr("SetAcceptableLatency")
@@ -98,7 +98,7 @@ def SetMaxBuffered(port_name, size):
         Buffer size
     """
 
-    # PYNEST-NG
+    # TODO-PYNEST-NG
     # sps(kernel.SLILiteral(port_name))
     # sps(size)
     # sr("SetMaxBuffered")
@@ -108,9 +108,7 @@ def SetMaxBuffered(port_name, size):
 def SyncProcesses():
     """Synchronize all MPI processes."""
 
-    # PYNEST-NG
-    # sr("SyncProcesses")
-    raise NotImplementedError
+    nestkernel.llapi_synchronize()
 
 
 def GetLocalVPs():

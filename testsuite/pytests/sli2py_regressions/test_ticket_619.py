@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 #
-# list_examples.sh
+# test_ticket_619.py
 #
 # This file is part of NEST.
 #
@@ -19,21 +19,22 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-# set bash strict mode
-set -euo pipefail
-IFS=$' \n\t'
+import nest
 
-echo ">>> Longest running examples:"
-grep -Eo "real: [^,]+" example_logs/*/meta.yaml | sed -e 's/:real://' | sort -k2 -r | head -n 20 || true;
+"""
+Regression test for Ticket #619.
 
-echo ">>> multiple run statistics"
-for x in example_logs/*/meta.yaml; do
-	name="$(basename "$(dirname "$x")")"
-	res="$(grep "result:" "$x" | sort | uniq -c | tr "\n" "\t" | sed -e 's/failed/\x1b[1;31m\0\x1b[0m/g' -e 's/success/\x1b[1;32m\0\x1b[0m/g')"
-	warn=""
-	if grep "fail" <<<"$res" >/dev/null && grep "success" <<<"$res" >/dev/null; then
-		warn='\033[01;33m'
-	fi
-	echo -e "$res\t$warn$name\033[0m"
-done
-echo "<<< done"
+Test ported from SLI regression test.
+Ensure SetKernelStatus accepts zero biological time alongside other kernel parameters.
+
+Author: Hans Ekkehard Plesser, 2012-11-29
+"""
+
+
+def test_ticket_619_set_kernel_status_with_zero_biological_time():
+    """
+    Ensure SetKernelStatus with biological_time 0.0 and rng_seed 1 succeeds.
+    """
+
+    nest.ResetKernel()
+    nest.SetKernelStatus({"biological_time": 0.0, "rng_seed": 1})
