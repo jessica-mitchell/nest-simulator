@@ -81,6 +81,8 @@ Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.htm
 [tool.scikit-build]
 sdist.cmake = false
 build-dir = "build/{wheel_tag}"
+metadata.version.provider = "scikit_build_core.metadata.regex"
+metadata.version.input = "VERSION"
 
 [tool.scikit-build.cmake.define]
 with-optimize ="-O2"
@@ -96,7 +98,6 @@ with-openmp = "ON"
 # with-music = "OFF"
 # with-hdf5 = "OFF"
 
-#pip install . --config-settings=cmake.define.SOME_DEFINE=ON
 
 [tool.cibuildwheel]
 build-frontend = "default"
@@ -121,7 +122,7 @@ before-all =  """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake
+    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
     brew link --force ncurses libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
