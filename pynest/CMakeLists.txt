@@ -63,7 +63,7 @@ if ( HAVE_PYTHON )
     -D_IS_PYNEST
   )
   # TODO PYNEST NG: Do changes only for the new pip installation
-  if(NOT "${SKBUILD}" STREQUAL "")    
+  if(NOT "${SKBUILD}" STREQUAL "")
     install( DIRECTORY nest/ ${PROJECT_BINARY_DIR}/pynest/nest/
       DESTINATION ./nest
       PATTERN "versionchecker.py.in" EXCLUDE

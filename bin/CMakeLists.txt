@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-if(NOT "${SKBUILD}" STREQUAL "") 
+if(NOT "${SKBUILD}" STREQUAL "")
   install( PROGRAMS
       nest-server
       nest-server-mpi
@@ -34,5 +34,3 @@ else()
       DESTINATION ${CMAKE_INSTALL_BINDIR}
       )
 endif()
-
-

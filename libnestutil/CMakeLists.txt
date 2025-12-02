@@ -56,7 +56,7 @@ target_include_directories(nestutil PRIVATE
 
 FILTER_HEADERS("${nestutil_sources}" install_headers)
 
-if(NOT "${SKBUILD}" STREQUAL "") 
+if(NOT "${SKBUILD}" STREQUAL "")
   set( CMAKE_INSTALL_INCLUDEDIR "nest/include")
 endif()
 

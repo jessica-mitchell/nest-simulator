@@ -100,7 +100,7 @@ set( with-full-logging OFF CACHE STRING "Write debug output to 'dump_<num_ranks>
 # GNUInstallDirs (included after calling nest_process_with_python()), but the
 # CMAKE_INSTALL_DATADIR is usually just CMAKE_INSTALL_DATAROOTDIR
 # and we want it to be CMAKE_INSTALL_DATAROOTDIR/PROJECT_NAME
-if(NOT "${SKBUILD}" STREQUAL "") 
+if(NOT "${SKBUILD}" STREQUAL "")
   set( CMAKE_INSTALL_DATADIR "nest/share/${PROJECT_NAME}" CACHE STRING "Relative directory, where NEST installs its data (share/nest)" )
 else()
   set( CMAKE_INSTALL_DATADIR "share/${PROJECT_NAME}" CACHE STRING "Relative directory, where NEST installs its data (share/nest)" )
@@ -352,7 +352,7 @@ configure_file(
 ################################################################################
 ##################            Install Extra Files             ##################
 ################################################################################
-if(NOT "${SKBUILD}" STREQUAL "") 
+if(NOT "${SKBUILD}" STREQUAL "")
   set( CMAKE_INSTALL_DOCDIR "nest/doc")
 endif()
 

@@ -49,7 +49,7 @@ target_include_directories(models PRIVATE
 )
 
 # Install the models headers
-if(NOT "${SKBUILD}" STREQUAL "") 
+if(NOT "${SKBUILD}" STREQUAL "")
   set( CMAKE_INSTALL_INCLUDEDIR "nest/include")
 endif()
 
