@@ -101,6 +101,33 @@ Based on ``hl_api_info.py``:
    nest.authors()
    "
 
+Console Script Usage
+--------------------
+
+The ``pynest-ng`` package installs a ``nest`` console script that provides convenient
+command-line access to NEST functionality:
+
+.. code-block:: bash
+
+   # Show version information
+   nest --version
+
+   # Display comprehensive system information
+   nest --info
+
+   # Start interactive Python session with NEST imported
+   nest --interactive
+   nest -i  # short form
+
+   # Execute Python script with NEST available
+   nest your_script.py
+
+   # Show help
+   nest --help
+
+The console script automatically initializes NEST and makes it available in the global
+namespace, simplifying script execution and interactive sessions.
+
 Example Scripts
 ---------------
 

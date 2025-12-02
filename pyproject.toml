@@ -51,6 +51,9 @@ dependencies = [
   "h5py"
 ]
 
+[project.scripts]
+nest = "nest:main"
+
 [project.optional-dependencies]
 nestml = [
   "nestml"
