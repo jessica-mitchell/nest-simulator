@@ -26,14 +26,13 @@ set(nestutil_sources
     enum_bitfield.h
     iaf_propagator.h iaf_propagator.cpp
     iterator_pair.h
-    lockptr.h
     logging_event.h logging_event.cpp
     logging.h
     nest_types.h
     numerics.h numerics.cpp
     regula_falsi.h
     sort.h
-    string_utils.h
+    string_util.h
     vector_util.h
 )
 
