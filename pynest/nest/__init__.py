@@ -120,8 +120,6 @@ class NestModule(types.ModuleType):
         # Finalize the nest module with a public API.
         _api = list(k for k in self.__dict__ if not k.startswith("_"))
         _api.extend(k for k in dir(type(self)) if not k.startswith("_"))
-        # Explicitly include the main method
-        _api.append("main")
         self.__all__ = list(set(_api))
 
         # Block setting of unknown attributes
@@ -141,71 +139,6 @@ class NestModule(types.ModuleType):
 
     def __dir__(self):
         return list(set(vars(self).keys()) | set(self.__all__))
-
-    def main(self):
-        """Entry point for nest command-line interface."""
-        import argparse
-        import sys
-
-        parser = argparse.ArgumentParser(
-            description="NEST Neural Simulator",
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            epilog="""Examples:
-  nest --version          Show NEST version
-  nest --info             Show system information
-  nest --interactive      Start interactive session
-  nest script.py          Execute a NEST script
-  nest                    Start interactive session (default)""",
-        )
-
-        parser.add_argument("--version", action="version", version=f"NEST {self.__version__}")
-        parser.add_argument("--info", action="store_true", help="Show system information")
-        parser.add_argument(
-            "--interactive", "-i", action="store_true", help="Start interactive session with NEST imported"
-        )
-        parser.add_argument("script", nargs="?", help="Python script to execute with NEST available")
-
-        args = parser.parse_args()
-
-        if args.info:
-            print(f"NEST {self.__version__}")
-            print("=" * 50)
-            # Display build and system information
-            build_info = self.build_info
-            print(f"Version: {build_info.get('version', 'unknown')}")
-            print(f"Built: {build_info.get('built', 'unknown')}")
-            print(f"Host: {build_info.get('host', 'unknown')}")
-            print(f"CPU: {build_info.get('hostcpu', 'unknown')}")
-            print(f"OS: {build_info.get('hostos', 'unknown')}")
-            print(f"Threads Model: {build_info.get('threads_model', 'unknown')}")
-            print(f"GSL: {'Yes' if build_info.get('have_gsl', False) else 'No'}")
-            print(f"Boost: {'Yes' if build_info.get('have_boost', False) else 'No'}")
-            print(f"MPI: {'Yes' if build_info.get('have_mpi', False) else 'No'}")
-            print(f"HDF5: {'Yes' if build_info.get('have_hdf5', False) else 'No'}")
-            print(f"MUSIC: {'Yes' if build_info.get('have_music', False) else 'No'}")
-            print(f"Threads: {'Yes' if build_info.get('have_threads', False) else 'No'}")
-            return
-
-        if args.interactive or not args.script:
-            # Start interactive Python with NEST imported
-            import code
-
-            print(f"NEST {self.__version__} - Neural Simulation Tool")
-            print("NEST is available as 'nest'. Try: nest.sysinfo()")
-            print("Type help(nest) for more information.")
-            code.interact(local={"nest": self})
-        else:
-            # Execute script file with NEST available in global namespace
-            try:
-                with open(args.script) as f:
-                    script_globals = {"nest": self, "__name__": "__main__"}
-                    exec(f.read(), script_globals)
-            except FileNotFoundError:
-                print(f"Error: Script file '{args.script}' not found.", file=sys.stderr)
-                sys.exit(1)
-            except Exception as e:
-                print(f"Error executing script: {e}", file=sys.stderr)
-                sys.exit(1)
 
     # Define the kernel attributes.
     #
@@ -612,14 +545,4 @@ globals().update(_module.__dict__)
 del _rel_import_star, _lazy_module_property, _original_module_attrs
 
 
-# Standalone main function for console script entry point
-def main():
-    """Console script entry point for NEST command-line interface."""
-    import nest  # This will import the module we just created
-
-    nest.main()  # Call the main method on the module
-
-
-# Keep a reference to the module for the console script
-_nest_module = _module
 del _module
