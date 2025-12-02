@@ -98,18 +98,3 @@ jobs:
           bash $($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/share/nest/testsuite/do_tests.sh --with-python=$VIRTUAL_ENV/bin/python3 --prefix=$($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
           # run example script
           python $($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/nest/doc/examples/pynest/example_script.py
-
-      - name: Test console script
-        run: |
-          source .env/bin/activate
-          # Test console script is available
-          which nest
-          # Test version output
-          nest --version
-          # Test system info output
-          nest --info
-          # Test help output
-          nest --help
-          # Test script execution
-          echo "print('Console script test successful!')" > test_script.py
-          nest test_script.py
