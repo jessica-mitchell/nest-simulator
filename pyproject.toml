@@ -6,18 +6,6 @@ requires = ["scikit-build-core",
     ]
 build-backend = "scikit_build_core.build"
 
-#[build-system]
-#requires = [
-#    "setuptools>=61",
-#    "wheel",
-#    "scikit-build-core",
-#    "pybind11",
-#    "cmake",
-#    "ninja",
-#    "cython<=3.0.12"
-#]
-#build-backend = "setuptools.build_meta"
-
 [project]
 name = "pynest-ng"
 # version = "3.8.post0.dev8"
@@ -54,22 +42,61 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
+  "cython<=3.0.12",
   "numpy",
-  "pynest-api",
   "pandas",
   "scipy",
   "matplotlib",
-  "h5py",
-  "setuptools",
-  "pytest"
+  "mpi4py",
+  "h5py"
 ]
 
 [project.optional-dependencies]
 nestml = [
   "nestml"
 ]
-mpi = [
-  "mpi4py"
+desktop = [
+  "nest-desktop"
+]
+server = [
+  "Flask",
+  "flask-cors",
+  "gunicorn",
+  "requests",
+  "RestrictedPython"
+]
+test = [
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
+  "flake8",
+  "black",
+  "isort",
+  "mypy"
+]
+docs = [
+  "sphinx >= 6.2.1",
+  "sphinx_rtd_theme",
+  "sphinx_autobuild",
+  "sphinx_gallery",
+  "sphinx-tabs",
+  "sphinx_design",
+  "sphinx-material",
+  "sphinx-copybutton",
+  "sphinx-carousel",
+  "sphinx-notfound-page",
+  "sphinxcontrib-mermaid",
+  "sphinxcontrib-plantuml",
+  "nbsphinx",
+  "numpydoc",
+  "example",
+  "Image",
+  "breathe",
+  "csvkit",
+  "docutils",
+  "PyYAML >= 4.2b1",
+  "tqdm",
+  "yamllint"
 ]
 
 [project.urls]
@@ -92,13 +119,6 @@ with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
-# with-userdoc ="OFF"
-# with-mpi = "OFF"
-# with-libneurosim = "OFF"
-# with-sionlib = "OFF"
-# with-music = "OFF"
-# with-hdf5 = "OFF"
-
 
 [tool.cibuildwheel]
 build-frontend = "default"
@@ -123,7 +143,7 @@ before-all =  """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp boost gsl open-mpi graphviz ncurses
+    brew install llvm libomp boost gsl graphviz ncurses
     brew link --force ncurses libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
