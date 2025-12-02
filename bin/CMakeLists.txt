@@ -23,7 +23,7 @@ if(NOT "${SKBUILD}" STREQUAL "")
       nest-server-mpi
       ${PROJECT_BINARY_DIR}/bin/nest-config
       ${PROJECT_BINARY_DIR}/bin/nest_vars.sh
-      DESTINATION "../bin"
+      DESTINATION ${SKBUILD_SCRIPTS_DIR}
       )
 else()
   install( PROGRAMS
