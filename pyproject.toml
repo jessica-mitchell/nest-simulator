@@ -123,7 +123,7 @@ before-all =  """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
+    brew install llvm libomp boost gsl open-mpi graphviz ncurses
     brew link --force ncurses libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
