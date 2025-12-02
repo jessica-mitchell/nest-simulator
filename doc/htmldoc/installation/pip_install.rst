@@ -47,31 +47,31 @@ Install from PyPI
 
    # Install NEST
    pip install --upgrade pip
-   pip install pynest-ng
+   pip install nest-simulator
 
    # Verify installation
    python -c "import nest; print('NEST version:', nest.__version__)"
 
 .. note::
-   The package name is ``pynest-ng`` but you import it as ``nest`` in Python.
+   The package name is ``nest-simulator`` but you import it as ``nest`` in Python.
 
 **Install with Optional Dependencies**
 
 .. code-block:: bash
 
    # Install with NESTML support (neural modeling language)
-   pip install pynest-ng[nestml]
+   pip install nest-simulator[nestml]
 
    # Install with NEST Desktop (web-based GUI)
-   pip install pynest-ng[desktop]
+   pip install nest-simulator[desktop]
 
-   # Install with NEST Server (REST API)
-   pip install pynest-ng[server]
+   # Install the NEST Server (REST API) dependencies
+   pip install nest-simulator[server]
 
    # Install multiple optional dependencies
-   pip install pynest-ng[nestml,desktop]
-   pip install pynest-ng[nestml,server]
-   pip install pynest-ng[nestml,desktop,server]
+   pip install nest-simulator[nestml,desktop]
+   pip install nest-simulator[nestml,server]
+   pip install nest-simulator[nestml,desktop,server]
 
 Available optional dependencies:
 
@@ -173,13 +173,13 @@ The PyPI package comes with these features built-in:
 .. code-block:: bash
 
    # For neural modeling language support
-   pip install pynest-ng[nestml]
+   pip install nest-simulator[nestml]
 
    # For web-based graphical interface
-   pip install pynest-ng[desktop]
+   pip install nest-simulator[desktop]
 
    # For REST API server functionality
-   pip install pynest-ng[server]
+   pip install nest-simulator[server]
 
    # For data analysis and visualization (recommended)
    pip install matplotlib jupyter pandas seaborn
@@ -196,7 +196,7 @@ Common Issues
 
    # Ensure you're in the correct virtual environment
    which python
-   pip list | grep pynest-ng
+   pip list | grep nest-simulator
 
    # Verify the package is installed correctly
    python -c "import nest; print('NEST installed successfully')"
@@ -211,7 +211,7 @@ Common Issues
    # Try installing in a fresh virtual environment
    python3 -m venv fresh-env
    source fresh-env/bin/activate
-   pip install pynest-ng
+   pip install nest-simulator
 
 **3. Python Version Compatibility**
 
@@ -231,8 +231,6 @@ Getting Help
 - **System Info**: Run ``python -c "import nest; nest.sysinfo()"`` for debugging
 - **Help Desk**: Use ``nest.helpdesk()`` to open documentation in browser
 
-
-
 Next Steps
 ==========
 
@@ -243,17 +241,19 @@ Next Steps
 - Try the built-in examples: ``python -c "import nest; nest.helpdesk()"``
 - Install optional dependencies:
 
-  - ``pip install pynest-ng[nestml]`` for neural modeling language support
-  - ``pip install pynest-ng[desktop]`` for web-based GUI
-  - ``pip install pynest-ng[server]`` for REST API functionality
+  - ``pip install nest-simulator[nestml]`` for neural modeling language support
+  - ``pip install nest-simulator[desktop]`` for web-based GUI
+  - ``pip install nest-simulator[server]`` for REST API functionality
 - Explore advanced features like custom neuron models and network simulations
 
 **What's Included**:
 
 - **Core NEST simulator**: All standard neuron and synapse models
-- **GSL, Boost, OpenMP**: High-performance computing libraries included
-- **HDF5 support**: Data I/O capabilities built-in
-- **MPI4Py**: Message passing interface for parallel computing
+- **GSL**: GNU Scientific Library for mathematical functions (compiled in)
+- **Boost**: C++ libraries for enhanced functionality (compiled in)
+- **OpenMP**: Parallel computing support on single machines (compiled in)
+- **HDF5**: Data input/output capabilities (compiled in)
+- **Python dependencies**: NumPy, SciPy, Matplotlib, Pandas, H5Py, MPI4Py, Cython
 
 **Optional Extensions**:
 
