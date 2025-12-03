@@ -85,12 +85,12 @@ jobs:
           source .env/bin/activate
           python -c "
           import nest
-          print(f'✓ NEST {nest.__version__} imported successfully')
+          print(f'NEST {nest.__version__} imported successfully')
 
           # Test basic functionality
           nest.ResetKernel()
           neurons = nest.Create('iaf_psc_alpha', 2)
-          print('✓ Basic simulation functionality works')
+          print('Basic simulation functionality works')
 
           # Test utilities
           import os

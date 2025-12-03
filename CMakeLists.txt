@@ -324,11 +324,6 @@ configure_file(
 )
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/pynest/setup.py.in"
-    "${PROJECT_BINARY_DIR}/pynest/setup.py" @ONLY
-)
-
-configure_file(
     "${PROJECT_SOURCE_DIR}/bin/nest-config.in"
     "${PROJECT_BINARY_DIR}/bin/nest-config" @ONLY
 )
