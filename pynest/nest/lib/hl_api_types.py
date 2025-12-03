@@ -391,6 +391,14 @@ class NodeCollection:
         if len(params) == 0:
             # get() is called without arguments
             result = nestkernel.llapi_get_nc_status(self._datum)
+
+            # For compatibility with NEST 3.9 and earlier, return scalars if only one node in node collection
+            if isinstance(result, dict) and len(self) == 1:
+                new_result = {}
+                for k, v in result.items():
+                    new_result[k] = v[0] if is_iterable(v) and len(v) == 1 and type(v) is not dict else v
+                result = new_result
+
         elif len(params) == 1:
             # params is a tuple with a string or list of strings
             result = get_parameters(self, params[0])
@@ -400,16 +408,7 @@ class NodeCollection:
                 result = Receptors(self, result)
         else:
             # Hierarchical addressing
-            # PYNEST-NG-FUTURE: Drop this? Not sure anyone ever used it...
             result = get_parameters_hierarchical_addressing(self, params)
-
-        # PYNEST-NG-FUTURE: Decide if the behavior should be the same
-        # for single-node node collections or different.
-        if isinstance(result, dict) and len(self) == 1:
-            new_result = {}
-            for k, v in result.items():
-                new_result[k] = v[0] if is_iterable(v) and len(v) == 1 and type(v) is not dict else v
-            result = new_result
 
         if output == "pandas":
             index = self.get("global_id")
