@@ -43,11 +43,6 @@ classifiers = [
 ]
 dependencies = [
   "cython<=3.0.12",
-  "numpy",
-  "pandas",
-  "scipy",
-  "matplotlib",
-  "mpi4py",
   "h5py"
 ]
 
@@ -97,6 +92,18 @@ docs = [
   "PyYAML >= 4.2b1",
   "tqdm",
   "yamllint"
+]
+examples = [
+  "matplotlib",
+  "numpy",
+  "scipy",
+  "pandas",
+  "networkx",
+  "seaborn",
+  "ipython",
+  "cycler",
+  "imageio",
+  "requests"
 ]
 
 [project.urls]
