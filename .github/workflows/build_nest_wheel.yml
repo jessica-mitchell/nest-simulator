@@ -10,14 +10,14 @@ jobs:
       matrix:
         os: [macos-14, macos-15-intel, macos-15, ubuntu-22.04, ubuntu-24.04]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         with:
           package-dir: .
           output-dir: wheelhouse
-        config-file: "{package}/pyproject.toml"
+          config-file: "{package}/pyproject.toml"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -73,12 +73,12 @@ jobs:
           # Minimal test
           python -c "
           import nest
-          print(f'NEST {nest.__version__} imported successfully')
+          print(f'✓ NEST {nest.__version__} imported successfully')
           "
 
   upload_pypi:
     name: Upload wheels to pypi
-    needs: [build_wheels]
+    needs: [test_packages]
     runs-on: ubuntu-latest
     environment: testpypi
     permissions:
