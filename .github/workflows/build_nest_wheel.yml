@@ -8,9 +8,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14,macos-15-intel, macos-15, ubuntu-22.04, ubuntu-24.04]
+        os: [macos-14, macos-15-intel, macos-15, ubuntu-22.04, ubuntu-24.04]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
@@ -19,7 +19,7 @@ jobs:
           output-dir: wheelhouse
           config-file: "{package}/pyproject.toml"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
@@ -28,78 +28,53 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
 
-  # test_packages:
-  #   name: Test built packages before upload
-  #   needs: [build_wheels, build_sdist]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         # unpacks all CIBW artifacts into dist/
-  #         pattern: cibw-*
-  #         path: dist
-  #         merge-multiple: true
+  test_packages:
+    name: Test built packages before upload
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
 
-  #     - name: Install system dependencies
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y python3 python3-pip python3-virtualenv time openmpi-bin openmpi-common libopenmpi-dev
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.12'
+      - name: Install and test package
+        run: |
+          python -m venv .env
+          source .env/bin/activate
+          pip install --upgrade pip
 
-  #     - name: Create and activate virtualenv
-  #       run: |
-  #         python -m venv .env
-  #         source .env/bin/activate
-  #         python -m pip install --upgrade pip
+          # Use sdist to avoid version compatibility issues
+          SDIST_FILE=$(find dist -name "*.tar.gz" | head -1)
+          if [ -n "$SDIST_FILE" ]; then
+            echo "Installing: $SDIST_FILE"
+            pip install "$SDIST_FILE"
+          else
+            echo "ERROR: No source distribution found"
+            exit 1
+          fi
 
-  #     - name: Install built wheel
-  #       run: |
-  #         source .env/bin/activate
-  #         # Find and install the Linux wheel
-  #         WHEEL_FILE=$(find dist -name "*linux*.whl" | head -1)
-  #         if [ -n "$WHEEL_FILE" ]; then
-  #           echo "Installing wheel: $WHEEL_FILE"
-  #           pip install "$WHEEL_FILE"
-  #         else
-  #           echo "No Linux wheel found, installing from sdist"
-  #           SDIST_FILE=$(find dist -name "*.tar.gz" | head -1)
-  #           pip install "$SDIST_FILE"
-  #         fi
-
-  #     - name: Test package functionality
-  #       run: |
-  #         source .env/bin/activate
-  #         python -c "
-  #         import nest
-  #         print(f'NEST {nest.__version__} imported successfully')
-
-  #         # Test basic functionality
-  #         nest.ResetKernel()
-  #         neurons = nest.Create('iaf_psc_alpha', 2)
-  #         print('Basic simulation functionality works')
-
-  #         # Test utilities
-  #         import os
-  #         if os.path.exists('/usr/bin/which'):
-  #             os.system('which nest-config && nest-config --version')
-  #             os.system('which nest-server && echo "✓ NEST server available"')
-
-  #         print('✓ All tests passed')
-  #         "
+          # Minimal test
+          python -c "
+          import nest
+          print(f'NEST {nest.__version__} imported successfully')
+          "
 
   upload_pypi:
     name: Upload wheels to pypi

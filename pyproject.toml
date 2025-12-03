@@ -8,7 +8,6 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pynest-ng"
-# version = "3.8.post0.dev8"
 dynamic = ["version"]
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
@@ -22,7 +21,7 @@ maintainers = [
 ]
 requires-python = ">=3.10, <4.0"
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 3 - Production",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
   "Operating System :: POSIX :: Linux",
@@ -42,19 +41,11 @@ classifiers = [
 dependencies = [
   "cython<=3.0.12",
   "numpy",
-  "scipy",
-  "matplotlib",
-  "pandas",
-  "h5py"
+  "h5py", # Sonata
+  "matplotlib"
 ]
 
 [project.optional-dependencies]
-nestml = [
-  "nestml"
-]
-desktop = [
-  "nest-desktop"
-]
 server = [
   "Flask",
   "flask-cors",
@@ -69,7 +60,9 @@ test = [
   "flake8",
   "black",
   "isort",
-  "mypy"
+  "mypy",
+  "scipy",
+  "pandas"
 ]
 docs = [
   "sphinx >= 6.2.1",
@@ -128,6 +121,7 @@ with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
+with-sonata = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
@@ -143,16 +137,16 @@ before-all = """
   NEST_SRC_DIR=${PWD}
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
-    apk add git libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5 cmake
+    apk add git libc6-compat gsl gsl-dev wget bzip2 hdf5 cmake
   else
-    yum install -y git glibc glibc-devel gsl gsl-devel ncurses ncurses-devel wget bzip2 hdf5 cmake
+    yum install -y git glibc glibc-devel gsl gsl-devel wget bzip2 hdf5 cmake
   fi
   # Install boost
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp boost gsl graphviz ncurses
-    brew link --force ncurses libomp
+    brew install llvm libomp boost gsl graphviz
+    brew link --force libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
       LDFLAGS="-L/opt/homebrew/lib"
@@ -205,16 +199,6 @@ repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest
 [tool.cibuildwheel.windows]
 
 [tool.cibuildwheel.pyodide]
-
-[tool.pytest.ini_options]
-markers = [
-    "skipif_missing_gsl: skip test if NEST was built without GSL support",
-    "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
-    "skipif_missing_mpi: skip test if NEST was built without MPI support",
-    "skipif_missing_threads: skip test if NEST was built without multithreading support",
-    "skipif_incompatible_mpi: skip test if NEST was built with OpenMPI < 5.0.7",
-    "simulation: the simulation class to use. Always pass a 2nd dummy argument"
-]
 
 [tool.isort]
 profile = "black"
