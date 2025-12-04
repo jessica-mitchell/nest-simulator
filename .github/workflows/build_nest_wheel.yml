@@ -117,7 +117,7 @@ jobs:
 
   upload_pypi:
     name: Upload wheels to pypi (${{ matrix.package_type }})
-    needs: [test_packages]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     strategy:
       matrix:
