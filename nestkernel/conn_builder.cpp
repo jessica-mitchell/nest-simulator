@@ -544,9 +544,8 @@ nest::BipartiteConnBuilder::set_synapse_params( const Dictionary& syn_defaults,
   const Dictionary& syn_params,
   size_t synapse_indx )
 {
-  for ( auto& syn_kv_pair : syn_defaults )
+  for ( [[maybe_unused]] const auto& [ param_name, unused ] : syn_defaults )
   {
-    const std::string param_name = syn_kv_pair.first;
     if ( skip_syn_params_.find( param_name ) != skip_syn_params_.end() )
     {
       continue; // weight, delay or other not-settable parameter
@@ -603,12 +602,13 @@ nest::BipartiteConnBuilder::set_structural_plasticity_parameters( const std::vec
     throw KernelException( "Structural plasticity can only be used with a single syn_spec." );
   }
 
-  // We know now that we only have a single syn spec, so we extract that.
-  // We must take a reference here, otherwise access registration will not work, because the
-  // DictionaryAccessFlag scheme relies on the address of the dictionary.
+  // We know now that we only have a single syn spec and work with that in what follows.
+  // We take a reference to avoid copying. This also ensures that access to the dictionary
+  // elements is properly registered in the actual dictionary passed in from the Python level.
   const Dictionary& syn_spec = syn_specs[ 0 ];
 
-  if ( syn_spec.known( names::pre_synaptic_element ) xor syn_spec.known( names::post_synaptic_element ) )
+  // != is the correct way to express exclusive or in C ++."xor" is bitwise.
+  if ( syn_spec.known( names::pre_synaptic_element ) != syn_spec.known( names::post_synaptic_element ) )
   {
     throw BadProperty( "Structural plasticity requires both a pre- and postsynaptic element." );
   }
@@ -1686,7 +1686,7 @@ nest::FixedTotalNumberBuilder::FixedTotalNumberBuilder( NodeCollectionPTR source
   const Dictionary& conn_spec,
   const std::vector< Dictionary >& syn_specs )
   : BipartiteConnBuilder( sources, targets, third_out, conn_spec, syn_specs )
-  , N_( boost::any_cast< long >( conn_spec.at( names::N ) ) )
+  , N_( conn_spec.get< long >( names::N ) )
 {
 
   // check for potential errors
