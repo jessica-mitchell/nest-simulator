@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14, macos-15, macos-15-intel, ubuntu-22.04, ubuntu-24.04]
+        os: [macos-14, macos-15, macos-15-intel, ubuntu-24.04]
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +46,8 @@ jobs:
     permissions:
       id-token: write
     # if: github.event_name == 'release' && github.event.action == 'published'
-    # or, alternatively, upload to PyPI on every tag starting with 'v' (remove on: release above to use this)
+    # or, alternatively, upload to PyPI on every tag starting with 'v'
+    # (remove on: release above to use this)
     # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/download-artifact@v4
@@ -72,7 +73,8 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip python3-virtualenv time openmpi-bin openmpi-common libopenmpi-dev
+          sudo apt-get install -y python3 python3-pip python3-virtualenv time \
+            openmpi-bin openmpi-common libopenmpi-dev
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -88,11 +90,22 @@ jobs:
       - name: Install package from TestPyPI
         run: |
           source .env/bin/activate
-          python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pynest-ng
+          python3 -m pip --no-cache-dir install \
+            --index-url https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple pynest-ng
 
       - name: Test import
         run: |
           source .env/bin/activate
           python -c "import nest; print(nest.__version__)"
-          pip install pytest pytest-timeout pytest-xdist pytest-pylint pytest-mypy pytest-cov data-science-types terminaltables pycodestyle pydocstyle rstcheck mypy>=0.8 junitparser>=2 clang-format==17.0.4 attrs
-          # bash $($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/share/nest/testsuite/do_tests.sh --with-python=$VIRTUAL_ENV/bin/python3 --prefix=$($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
+          pip install pytest pytest-timeout pytest-xdist pytest-pylint \
+            pytest-mypy pytest-cov data-science-types terminaltables \
+            pycodestyle pydocstyle rstcheck mypy>=0.8 junitparser>=2 \
+            clang-format==17.0.4 attrs
+          # bash $($VIRTUAL_ENV/bin/python3 -c \
+          #   'from distutils.sysconfig import get_python_lib; \
+          #   print(get_python_lib())')/share/nest/testsuite/do_tests.sh \
+          #   --with-python=$VIRTUAL_ENV/bin/python3 \
+          #   --prefix=$($VIRTUAL_ENV/bin/python3 -c \
+          #   'from distutils.sysconfig import get_python_lib; \
+          #   print(get_python_lib())')
