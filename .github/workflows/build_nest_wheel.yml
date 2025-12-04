@@ -4,34 +4,13 @@ on: [push, pull_request]
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }} (${{ matrix.package_type }})
+    name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14, macos-15-intel, macos-15, ubuntu-22.04, ubuntu-24.04]
-        package_type: [minimal, full]
+        os: [macos-14, macos-15, macos-15-intel, ubuntu-22.04, ubuntu-24.04]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Modify package name for full variant
-        if: matrix.package_type == 'full'
-        run: |
-          # Create full package variant
-          if [[ "${{ runner.os }}" == "macOS" ]]; then
-            sed -i '' 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
-            sed -i '' '/wheel\.exclude = \[/,/\]/c\
-            wheel.exclude = [\
-              ".git*",\
-              ".github/"\
-            ]' pyproject.toml
-          else
-            sed -i 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
-            sed -i '/wheel\.exclude = \[/,/\]/c\
-            wheel.exclude = [\
-              ".git*",\
-              ".github/"\
-            ]' pyproject.toml
-          fi
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
@@ -40,120 +19,29 @@ jobs:
           output-dir: wheelhouse
           config-file: "{package}/pyproject.toml"
 
-      - name: Validate built wheels before upload
-        run: |
-          echo "Validating built wheels..."
-          for wheel in wheelhouse/*.whl; do
-            if [ -f "$wheel" ]; then
-              echo "Checking: $wheel"
-              file_size=$(stat -c%s "$wheel" 2>/dev/null || stat -f%z "$wheel" 2>/dev/null)
-              echo "  Size: $file_size bytes"
-
-              if [ "$file_size" -lt 1000 ]; then
-                echo "  ⚠️  Warning: Very small wheel file"
-              fi
-
-              # Test ZIP integrity
-              if python -m zipfile -t "$wheel" >/dev/null 2>&1; then
-                echo "  ✓ Valid wheel file"
-              else
-                echo "  ✗ Invalid wheel file - removing: $wheel"
-                echo "  First few bytes:"
-                hexdump -C "$wheel" | head -3
-                rm "$wheel"
-              fi
-            fi
-          done
-
-          remaining_wheels=$(ls wheelhouse/*.whl 2>/dev/null | wc -l)
-          echo "Valid wheels remaining: $remaining_wheels"
-          if [ "$remaining_wheels" -eq 0 ]; then
-            echo "ERROR: No valid wheels were built"
-            exit 1
-          fi
-
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.package_type }}-${{ matrix.os }}-${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
-    name: Build source distribution (${{ matrix.package_type }})
+    name: Build source distribution
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package_type: [minimal, full]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Modify package name for full variant
-        if: matrix.package_type == 'full'
-        run: |
-          # Create full package variant
-          sed -i 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
-          # Remove exclusions for full package (keep all files except git)
-          sed -i '/wheel\.exclude = \[/,/\]/c\
-          wheel.exclude = [\
-            ".git*",\
-            ".github/"\
-          ]' pyproject.toml
 
       - name: Build sdist
         run: pipx run build --sdist
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-sdist-${{ matrix.package_type }}
+          name: cibw-sdist
           path: dist/*.tar.gz
 
-  # test_packages:
-  #   name: Test built packages before upload (${{ matrix.package_type }})
-  #   needs: [build_wheels, build_sdist]
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       package_type: [minimal, full]
-  #   steps:
-  #     - uses: actions/download-artifact@v4
-  #       with:
-  #         pattern: cibw-*-${{ matrix.package_type }}-*
-  #         path: dist
-  #         merge-multiple: true
-
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.12'
-
-  #     - name: Install and test package
-  #       run: |
-  #         python -m venv .env
-  #         source .env/bin/activate
-  #         pip install --upgrade pip
-
-  #         # Use sdist to avoid version compatibility issues
-  #         SDIST_FILE=$(find dist -name "*.tar.gz" | head -1)
-  #         if [ -n "$SDIST_FILE" ]; then
-  #           echo "Installing: $SDIST_FILE"
-  #           pip install "$SDIST_FILE"
-  #         else
-  #           echo "ERROR: No source distribution found"
-  #           exit 1
-  #         fi
-
-  #         # Minimal test
-  #         python -c "
-  #         import nest
-  #         print(f'✓ NEST {nest.__version__} imported successfully')
-  #         "
-
   upload_pypi:
-    name: Upload wheels to pypi (${{ matrix.package_type }})
+    name: Upload wheels to pypi
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package_type: [minimal, full]
     environment: testpypi
     permissions:
       id-token: write
@@ -163,51 +51,10 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          # unpacks all CIBW artifacts for this package type
-          pattern: cibw-*-${{ matrix.package_type }}-*
+          # unpacks all CIBW artifacts into dist/
+          pattern: cibw-*
           path: dist
           merge-multiple: true
-
-      - name: Debug artifact contents
-        run: |
-          echo "Artifact contents after download:"
-          find dist -type f -name "*.whl" -o -name "*.tar.gz" | while read file; do
-            echo "File: $file"
-            ls -la "$file"
-          done
-
-      - name: Validate wheel files
-        run: |
-          echo "Checking wheel file integrity..."
-          for file in dist/*.whl dist/*.tar.gz; do
-            if [ -f "$file" ]; then
-              echo "Checking: $file"
-              file_size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo "unknown")
-              echo "  Size: $file_size bytes"
-
-              # Check if it's a wheel file
-              if [[ "$file" == *.whl ]]; then
-                # Test if wheel file is valid ZIP
-                if python -m zipfile -t "$file" >/dev/null 2>&1; then
-                  echo "  ✓ Valid wheel file"
-                else
-                  echo "  ✗ Corrupted wheel file: $file"
-                  echo "  File contents:"
-                  hexdump -C "$file" | head -5
-                  exit 1
-                fi
-              elif [[ "$file" == *.tar.gz ]]; then
-                # Test if tar.gz file is valid
-                if tar -tzf "$file" >/dev/null 2>&1; then
-                  echo "  ✓ Valid tar.gz file"
-                else
-                  echo "  ✗ Corrupted tar.gz file: $file"
-                  exit 1
-                fi
-              fi
-            fi
-          done
-          echo "All files validated successfully"
 
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -218,13 +65,9 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   test_uploaded_package:
-    name: Validate uploaded package from PyPI (${{ matrix.package_type }})
+    name: Test uploaded package in virtualenv
     needs: [upload_pypi]
     runs-on: ubuntu-latest
-    if: always() && needs.upload_pypi.result == 'success'
-    strategy:
-      matrix:
-        package_type: [minimal, full]
     steps:
       - name: Install system dependencies
         run: |
@@ -245,38 +88,11 @@ jobs:
       - name: Install package from TestPyPI
         run: |
           source .env/bin/activate
-          if [ "${{ matrix.package_type }}" = "full" ]; then
-            PACKAGE_NAME="pynest-ng-full"
-          else
-            PACKAGE_NAME="pynest-ng"
-          fi
+          python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pynest-ng
 
-          echo "Waiting for package to be available on TestPyPI..."
-          sleep 30
-
-          # Retry installation with exponential backoff
-          for i in {1..5}; do
-            echo "Installation attempt $i/5"
-            if python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple $PACKAGE_NAME; then
-              echo "✓ Package installed successfully"
-              break
-            else
-              if [ $i -eq 5 ]; then
-                echo "✗ Failed to install package after 5 attempts"
-                exit 1
-              fi
-              wait_time=$((30 * i))
-              echo "Installation failed, waiting ${wait_time}s before retry..."
-              sleep $wait_time
-            fi
-          done
-
-      - name: Minimal validation test
+      - name: Test import
         run: |
           source .env/bin/activate
-          python -c "
-          import nest
-          print(f'NEST {nest.__version__} imported from PyPI')
-          # Just verify the package is installable and importable
-          print('PyPI package validation complete')
-          "
+          python -c "import nest; print(nest.__version__)"
+          pip install pytest pytest-timeout pytest-xdist pytest-pylint pytest-mypy pytest-cov data-science-types terminaltables pycodestyle pydocstyle rstcheck mypy>=0.8 junitparser>=2 clang-format==17.0.4 attrs
+          # bash $($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/share/nest/testsuite/do_tests.sh --with-python=$VIRTUAL_ENV/bin/python3 --prefix=$($VIRTUAL_ENV/bin/python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')

@@ -6,6 +6,7 @@ requires = ["scikit-build-core",
     ]
 build-backend = "scikit_build_core.build"
 
+
 [project]
 name = "pynest-ng"
 dynamic = ["version"]
@@ -19,7 +20,7 @@ authors = [
 maintainers = [
   { name = "Steffen Graber", email = "s.graber@fz-juelich.de" },
 ]
-requires-python = ">=3.10, <4.0"
+requires-python = ">=3.9, <4.0"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
@@ -138,15 +139,16 @@ with-sonata = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-build = ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
-skip = "*-win* *-manylinux_i686" # Skip Windows and 32-bit builds
-test-skip = "*macosx*"  # Skip macOS tests due to platform compatibility issues
-archs = ["auto64"]  # Only 64-bit architectures
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+# build = ["cp312-*"]
+skip = "*-win* *-manylinux_i686" # Skip
+test-skip = ""
+archs = ["auto64"]
 config-settings = {}
 dependency-versions = "pinned"
 environment-pass = []
 build-verbosity = 2
-before-all = """
+before-all =  """
   NEST_SRC_DIR=${PWD}
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
@@ -158,7 +160,7 @@ before-all = """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp boost gsl graphviz
+    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake
     brew link --force libomp
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
@@ -176,8 +178,8 @@ before-all = """
     ./bootstrap.sh
     ./b2 install
   fi
-"""
 
+  """
 # Only specify the images you actually use
 container-engine = "docker"
 manylinux-x86_64-image = "manylinux2014"
@@ -185,18 +187,17 @@ manylinux-aarch64-image = "manylinux2014"
 musllinux-x86_64-image = "musllinux_1_2"
 musllinux-aarch64-image = "musllinux_1_2"
 
-
 [[tool.cibuildwheel.overrides]]
 select = "*-macos*"
 inherit.environment = "append"
-environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
+environment = { MACOSX_DEPLOYMENT_TARGET = "14.0" }
 
 
 [tool.cibuildwheel.linux]
-repair-wheel-command = "python -m zipfile -t {wheel} && auditwheel repair -w {dest_dir} {wheel} && python -m zipfile -t {dest_dir}/*.whl"
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
-repair-wheel-command = "python -m zipfile -t {wheel} && delocate-wheel -w {dest_dir} -v {wheel} && python -m zipfile -t {dest_dir}/*.whl"
+repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
 
 [tool.cibuildwheel.windows]
 
