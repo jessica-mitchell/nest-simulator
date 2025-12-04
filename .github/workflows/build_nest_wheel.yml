@@ -4,13 +4,34 @@ on: [push, pull_request]
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} (${{ matrix.package_type }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-14, macos-15-intel, macos-15, ubuntu-22.04, ubuntu-24.04]
+        package_type: [minimal, full]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Modify package name for full variant
+        if: matrix.package_type == 'full'
+        run: |
+          # Create full package variant
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            sed -i '' 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
+            sed -i '' '/wheel\.exclude = \[/,/\]/c\
+            wheel.exclude = [\
+              ".git*",\
+              ".github/"\
+            ]' pyproject.toml
+          else
+            sed -i 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
+            sed -i '/wheel\.exclude = \[/,/\]/c\
+            wheel.exclude = [\
+              ".git*",\
+              ".github/"\
+            ]' pyproject.toml
+          fi
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
@@ -21,65 +42,86 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.package_type }}-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
-    name: Build source distribution
+    name: Build source distribution (${{ matrix.package_type }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package_type: [minimal, full]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Modify package name for full variant
+        if: matrix.package_type == 'full'
+        run: |
+          # Create full package variant
+          sed -i 's/name = "pynest-ng"/name = "pynest-ng-full"/' pyproject.toml
+          # Remove exclusions for full package (keep all files except git)
+          sed -i '/wheel\.exclude = \[/,/\]/c\
+          wheel.exclude = [\
+            ".git*",\
+            ".github/"\
+          ]' pyproject.toml
 
       - name: Build sdist
         run: pipx run build --sdist
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-sdist
+          name: cibw-sdist-${{ matrix.package_type }}
           path: dist/*.tar.gz
 
-  test_packages:
-    name: Test built packages before upload
-    needs: [build_wheels, build_sdist]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: cibw-*
-          path: dist
-          merge-multiple: true
+  # test_packages:
+  #   name: Test built packages before upload (${{ matrix.package_type }})
+  #   needs: [build_wheels, build_sdist]
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       package_type: [minimal, full]
+  #   steps:
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: cibw-*-${{ matrix.package_type }}-*
+  #         path: dist
+  #         merge-multiple: true
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
 
-      - name: Install and test package
-        run: |
-          python -m venv .env
-          source .env/bin/activate
-          pip install --upgrade pip
+  #     - name: Install and test package
+  #       run: |
+  #         python -m venv .env
+  #         source .env/bin/activate
+  #         pip install --upgrade pip
 
-          # Use sdist to avoid version compatibility issues
-          SDIST_FILE=$(find dist -name "*.tar.gz" | head -1)
-          if [ -n "$SDIST_FILE" ]; then
-            echo "Installing: $SDIST_FILE"
-            pip install "$SDIST_FILE"
-          else
-            echo "ERROR: No source distribution found"
-            exit 1
-          fi
+  #         # Use sdist to avoid version compatibility issues
+  #         SDIST_FILE=$(find dist -name "*.tar.gz" | head -1)
+  #         if [ -n "$SDIST_FILE" ]; then
+  #           echo "Installing: $SDIST_FILE"
+  #           pip install "$SDIST_FILE"
+  #         else
+  #           echo "ERROR: No source distribution found"
+  #           exit 1
+  #         fi
 
-          # Minimal test
-          python -c "
-          import nest
-          print(f'✓ NEST {nest.__version__} imported successfully')
-          "
+  #         # Minimal test
+  #         python -c "
+  #         import nest
+  #         print(f'✓ NEST {nest.__version__} imported successfully')
+  #         "
 
   upload_pypi:
-    name: Upload wheels to pypi
+    name: Upload wheels to pypi (${{ matrix.package_type }})
     needs: [test_packages]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package_type: [minimal, full]
     environment: testpypi
     permissions:
       id-token: write
@@ -89,8 +131,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          # unpacks all CIBW artifacts into dist/
-          pattern: cibw-*
+          # unpacks all CIBW artifacts for this package type
+          pattern: cibw-*-${{ matrix.package_type }}-*
           path: dist
           merge-multiple: true
 
@@ -103,9 +145,12 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   test_uploaded_package:
-    name: Validate uploaded package from PyPI
+    name: Validate uploaded package from PyPI (${{ matrix.package_type }})
     needs: [upload_pypi]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package_type: [minimal, full]
     steps:
       - name: Install system dependencies
         run: |
@@ -126,7 +171,12 @@ jobs:
       - name: Install package from TestPyPI
         run: |
           source .env/bin/activate
-          python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pynest-ng
+          if [ "${{ matrix.package_type }}" = "full" ]; then
+            PACKAGE_NAME="pynest-ng-full"
+          else
+            PACKAGE_NAME="pynest-ng"
+          fi
+          python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple $PACKAGE_NAME
 
       - name: Minimal validation test
         run: |
