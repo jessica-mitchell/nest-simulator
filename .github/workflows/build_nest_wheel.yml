@@ -40,6 +40,38 @@ jobs:
           output-dir: wheelhouse
           config-file: "{package}/pyproject.toml"
 
+      - name: Validate built wheels before upload
+        run: |
+          echo "Validating built wheels..."
+          for wheel in wheelhouse/*.whl; do
+            if [ -f "$wheel" ]; then
+              echo "Checking: $wheel"
+              file_size=$(stat -c%s "$wheel" 2>/dev/null || stat -f%z "$wheel" 2>/dev/null)
+              echo "  Size: $file_size bytes"
+
+              if [ "$file_size" -lt 1000 ]; then
+                echo "  ⚠️  Warning: Very small wheel file"
+              fi
+
+              # Test ZIP integrity
+              if python -m zipfile -t "$wheel" >/dev/null 2>&1; then
+                echo "  ✓ Valid wheel file"
+              else
+                echo "  ✗ Invalid wheel file - removing: $wheel"
+                echo "  First few bytes:"
+                hexdump -C "$wheel" | head -3
+                rm "$wheel"
+              fi
+            fi
+          done
+
+          remaining_wheels=$(ls wheelhouse/*.whl 2>/dev/null | wc -l)
+          echo "Valid wheels remaining: $remaining_wheels"
+          if [ "$remaining_wheels" -eq 0 ]; then
+            echo "ERROR: No valid wheels were built"
+            exit 1
+          fi
+
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.package_type }}-${{ matrix.os }}-${{ strategy.job-index }}
@@ -136,6 +168,47 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - name: Debug artifact contents
+        run: |
+          echo "Artifact contents after download:"
+          find dist -type f -name "*.whl" -o -name "*.tar.gz" | while read file; do
+            echo "File: $file"
+            ls -la "$file"
+          done
+
+      - name: Validate wheel files
+        run: |
+          echo "Checking wheel file integrity..."
+          for file in dist/*.whl dist/*.tar.gz; do
+            if [ -f "$file" ]; then
+              echo "Checking: $file"
+              file_size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo "unknown")
+              echo "  Size: $file_size bytes"
+
+              # Check if it's a wheel file
+              if [[ "$file" == *.whl ]]; then
+                # Test if wheel file is valid ZIP
+                if python -m zipfile -t "$file" >/dev/null 2>&1; then
+                  echo "  ✓ Valid wheel file"
+                else
+                  echo "  ✗ Corrupted wheel file: $file"
+                  echo "  File contents:"
+                  hexdump -C "$file" | head -5
+                  exit 1
+                fi
+              elif [[ "$file" == *.tar.gz ]]; then
+                # Test if tar.gz file is valid
+                if tar -tzf "$file" >/dev/null 2>&1; then
+                  echo "  ✓ Valid tar.gz file"
+                else
+                  echo "  ✗ Corrupted tar.gz file: $file"
+                  exit 1
+                fi
+              fi
+            fi
+          done
+          echo "All files validated successfully"
+
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -148,6 +221,7 @@ jobs:
     name: Validate uploaded package from PyPI (${{ matrix.package_type }})
     needs: [upload_pypi]
     runs-on: ubuntu-latest
+    if: always() && needs.upload_pypi.result == 'success'
     strategy:
       matrix:
         package_type: [minimal, full]
@@ -176,7 +250,26 @@ jobs:
           else
             PACKAGE_NAME="pynest-ng"
           fi
-          python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple $PACKAGE_NAME
+
+          echo "Waiting for package to be available on TestPyPI..."
+          sleep 30
+
+          # Retry installation with exponential backoff
+          for i in {1..5}; do
+            echo "Installation attempt $i/5"
+            if python3 -m pip --no-cache-dir install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple $PACKAGE_NAME; then
+              echo "✓ Package installed successfully"
+              break
+            else
+              if [ $i -eq 5 ]; then
+                echo "✗ Failed to install package after 5 attempts"
+                exit 1
+              fi
+              wait_time=$((30 * i))
+              echo "Installation failed, waiting ${wait_time}s before retry..."
+              sleep $wait_time
+            fi
+          done
 
       - name: Minimal validation test
         run: |
