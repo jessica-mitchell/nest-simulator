@@ -190,7 +190,7 @@ musllinux-aarch64-image = "musllinux_1_2"
 [[tool.cibuildwheel.overrides]]
 select = "*-macos*"
 inherit.environment = "append"
-environment = { MACOSX_DEPLOYMENT_TARGET = "14.0" }
+environment = { MACOSX_DEPLOYMENT_TARGET = "15.0" }
 
 
 [tool.cibuildwheel.linux]
