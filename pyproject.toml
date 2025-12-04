@@ -134,7 +134,7 @@ with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
-with-hdf5 = "ON"
+# with-hdf5 = "ON" # Disabled due to issues wit path
 
 [tool.cibuildwheel]
 build-frontend = "default"
