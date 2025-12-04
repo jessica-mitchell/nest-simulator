@@ -134,7 +134,7 @@ with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
-with-sonata = "ON"
+with-hdf5 = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
