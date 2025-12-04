@@ -138,8 +138,7 @@ with-openmp = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-#build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
-build = ["cp311-*", "cp312-*"]
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 # test-command = "python -c 'import nest; print(f\"NEST {nest.__version__} imported successfully\")'"
