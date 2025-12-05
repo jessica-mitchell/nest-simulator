@@ -141,7 +141,25 @@ build-frontend = "default"
 build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
-# test-command = "python -c 'import nest; print(f\"NEST {nest.__version__} imported successfully\")'"
+test-requires = [
+  "isort",
+  "junitparser",
+  "matplotlib",
+  "mypy",
+  "numpy",
+  "pandas",
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
+  "scipy",
+]
+test-command = """
+  python -c "import nest; print(f'NEST {nest.__version__} imported successfully')" &&
+  python -c "import nest; nest.ResetKernel(); print('NEST kernel reset successful')" &&
+  python -c "import nest; n = nest.Create('iaf_psc_alpha'); print(f'Created neuron: {n}')"
+  ## TODO: Enable tests when test suite is ready
+  # && pytest {package}/testsuite/pytests/ -v --tb=short -x --maxfail=5 --ignore={package}/testsuite/pytests/mpi/
+"""
 archs = ["auto64"]
 config-settings = {}
 dependency-versions = "pinned"
