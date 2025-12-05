@@ -134,7 +134,7 @@ with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
-# with-hdf5 = "ON" # Disabled due to issues wit path
+with-hdf5 = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
@@ -156,7 +156,7 @@ before-all =  """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS: $OSTYPE"
     echo "Architecture: $(arch)"
-    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake
+    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake hdf5
     brew link --force libomp
     if [[ $(arch) == 'arm64' ]]; then
       export LDFLAGS="-L/opt/homebrew/lib"
