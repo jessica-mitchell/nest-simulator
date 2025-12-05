@@ -260,6 +260,15 @@ select = "*-musllinux*"
 inherit.test-requires = "append"
 test-requires = ["h5py>=3.8.0"]
 
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux_aarch64"
+environment = { MAKEFLAGS = "-j1" }  # Reduce parallelism for ARM builds
+
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux2014*"
+inherit.test-requires = "append"
+test-requires = []  # No h5py for manylinux builds (no Sonata support)
+
 [tool.cibuildwheel.linux]
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
