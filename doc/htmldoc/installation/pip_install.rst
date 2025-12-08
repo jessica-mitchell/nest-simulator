@@ -1,5 +1,5 @@
-NEST pip Installation Guide
-===========================
+NEST Simulator pip Installation Guide
+=====================================
 
 .. contents::
    :local:
@@ -7,7 +7,7 @@ NEST pip Installation Guide
 Introduction
 ============
 
-NEST is a neural network simulator with Python bindings. This guide covers installation of the ``pynest-ng`` package from PyPI.
+NEST is a neural network simulator with Python bindings. This guide covers installation of the ``nest-simulator`` package from PyPI.
 
 Prerequisites
 =============
@@ -30,13 +30,13 @@ Basic Installation
 
    # Install NEST
    pip install --upgrade pip
-   pip install pynest-ng
+   pip install nest-simulator
 
    # Verify installation
    python -c "import nest; print('NEST version:', nest.__version__)"
 
 .. note::
-   The package name is ``pynest-ng`` but you import it as ``nest`` in Python.
+   The package name is ``nest-simulator`` but you import it as ``nest`` in Python.
 
 Optional Features
 -----------------
@@ -51,20 +51,20 @@ Available options:
 .. code-block:: bash
 
    # Install with Sonata format support (HDF5-based network files)
-   pip install pynest-ng[sonata]
+   pip install nest-simulator[sonata]
 
    # Install with server capabilities (REST API)
-   pip install pynest-ng[server]
+   pip install nest-simulator[server]
 
    # Install with example dependencies
-   pip install pynest-ng[examples]
+   pip install nest-simulator[examples]
 
    # Install everything
-   pip install pynest-ng[full]
+   pip install nest-simulator[full]
 
    # Combine multiple options
-   pip install pynest-ng[sonata,server]
-   pip install pynest-ng[examples,server]
+   pip install nest-simulator[sonata,server]
+   pip install nest-simulator[examples,server]
 
 Verification
 ============
@@ -128,7 +128,7 @@ Common Issues
 .. code-block:: bash
 
    # Verify installation
-   pip list | grep pynest-ng
+   pip list | grep nest-simulator
    python -c "import nest; print('OK')"
 
 **Python Version Issues**
@@ -146,7 +146,7 @@ Common Issues
    pip install --upgrade pip
    python3 -m venv clean-env
    source clean-env/bin/activate
-   pip install pynest-ng
+   pip install nest-simulator
 
 Getting Help
 ============
