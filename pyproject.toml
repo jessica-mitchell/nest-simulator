@@ -8,7 +8,7 @@ build-backend = "scikit_build_core.build"
 
 
 [project]
-name = "pynest-ng"
+name = "nest-simulator"
 dynamic = ["version"]
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
@@ -100,13 +100,14 @@ sonata = [
   "h5py>=3.8.0",
 ]
 full = [
-  # Examples dependencies (non-duplicated)
+  # Examples dependencies
   "networkx", "seaborn", "ipython", "cycler", "imageio", "requests",
   # Sonata support
   "h5py>=3.8.0",
   # Additional tools
-  "nestml",
-  "nest-desktop",
+  "nestml", "nest-desktop",
+  # Nest server dependencies
+  "Flask", "flask-cors", "gunicorn", "requests", "RestrictedPython",
   # Development tools
   "jupyter", "jupyterlab", "notebook"
 ]
@@ -128,7 +129,7 @@ wheel.exclude = [
   ".git*",           # Always exclude git files
   ".github/",        # Always exclude CI configuration
   "build_support/",  # Always exclude build tools
-  "docs/",           # Exclude docs from minimal package (full package will override)
+  "docs/",           # Exclude docs from package
 ]
 
 [tool.scikit-build.cmake.define]
