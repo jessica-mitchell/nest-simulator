@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+  # Trigger on pull requests and pushes to main branches for testing
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ master, hep_pynest-ng ]
 
 jobs:
   build_wheels:
@@ -11,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15, macos-15-intel, ubuntu-24.04]
+        os: [macos-15, ubuntu-24.04, ubuntu-22.04, ubuntu-20.04]
     steps:
       - uses: actions/checkout@v4
 
@@ -93,8 +98,118 @@ jobs:
             --index-url https://test.pypi.org/simple/ \
             --extra-index-url https://pypi.org/simple nest-simulator
 
-      - name: Test import
+      - name: Test NEST functionality
         run: |
           source .env/bin/activate
-          python -c "import nest; print(nest.__version__)"
-          python -c "import nest; nest.ResetKernel(); print('Basic functionality works')"
+          python3 -c "
+          import nest
+          print(f'NEST version: {nest.__version__}')
+
+          # Test kernel reset
+          nest.ResetKernel()
+          print('✓ Kernel reset successful')
+
+          # Test neuron creation
+          neurons = nest.Create('iaf_psc_alpha', 10)
+          print(f'✓ Created {len(neurons)} neurons: {neurons}')
+
+          # Test device creation
+          voltmeter = nest.Create('voltmeter')
+          spike_generator = nest.Create('spike_generator', params={'spike_times': [10.0, 20.0]})
+          print('✓ Created measurement devices')
+
+          # Test connections
+          nest.Connect(spike_generator, neurons[0])
+          nest.Connect(voltmeter, neurons[:3])
+          print('✓ Network connections established')
+
+          # Test simulation
+          nest.Simulate(50.0)
+          print('✓ Simulation completed successfully')
+
+          # Test data retrieval
+          events = voltmeter.events
+          print(f'✓ Retrieved {len(events[\\\"times\\\"])} voltage measurements')
+
+          # Test Sonata support
+          try:
+              import nest.lib.hl_api_sonata
+              print('✓ Sonata support: AVAILABLE')
+          except ImportError:
+              print('- Sonata support: NOT AVAILABLE (expected on some platforms)')
+
+          print('All NEST functionality tests passed!')
+          "
+
+  test_linux_distros:
+    name: Test on different Linux distributions
+    needs: [upload_pypi]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: ["alpine:3.19", "debian:12", "debian:11", "fedora:39"]
+    steps:
+      - name: Test on ${{ matrix.distro }}
+        run: |
+          docker run --rm ${{ matrix.distro }} sh -c '
+            # Install Python and pip based on distro
+            if command -v apk >/dev/null 2>&1; then
+              # Alpine
+              apk add --no-cache python3 py3-pip
+              PIP_CMD="pip3"
+            elif command -v apt-get >/dev/null 2>&1; then
+              # Debian/Ubuntu
+              apt-get update && apt-get install -y python3 python3-pip
+              PIP_CMD="pip3"
+            elif command -v dnf >/dev/null 2>&1; then
+              # Fedora
+              dnf install -y python3 python3-pip
+              PIP_CMD="pip3"
+            else
+              echo "Unsupported package manager"
+              exit 1
+            fi
+
+            # Install package from TestPyPI
+            $PIP_CMD install --no-cache-dir \
+              --index-url https://test.pypi.org/simple/ \
+              --extra-index-url https://pypi.org/simple nest-simulator
+
+            # Comprehensive NEST functionality tests
+            python3 -c "
+            import nest
+            print(f'NEST {nest.__version__} on ${{ matrix.distro }}')
+
+            # Test kernel reset
+            nest.ResetKernel()
+            print('✓ Kernel reset successful')
+
+            # Test neuron creation and basic models
+            neurons = nest.Create('iaf_psc_alpha', 5)
+            print(f'✓ Created neurons: {neurons}')
+
+            # Test device creation
+            vm = nest.Create('voltmeter')
+            sg = nest.Create('spike_generator', params={'spike_times': [10.0]})
+            print('✓ Created devices')
+
+            # Test connections
+            nest.Connect(sg, neurons[0])
+            nest.Connect(vm, neurons)
+            print('✓ Network connections OK')
+
+            # Test short simulation
+            nest.Simulate(25.0)
+            events = vm.events
+            print(f'✓ Simulation complete: {len(events[\\\"times\\\"])} recordings')
+
+            # Test Sonata support detection
+            try:
+                import nest.lib.hl_api_sonata
+                print('✓ Sonata support: AVAILABLE')
+            except ImportError:
+                print('- Sonata support: NOT AVAILABLE')
+
+            print('All tests passed on ${{ matrix.distro }}!')
+            "
+          '
