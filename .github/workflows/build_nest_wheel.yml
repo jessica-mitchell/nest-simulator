@@ -1,6 +1,9 @@
 name: Build NEST simulator wheels
 
-on: [push, pull_request]
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
   build_wheels:
@@ -45,10 +48,7 @@ jobs:
     environment: testpypi
     permissions:
       id-token: write
-    # if: github.event_name == 'release' && github.event.action == 'published'
-    # or, alternatively, upload to PyPI on every tag starting with 'v'
-    # (remove on: release above to use this)
-    # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release' && github.event.action == 'published' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/download-artifact@v4
         with:
