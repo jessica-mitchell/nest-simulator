@@ -20,7 +20,6 @@ jobs:
         with:
           package-dir: .
           output-dir: wheelhouse
-          config-file: "{package}/pyproject.toml"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -48,7 +47,7 @@ jobs:
     environment: testpypi
     permissions:
       id-token: write
-    if: github.event_name == 'release' && github.event.action == 'published' || github.event_name == 'workflow_dispatch'
+    if: (github.event_name == 'release' && github.event.action == 'published') || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -73,7 +72,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip python3-virtualenv time \
+          sudo apt-get install -y python3 python3-pip python3-virtualenv \
             openmpi-bin openmpi-common libopenmpi-dev
 
       - name: Set up Python
@@ -98,14 +97,4 @@ jobs:
         run: |
           source .env/bin/activate
           python -c "import nest; print(nest.__version__)"
-          pip install pytest pytest-timeout pytest-xdist pytest-pylint \
-            pytest-mypy pytest-cov data-science-types terminaltables \
-            pycodestyle pydocstyle rstcheck mypy>=0.8 junitparser>=2 \
-            clang-format==17.0.4 attrs
-          # bash $($VIRTUAL_ENV/bin/python3 -c \
-          #   'from distutils.sysconfig import get_python_lib; \
-          #   print(get_python_lib())')/share/nest/testsuite/do_tests.sh \
-          #   --with-python=$VIRTUAL_ENV/bin/python3 \
-          #   --prefix=$($VIRTUAL_ENV/bin/python3 -c \
-          #   'from distutils.sysconfig import get_python_lib; \
-          #   print(get_python_lib())')
+          python -c "import nest; nest.ResetKernel(); print('Basic functionality works')"
