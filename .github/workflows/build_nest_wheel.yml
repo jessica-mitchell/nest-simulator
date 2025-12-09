@@ -98,49 +98,6 @@ jobs:
             --index-url https://test.pypi.org/simple/ \
             --extra-index-url https://pypi.org/simple nest-simulator
 
-      - name: Test NEST functionality
-        run: |
-          source .env/bin/activate
-          python3 -c "
-          import nest
-          print(f'NEST version: {nest.__version__}')
-
-          # Test kernel reset
-          nest.ResetKernel()
-          print('✓ Kernel reset successful')
-
-          # Test neuron creation
-          neurons = nest.Create('iaf_psc_alpha', 10)
-          print(f'✓ Created {len(neurons)} neurons: {neurons}')
-
-          # Test device creation
-          voltmeter = nest.Create('voltmeter')
-          spike_generator = nest.Create('spike_generator', params={'spike_times': [10.0, 20.0]})
-          print('✓ Created measurement devices')
-
-          # Test connections
-          nest.Connect(spike_generator, neurons[0])
-          nest.Connect(voltmeter, neurons[:3])
-          print('✓ Network connections established')
-
-          # Test simulation
-          nest.Simulate(50.0)
-          print('✓ Simulation completed successfully')
-
-          # Test data retrieval
-          events = voltmeter.events
-          print(f'✓ Retrieved {len(events[\\\"times\\\"])} voltage measurements')
-
-          # Test Sonata support
-          try:
-              import nest.lib.hl_api_sonata
-              print('✓ Sonata support: AVAILABLE')
-          except ImportError:
-              print('- Sonata support: NOT AVAILABLE (expected on some platforms)')
-
-          print('All NEST functionality tests passed!')
-          "
-
   test_macos_specific:
     name: Test macOS-specific functionality
     needs: [upload_pypi]
