@@ -138,7 +138,7 @@ with-warning = "ON"
 with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
-with-openmp = "ON"
+with-openmp = "OFF"
 with-hdf5 = "OFF"
 with-sonata = "OFF"
 
@@ -183,8 +183,7 @@ before-all =  """
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS: $OSTYPE"
     echo "Architecture: $(arch)"
-    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake hdf5
-    brew link --force libomp
+    brew install llvm boost gsl libtool graphviz ncurses cmake hdf5
     # Enable Sonata on macOS where HDF5 is available
     export NEST_ENABLE_SONATA=ON
     if [[ $(arch) == 'arm64' ]]; then
