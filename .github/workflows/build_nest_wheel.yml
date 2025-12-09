@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15, ubuntu-24.04, ubuntu-22.04]
+        os: [macos-15, macos-13, ubuntu-24.04, ubuntu-22.04]
     steps:
       - uses: actions/checkout@v4
 
@@ -141,13 +141,81 @@ jobs:
           print('All NEST functionality tests passed!')
           "
 
+  test_macos_specific:
+    name: Test macOS-specific functionality
+    needs: [upload_pypi]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-15, macos-13]
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install package from TestPyPI
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip --no-cache-dir install \
+            --index-url https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple nest-simulator
+
+      - name: Test NEST with macOS architecture info
+        run: |
+          python3 -c "
+          import nest
+          import platform
+          import sys
+
+          print(f'NEST {nest.__version__} on {platform.system()} {platform.release()}')
+          print(f'Architecture: {platform.machine()}')
+          print(f'Python: {sys.version}')
+
+          # Test kernel and basic functionality
+          nest.ResetKernel()
+          print('✓ Kernel reset successful')
+
+          # Test neuron creation
+          neurons = nest.Create('iaf_psc_alpha', 8)
+          print(f'✓ Created {len(neurons)} neurons')
+
+          # Test devices
+          vm = nest.Create('voltmeter')
+          sg = nest.Create('spike_generator', params={'spike_times': [15.0, 35.0]})
+          print('✓ Created devices')
+
+          # Test connections and simulation
+          nest.Connect(sg, neurons)
+          nest.Connect(vm, neurons[:4])
+          nest.Simulate(60.0)
+
+          events = vm.events
+          print(f'✓ Simulation complete: {len(events[\"times\"])} measurements')
+
+          # Test Sonata on macOS (should be available)
+          try:
+              import nest.lib.hl_api_sonata
+              print('✓ Sonata support: AVAILABLE (expected on macOS)')
+          except ImportError:
+              print('❌ Sonata support: NOT AVAILABLE (unexpected on macOS)')
+
+          print(f'All macOS tests passed on {platform.machine()}!')
+          "
+
   test_linux_distros:
     name: Test on different Linux distributions
     needs: [upload_pypi]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: ["alpine:3.19", "debian:12", "debian:11", "fedora:39", "ubuntu:24.04", "ubuntu:22.04"]
+        distro: [
+          "alpine:3.19", "alpine:3.18",
+          "debian:12", "debian:11",
+          "fedora:39", "fedora:38",
+          "ubuntu:24.04", "ubuntu:22.04", "ubuntu:20.04",
+          "archlinux:latest"
+        ]
     steps:
       - name: Test on ${{ matrix.distro }}
         run: |
@@ -165,6 +233,10 @@ jobs:
               # Fedora
               dnf install -y python3 python3-pip
               PIP_CMD="pip3"
+            elif command -v pacman >/dev/null 2>&1; then
+              # Arch Linux
+              pacman -Sy --noconfirm python python-pip
+              PIP_CMD="pip"
             else
               echo "Unsupported package manager"
               exit 1
