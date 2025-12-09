@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15, macos-13, ubuntu-24.04, ubuntu-22.04]
+        os: [macos-15, macos-15-intel, macos-latest, ubuntu-24.04]
     steps:
       - uses: actions/checkout@v4
 
@@ -76,7 +76,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15, macos-13]
+        os: [macos-15, macos-latest, macos-15-intel]
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -142,7 +142,7 @@ jobs:
           "alpine:3.19", "alpine:3.18",
           "debian:12", "debian:11",
           "fedora:39", "fedora:38",
-          "ubuntu:24.04", "ubuntu:22.04", "ubuntu:20.04",
+          "ubuntu:24.04", "ubuntu:22.04",
           "archlinux:latest"
         ]
     steps:
