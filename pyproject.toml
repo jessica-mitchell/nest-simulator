@@ -138,7 +138,7 @@ with-warning = "ON"
 with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
-with-openmp = "OFF"
+with-openmp = "OFF" # OpenMP support is disabled for better compatibility in macos wheels
 with-hdf5 = "OFF"
 with-sonata = "OFF"
 
