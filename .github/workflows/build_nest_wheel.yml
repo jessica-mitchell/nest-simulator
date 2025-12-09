@@ -69,6 +69,48 @@ jobs:
           # only for test pypi
           repository-url: https://test.pypi.org/legacy/
 
+  # Parallel build tests (don't wait for PyPI upload)
+  test_build_artifacts:
+    name: Test built wheels locally
+    needs: [build_wheels]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-15, macos-latest, ubuntu-24.04, ubuntu-22.04]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cibw-wheels-${{ matrix.os }}-*
+          path: wheelhouse
+          merge-multiple: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install and test local wheel
+        run: |
+          # Find and install the wheel file
+          wheel_file=$(find wheelhouse -name "*.whl" | head -1)
+          if [ -z "$wheel_file" ]; then
+            echo "No wheel file found!"
+            exit 1
+          fi
+
+          echo "Installing wheel: $wheel_file"
+          python3 -m pip install --upgrade pip
+          python3 -m pip install "$wheel_file"
+
+          # Quick functionality test
+          python3 -c "
+          import nest
+          import platform
+          print(f'NEST {nest.__version__} on {platform.system()} {platform.machine()}')
+          nest.ResetKernel()
+          neurons = nest.Create('iaf_psc_alpha', 3)
+          print(f'✓ Local wheel test passed: {len(neurons)} neurons created')
+          "
 
   test_macos_specific:
     name: Test macOS-specific functionality
@@ -131,6 +173,76 @@ jobs:
 
           print(f'All macOS tests passed on {platform.machine()}!')
           "
+
+  # PyPI-based tests (run after upload)
+  test_uploaded_package:
+    name: Test uploaded package in virtualenv
+    needs: [upload_pypi]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip python3-virtualenv \
+            openmpi-bin openmpi-common libopenmpi-dev
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create and activate virtualenv
+        run: |
+          python -m venv .env
+          source .env/bin/activate
+          python -m pip install --upgrade pip
+
+      - name: Install package from TestPyPI
+        run: |
+          source .env/bin/activate
+          python3 -m pip --no-cache-dir install \
+            --index-url https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple nest-simulator
+
+      - name: Test NEST functionality
+        run: |
+          source .env/bin/activate
+          python3 -c "
+          import nest
+          print(f'NEST version: {nest.__version__}')
+
+          # Test kernel reset
+          nest.ResetKernel()
+          print('✓ Kernel reset successful')
+
+          # Test neuron creation
+          neurons = nest.Create('iaf_psc_alpha', 10)
+          print(f'✓ Created {len(neurons)} neurons: {neurons}')
+
+          # Test device creation
+          voltmeter = nest.Create('voltmeter')
+          spike_generator = nest.Create('spike_generator', params={'spike_times': [10.0, 20.0]})
+          print('✓ Created measurement devices')
+
+          # Test connections
+          nest.Connect(spike_generator, neurons[0])
+          nest.Connect(voltmeter, neurons[:3])
+          print('✓ Network connections established')
+
+          # Test simulation
+          nest.Simulate(50.0)
+          print('✓ Simulation completed successfully')
+
+          # Test data retrieval
+          events = voltmeter.events
+          print(f'✓ Retrieved {len(events[\"times\"])} voltage measurements')
+
+          # Test Sonata support
+          try:
+              import nest.lib.hl_api_sonata
+              print('✓ Sonata support: AVAILABLE')
+          except ImportError:
+              print('- Sonata support: NOT AVAILABLE (expected on some platforms)')
 
   test_linux_distros:
     name: Test on different Linux distributions
