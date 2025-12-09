@@ -92,9 +92,21 @@ jobs:
       - name: Install and test local wheel
         run: |
           # Find and install the wheel file
-          wheel_file=$(find wheelhouse -name "*.whl" | head -1)
+          # Instead of looking for 'wheelhouse', look for the actual artifact location
+          # GitHub Actions downloads artifacts to the current directory with their artifact names
+
+          # Find wheel files in downloaded artifacts
+          wheel_file=$(find . -name "*.whl" -type f | head -1)
+
+          # Alternative: if artifacts are in a specific subdirectory
+          # wheel_file=$(find wheels-* -name "*.whl" 2>/dev/null | head -1)
+
           if [ -z "$wheel_file" ]; then
             echo "No wheel file found!"
+            echo "Available files:"
+            find . -name "*.whl" -type f 2>/dev/null || echo "No .whl files found"
+            echo "Directory structure:"
+            ls -la
             exit 1
           fi
 
