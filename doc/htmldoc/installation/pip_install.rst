@@ -53,7 +53,7 @@ Install other desired packages (e.g., you may also want to use NEST in a Jupyter
 .. code-block:: bash
 
    # Optional packages
-   pip install jupyterlab, ipython
+   pip install jupyterlab
 
 Verify that NEST installed successfully:
 
@@ -81,14 +81,14 @@ Package contents
 **Optional Features:**
 
 - **Sonata support**: HDF5-based network format (macOS, Alpine Linux, Debian/Ubuntu)
-- **Server mode**: REST API for remote control
-- **Examples**: Additional visualization and analysis tools
+- **Server mode**: REST API for remote access
+- **Examples**: Additional tools needed by some examples (including `ipython`, `imageio`, `seaborn`, `networkX`, `cycler`)
 
 
 A small test example
 --------------------
 
-Once installed, you can open your preferred Python platform (like Jupyter notebook, ipython etc.).
+Once installed, you can open your preferred platform for editing and running Python code (like Jupyter notebook, ipython etc.).
 Then, run this example:
 
 
