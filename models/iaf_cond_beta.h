@@ -70,7 +70,12 @@ Description
 conductance-based synapses. Incoming spike events induce a postsynaptic change
 of conductance modelled by a beta function. The beta function
 is normalized such that an event of weight 1.0 results in a peak conductance of
-1 nS at :math:`t = \tau_{rise\_[ex|in]}`.
+1 nS at
+
+.. math::
+
+    t=\left(\ln\tau_{\textrm{syn,decay}}-\ln\tau_{\textrm{syn,rise}}\right)/ \
+    \left(\frac{1}{\tau_{\textrm{syn,rise}}}-\frac{1}{\tau_{\textrm{syn,decay}}}\right)
 
 .. note::
    Per 2009-04-17, this class has been revised to our newest
