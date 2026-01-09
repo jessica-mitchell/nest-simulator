@@ -130,6 +130,11 @@ section#kernel-attributes-nest-nestmodule dd {
 section#welcome-to-the-nest-simulator-documentation  object {
   height: 400px;
 }
+
+.eqno {
+  display: none;
+}
+
 /*************************************************************
  * Rules for  mermaid diagrams
  *************************************************************/
@@ -179,6 +184,11 @@ figure.align-default {
 .md-typeset h6 {
    font-weight: 600;
 }
+
+[id] {
+  scroll-margin-top: 4rem;
+}
+/*
 .md-typeset h1[id]:before,
 .md-typeset h2[id]:before,
 .md-typeset h3[id]:before,
@@ -186,6 +196,7 @@ figure.align-default {
    margin-top: -3.4rem;
   padding-top: 3.4rem;
 }
+*/
 
 [data-md-color-primary=orange] .md-tabs {
   background-color: var(--nest-orange);

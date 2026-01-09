@@ -237,9 +237,9 @@ Beta-function kernel
 
 
           .. math::
-            :label: beta_kernel
+            :name: beta_kernel
 
-            k(t)=\frac{\tau_{\textrm{syn,rise}}}{\tau_{\textrm{syn,decay}}-\tau_{\textrm{syn,rise}}}\left[\exp(-t/\tau_{\textrm{syn,decay}})-\exp(-t/\tau_{\textrm{syn,rise}})\right]\Theta(t)
+            k(t)=\frac{\tau_{\textrm{syn,rise}}}{\tau_{\textrm{syn,decay}}-\tau_{\textrm{syn,rise}}}\left[\exp(-t/\tau_{\textrm{syn,decay}})-\exp(-t/\tau_{\textrm{syn,rise}})\right]\Theta(t)\tag{beta_kernel}
 
           This function allows for independent rise and decay times, as quantified
           by :math:`\tau_{\textrm{syn,rise}}` and :math:`\tau_{\textrm{syn,decay}}`, respectively.
@@ -267,7 +267,7 @@ Beta-function kernel
           please use the alpha synapse model instead. Even though the limit
           :math:`\tau_{\textrm{syn,rise}}\rightarrow\tau_{\textrm{syn,decay}}` is
           well defined and coincides with the alpha synapse, there can be numerical
-          issues as both numerator and denominator in the kernel :eq:`beta_kernel`
+          issues as both numerator and denominator in the kernel :ref:`equation beta kernel <beta_kernel>`
           vanish in this limit.
 
 
