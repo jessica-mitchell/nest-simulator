@@ -119,11 +119,11 @@ Exponential kernel
 
        .. tab-item:: General info
 
-          The exponential kernel
+          The exponential kernel is
 
           .. math::
 
-            k(t) = \exp(-t/\tau_\mathsf{s})\Theta(t)
+            k(t) = \exp(-t/\tau_\textrm{syn})\Theta(t)
 
 
 
@@ -148,8 +148,7 @@ Exponential kernel
             \tau_\textrm{syn}\frac{dk(t)}{dt}=-k(t)+\tau_\textrm{syn}\delta(t)
 
           with spiking input from all presynaptic
-          neurons. This dynamics is solved using exact integration (link to exact
-          integration page) (ref to Rotter and Diesmann 1999).
+          neurons. This dynamics is solved using :ref:`exact_integration` [1]_.
 
 .. _alpha_synapse:
 
@@ -180,8 +179,7 @@ Alpha-function kernel
           :math:`t<0` and :math:`\Theta(t)=1` for :math:`t\geq0`, and synaptic
           time constant :math:`\tau_\textrm{syn}`. The kernel is normalized to have a
           peak value :math:`k(\tau_\textrm{syn})=1`.
-           The kernel corresponds to the solution of the
-          system of ordinary differential equations
+          The kernel corresponds to the solution of the system of ordinary differential equations
 
           .. math::
 
@@ -209,8 +207,7 @@ Alpha-function kernel
           The synaptic filtering is implemented with two additional state
           variables related to the synaptic current or conductance. These
           variables follow the dynamics described in the equations above
-          and are solved using exact integration (link to exact
-          integration page) (ref to Rotter and Diesmann 1999).
+          and are solved using :ref:`exact_integration` [1]_.
 
 
 .. _beta_synapse:
@@ -238,23 +235,24 @@ Beta-function kernel
           Beta synapses are defined by a kernel that is the difference of two
           exponentials :
 
-          .. math::
 
-            k(t)=\frac{\tau_{\textrm{syn,rise}}}{\tau_{\textrm{syn,decay}}-\tau_{\textrm{syn,rise}}}\left[\exp(-t/\tau_{\textrm{syn,decay}})-\exp(-t/\tau_{\textrm{syn,rise}})\right]\Theta(t)\label{eq:beta_kernel}
+          .. math::
+            :label: beta_kernel
+
+            k(t)=\frac{\tau_{\textrm{syn,rise}}}{\tau_{\textrm{syn,decay}}-\tau_{\textrm{syn,rise}}}\left[\exp(-t/\tau_{\textrm{syn,decay}})-\exp(-t/\tau_{\textrm{syn,rise}})\right]\Theta(t)
 
           This function allows for independent rise and decay times, as quantified
           by :math:`\tau_{\textrm{syn,rise}}` and :math:`\tau_{\textrm{syn,decay}}`, respectively.
           The kernel is normalized to have a peak value :math:`k(t)=1` at
           :math:`t=\left(\ln\tau_{\textrm{syn,decay}}-\ln\tau_{\textrm{syn,rise}}\right)/\left(\frac{1}{\tau_{\textrm{syn,rise}}}-\frac{1}{\tau_{\textrm{syn,decay}}}\right)`.
-          The kernel corresponds to the solution of the system of ordinary differential
-          equations
+          The kernel corresponds to the solution of the system of ordinary differential equations
 
           .. math::
 
-            \tau_{\textrm{syn,decay}}\frac{dk(t)}{dt} & =-k(t)+\kappa(t)\label{eq:beta1}\\
-            \tau_{\textrm{syn,rise}}\frac{d\kappa(t)}{dt} & =-\kappa(t)+\tau_{\textrm{syn,rise}}\delta(t)\label{eq:beta2}
+            \tau_{\textrm{syn,decay}}\frac{dk(t)}{dt} & =-k(t)+\kappa(t) \\
+            \tau_{\textrm{syn,rise}}\frac{d\kappa(t)}{dt} & =-\kappa(t)+\tau_{\textrm{syn,rise}}\delta(t)
 
-          with Dirac input at $t=0$ and initial conditions $\kappa(-\infty)=k(-\infty)=0$.
+          with Dirac input at :math:`t=0` and initial conditions :math:`\kappa(-\infty)=k(-\infty)=0`.
           Note that this system of differential equations is equivalent to the
           second-order differential equation
 
@@ -264,12 +262,12 @@ Beta-function kernel
 
 
           with :math:`a=1/\tau_{\textrm{syn,decay}}\neq b=1/\tau_{\textrm{syn,rise}}`
-          and initial condition :math:`k(-\infty)=0$ and $\frac{dk}{dt}(-\infty)=0`
-          (ref Rotter Diesmann 1999). For the case :math:`\tau_{\textrm{syn,rise}}=\tau_{\textrm{syn,decay}}`
+          and initial condition :math:`k(-\infty)=0` and :math:`\frac{dk}{dt}(-\infty)=0`
+          [1]_. For the case :math:`\tau_{\textrm{syn,rise}}=\tau_{\textrm{syn,decay}}`
           please use the alpha synapse model instead. Even though the limit
           :math:`\tau_{\textrm{syn,rise}}\rightarrow\tau_{\textrm{syn,decay}}` is
           well defined and coincides with the alpha synapse, there can be numerical
-          issues as both numerator and denominator in the kernel \eqref{beta_kernel}
+          issues as both numerator and denominator in the kernel :eq:`beta_kernel`
           vanish in this limit.
 
 
@@ -280,10 +278,16 @@ Beta-function kernel
           The synaptic filtering is implemented with two additional state
           variables related to the synaptic current or conductance. These
           variables follow the dynamics described in the equations above
-          and are solved using exact integration (link to exact
-          integration page) (ref to Rotter and Diesmann 1999).
+          and are solved using :ref:`exact_integration` [1]_.
 
 
+References
+-----------
+
+.. [1] Rotter S,  Diesmann M (1999). Exact simulation of
+       time-invariant linear systems with applications to neuronal
+       modeling. Biologial Cybernetics 81:381-402.
+       DOI: https://doi.org/10.1007/s004220050570
 
 .. Synaptic plasticity
 
