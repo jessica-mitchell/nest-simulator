@@ -823,7 +823,7 @@ jobs:
           make VERBOSE=1 installcheck
 
       - name: "Package NEST installation"
-        if: contains(matrix.use, 'python') && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         run: |
           cd "$NEST_RESULT"
           tar -czf ../nest-installation.tar.gz .
@@ -831,7 +831,7 @@ jobs:
           ls -lh nest-installation.tar.gz
 
       - name: "Upload NEST installation artifact"
-        if: contains(matrix.use, 'python') && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: nest-installation
