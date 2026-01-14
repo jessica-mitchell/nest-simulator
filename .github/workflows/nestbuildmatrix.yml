@@ -822,6 +822,22 @@ jobs:
           chmod -v u+x ${NEST_RESULT}/share/nest/testsuite/do_tests.sh
           make VERBOSE=1 installcheck
 
+      - name: "Package NEST installation"
+        if: contains(matrix.use, 'python') && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        run: |
+          cd "$NEST_RESULT"
+          tar -czf ../nest-installation.tar.gz .
+          cd ..
+          ls -lh nest-installation.tar.gz
+
+      - name: "Upload NEST installation artifact"
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: contains(matrix.use, 'python') && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        with:
+          name: nest-installation
+          path: nest-installation.tar.gz
+          retention-days: 90
+
       - name: "Upload install and test results"
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
