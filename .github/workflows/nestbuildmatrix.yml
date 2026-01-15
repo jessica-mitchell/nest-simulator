@@ -570,7 +570,7 @@ jobs:
     env:
       CXX_FLAGS: "-pedantic -Wextra -Woverloaded-virtual -Wno-unknown-pragmas"
       NEST_VPATH: "build"
-      NEST_RESULT: "result"
+      NEST_RESULT: "/opt/nest"
 
     strategy:
       fail-fast: false
@@ -758,7 +758,9 @@ jobs:
           CMAKE_C_COMPILER_LAUNCHER: ccache
           CMAKE_CXX_COMPILER_LAUNCHER: ccache
         run: |
-          mkdir -pv "$NEST_VPATH/reports" "$NEST_RESULT"
+          mkdir -pv "$NEST_VPATH/reports"
+          sudo mkdir -p "$NEST_RESULT"
+          sudo chown -R $(id -u):$(id -g) "$NEST_RESULT"
 
           if [ "$xNEST_BUILD_COMPILER" = "CLANG" ]; then
               export CC=clang-11
@@ -825,13 +827,12 @@ jobs:
       - name: "Package NEST installation"
         if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         run: |
-          INSTALL_DIR="$NEST_VPATH/$NEST_RESULT"
-          echo "INSTALL_DIR: $INSTALL_DIR"
+          echo "NEST_RESULT: $NEST_RESULT"
           echo "Checking installation directory contents:"
-          ls -la "$INSTALL_DIR" || echo "Directory does not exist!"
-          find "$INSTALL_DIR" -type f | head -20 || echo "No files found!"
+          ls -la "$NEST_RESULT" || echo "Directory does not exist!"
+          find "$NEST_RESULT" -type f | head -20 || echo "No files found!"
           echo "Creating archive in workspace root..."
-          tar -czf nest-installation.tar.gz -C "$INSTALL_DIR" .
+          tar -czf nest-installation.tar.gz -C "$NEST_RESULT" .
           echo "Archive created, verifying:"
           ls -lh nest-installation.tar.gz
           tar -tzf nest-installation.tar.gz | head -20 || echo "Archive is empty or invalid!"
@@ -860,7 +861,7 @@ jobs:
     env:
       CXX_FLAGS: "-pedantic -Wextra -Woverloaded-virtual -Wno-unknown-pragmas"
       NEST_VPATH: "build"
-      NEST_RESULT: "result"
+      NEST_RESULT: "/opt/nest"
 
     strategy:
       fail-fast: false
@@ -918,7 +919,9 @@ jobs:
 
       - name: "Configure NEST build"
         run: |
-          mkdir -pv "$NEST_VPATH/reports" "$NEST_RESULT"
+          mkdir -pv "$NEST_VPATH/reports"
+          sudo mkdir -p "$NEST_RESULT"
+          sudo chown -R $(id -u):$(id -g) "$NEST_RESULT"
 
           cd "$NEST_VPATH"
           cmake \
