@@ -825,13 +825,13 @@ jobs:
       - name: "Package NEST installation"
         if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         run: |
-          pwd
-          echo "NEST_RESULT: $NEST_RESULT"
+          INSTALL_DIR="$NEST_VPATH/$NEST_RESULT"
+          echo "INSTALL_DIR: $INSTALL_DIR"
           echo "Checking installation directory contents:"
-          ls -la "$NEST_RESULT" || echo "Directory does not exist!"
-          find "$NEST_RESULT" -type f | head -20 || echo "No files found!"
+          ls -la "$INSTALL_DIR" || echo "Directory does not exist!"
+          find "$INSTALL_DIR" -type f | head -20 || echo "No files found!"
           echo "Creating archive in workspace root..."
-          tar -czf nest-installation.tar.gz -C "$NEST_RESULT" .
+          tar -czf nest-installation.tar.gz -C "$INSTALL_DIR" .
           echo "Archive created, verifying:"
           ls -lh nest-installation.tar.gz
           tar -tzf nest-installation.tar.gz | head -20 || echo "Archive is empty or invalid!"
