@@ -51,6 +51,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
+    "sphinx_autodoc_typehints",
     "sphinx.ext.intersphinx",
     "sphinxcontrib.mermaid",
     "sphinx.ext.mathjax",
@@ -69,6 +70,7 @@ extensions = [
 ]
 
 autodoc_mock_imports = ["nest.pynestkernel", "nest.ll_api"]
+autodoc_use_type_comments = False
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]

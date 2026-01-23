@@ -159,6 +159,8 @@ More topics
        ^^^
 
 
+       * :ref:`types_synapses`
+       * :ref:`synapse_dynamics`
        * :ref:`sim_gap_junctions`
        * :ref:`weight_normalization`
 
