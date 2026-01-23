@@ -825,7 +825,7 @@ jobs:
           make VERBOSE=1 installcheck
 
       - name: "Package NEST installation"
-        if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        if: matrix.use == 'openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning, music, detailed-timers, threaded-timers, mpi-sync-timer' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         run: |
           echo "NEST_RESULT: $NEST_RESULT"
           echo "Checking installation directory contents:"
@@ -838,7 +838,7 @@ jobs:
           tar -tzf nest-installation.tar.gz | head -20 || echo "Archive is empty or invalid!"
 
       - name: "Upload NEST installation artifact"
-        if: matrix.use == 'openmp, python, gsl, ltdl, boost, optimize, warning' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
+        if: matrix.use == 'openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning, music, detailed-timers, threaded-timers, mpi-sync-timer' && matrix.os == 'ubuntu-22.04' && matrix.cpp_compiler == 'gcc'
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: nest-installation
