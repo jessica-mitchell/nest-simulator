@@ -7,8 +7,8 @@ Install from source in a ``venv`` environment
 
 .. code-block:: bash
 
-    python -m venv nest_venv
-    source nest_venv/bin/activate
+    python -m venv venv
+    source venv/bin/activate
 
 
 * Install base packages on your system:
@@ -61,7 +61,7 @@ Install from source in a ``venv`` environment
 
 * Build NEST:
 
-  You may need additional ``cmake`` options (see :ref:`cmake_options`).
+  You may need additional ``cmake`` options (see :ref:`cmake_options`). Note that you should *not* give `CMAKE_INSTALL_PREFIX` to have NEST installed into the venv correctly.
 
 .. code-block:: bash
 
