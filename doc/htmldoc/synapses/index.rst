@@ -12,8 +12,9 @@ Guides on using synapses in NEST
   .. grid-item-card:: Managing connections
 
       * :ref:`connectivity_concepts`
-      * :ref:`connection_generator`
       * :ref:`synapse_spec`
+      * :ref:`connection_generator`
+      * :ref:`handling_connections`
 
   .. grid-item-card:: Synapse description
 
@@ -21,11 +22,6 @@ Guides on using synapses in NEST
 
       * :ref:`types_synapses`
       * :ref:`synapse_dynamics`
-
-  .. grid-item-card:: Connection functionality
-      :class-title: sd-d-flex-row sd-align-minor-center
-      :link: handling_connections
-      :link-type: ref
 
   .. grid-item-card:: Weight normalization
       :class-title: sd-d-flex-row sd-align-minor-center
