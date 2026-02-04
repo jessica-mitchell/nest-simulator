@@ -1,0 +1,183 @@
+# Dockerfile.nest-ci
+# ==================
+#
+# Docker image for NEST integration testing across downstream repositories.
+# This image contains:
+#   - NEST simulator with all optional features enabled
+#   - Python scientific stack (numpy, scipy, matplotlib, etc.)
+#   - LaTeX for figure generation
+#   - Common testing tools
+#
+# Build:
+#   docker build -f Dockerfile.nest-ci -t ghcr.io/nest/nest-simulator:master .
+#
+# Usage in GitHub Actions:
+#   jobs:
+#     test:
+#       container:
+#         image: ghcr.io/nest/nest-simulator:master
+
+FROM ubuntu:22.04
+
+# Build arguments
+ARG NEST_VERSION=master
+ARG PYTHON_VERSION=3.10
+ARG JOBS=4
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Metadata
+LABEL org.opencontainers.image.title="NEST Simulator"
+LABEL org.opencontainers.image.description="NEST simulator for neural network simulations"
+LABEL org.opencontainers.image.version="${NEST_VERSION}"
+LABEL org.opencontainers.image.source="https://github.com/nest/nest-simulator"
+LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
+
+# =============================================================================
+# System Dependencies
+# =============================================================================
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Build tools
+    build-essential \
+    cmake \
+    git \
+    # NEST dependencies
+    libgsl-dev \
+    libboost-dev \
+    libboost-filesystem-dev \
+    libboost-regex-dev \
+    libboost-wave-dev \
+    libboost-python-dev \
+    libboost-program-options-dev \
+    libboost-test-dev \
+    libhdf5-dev \
+    libopenmpi-dev \
+    openmpi-bin \
+    libomp-dev \
+    libltdl-dev \
+    libreadline-dev \
+    libncurses-dev \
+    # Python
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-dev \
+    python${PYTHON_VERSION}-venv \
+    python3-pip \
+    # LaTeX for figure generation
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    dvipng \
+    cm-super \
+    # Utilities
+    wget \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Python 3.10 as default
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VERSION} 1 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1
+
+# =============================================================================
+# Python Dependencies
+# =============================================================================
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Scientific Python stack
+RUN pip install --no-cache-dir \
+    numpy \
+    scipy \
+    matplotlib \
+    pandas \
+    h5py \
+    cython
+
+# Additional dependencies commonly used with NEST
+RUN pip install --no-cache-dir \
+    cycler \
+    imageio \
+    requests \
+    "pulp<2.8.0" \
+    snakemake \
+    ipython \
+    psutil \
+    pydot \
+    networkx \
+    scikit-learn \
+    seaborn \
+    tqdm
+
+# Testing tools
+RUN pip install --no-cache-dir \
+    pytest \
+    pytest-timeout \
+    pytest-cov \
+    pytest-xdist
+
+# Jupyter support (optional, useful for tutorials)
+RUN pip install --no-cache-dir \
+    jupyter \
+    jupyterlab \
+    nbconvert
+
+# =============================================================================
+# Build and Install NEST
+# =============================================================================
+WORKDIR /nest-build
+
+# Copy NEST source code
+COPY . /nest-src
+
+# Configure NEST with all features enabled
+RUN cmake -S /nest-src -B /nest-build \
+    -DCMAKE_INSTALL_PREFIX=/opt/nest \
+    -Dwith-python=ON \
+    -Dwith-openmp=ON \
+    -Dwith-mpi=ON \
+    -Dwith-gsl=ON \
+    -Dwith-hdf5=ON \
+    -Dwith-boost=ON \
+    -Dwith-ltdl=ON \
+    -Dwith-readline=ON \
+    -DPYTHON_EXECUTABLE=/usr/bin/python${PYTHON_VERSION}
+
+# Build NEST
+RUN cmake --build /nest-build --parallel ${JOBS}
+
+# Install NEST
+RUN cmake --install /nest-build
+
+# Clean up build artifacts to reduce image size
+RUN rm -rf /nest-build /nest-src
+
+# =============================================================================
+# Environment Configuration
+# =============================================================================
+ENV NEST_INSTALL_DIR=/opt/nest
+ENV PATH="${NEST_INSTALL_DIR}/bin:${PATH}"
+ENV PYTHONPATH="${NEST_INSTALL_DIR}/lib/python${PYTHON_VERSION}/site-packages:${PYTHONPATH}"
+ENV LD_LIBRARY_PATH="${NEST_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
+
+# Configure matplotlib to use non-interactive backend
+ENV MPLBACKEND=Agg
+
+# MPI configuration for running in containers
+ENV OMPI_MCA_btl_vader_single_copy_mechanism=none
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+
+# =============================================================================
+# Verification
+# =============================================================================
+RUN python -c "import nest; print(f'NEST {nest.__version__} installed successfully')"
+RUN python -c "import numpy; import scipy; import matplotlib; print('Python stack OK')"
+
+# =============================================================================
+# Default Working Directory
+# =============================================================================
+WORKDIR /workspace
+
+# Default command: show NEST version
+CMD ["python", "-c", "import nest; print(f'NEST {nest.__version__}')"]

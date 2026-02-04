@@ -1,0 +1,405 @@
+# nest-simulator/.github/workflows/downstream-integration.yml
+#
+# This workflow orchestrates integration testing across multiple downstream
+# repositories that depend on NEST. It:
+#   1. Builds and publishes a NEST Docker image
+#   2. Triggers integration tests in downstream repos (in parallel)
+#   3. Waits for all downstream tests to complete
+#   4. Aggregates results and creates a summary
+#
+# Required secrets:
+#   - DOWNSTREAM_TRIGGER_PAT: PAT with 'repo' and 'actions' scope for all downstream repos
+#
+# Best practices applied:
+#   - Pinned action versions (use SHA for production)
+#   - Concurrency control to prevent duplicate runs
+#   - Job timeouts to prevent hung workflows
+#   - Minimal permissions per job
+
+name: Downstream Integration Tests
+
+# Prevent concurrent runs on the same branch/tag
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false  # Don't cancel - we want to complete integration tests
+
+on:
+  # Run on pushes to master
+  push:
+    branches: [master]
+
+  # Run on release candidates and releases
+  release:
+    types: [published]
+
+  # Allow manual trigger with custom image
+  workflow_dispatch:
+    inputs:
+      nest_image:
+        description: 'Use existing NEST image (skip build)'
+        required: false
+        type: string
+      downstream_repos:
+        description: 'Comma-separated list of repos to test (empty = all)'
+        required: false
+        type: string
+
+  # Allow scheduled runs (e.g., nightly)
+  schedule:
+    - cron: '0 2 * * *'  # 2 AM UTC daily
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ============================================================================
+  # Job 1: Build and publish NEST Docker image
+  # ============================================================================
+  build-image:
+    name: Build NEST Image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_tag: ${{ steps.output.outputs.image_tag }}
+      image_digest: ${{ steps.build.outputs.digest }}
+      nest_version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get NEST version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      # Skip build if image provided via workflow_dispatch
+      - name: Check for existing image
+        id: check
+        if: inputs.nest_image != ''
+        run: |
+          echo "skip_build=true" >> $GITHUB_OUTPUT
+          echo "image_tag=${{ inputs.nest_image }}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        if: steps.check.outputs.skip_build != 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: steps.check.outputs.skip_build != 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        if: steps.check.outputs.skip_build != 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            # Branch name (e.g., master)
+            type=ref,event=branch
+            # Tag name (e.g., v3.9)
+            type=ref,event=tag
+            # Short SHA (e.g., sha-abc1234)
+            type=sha,prefix=sha-
+            # Semver (e.g., 3.9.0, 3.9)
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Build and push Docker image
+        if: steps.check.outputs.skip_build != 'true'
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile  # Assumes Dockerfile exists in nest-simulator
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEST_VERSION=${{ steps.version.outputs.version }}
+
+      - name: Set output image tag
+        id: output
+        run: |
+          if [[ "${{ steps.check.outputs.skip_build }}" == "true" ]]; then
+            echo "image_tag=${{ steps.check.outputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            # Use the first tag (most specific)
+            echo "image_tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+          fi
+
+  # ============================================================================
+  # Job 2: Trigger downstream repository tests
+  # ============================================================================
+  trigger-downstream:
+    name: Test ${{ matrix.repo.name }}
+    needs: build-image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90  # Allow time for downstream tests
+    # Don't fail fast - we want results from all repos
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          # Same organization repos
+          - name: nest-models
+            owner: nest
+            repo: nest-models
+            workflow: nest-integration.yml
+            timeout: 30  # minutes
+
+          - name: nest-examples
+            owner: nest
+            repo: nest-examples
+            workflow: nest-integration.yml
+            timeout: 45
+
+          - name: nest-tutorials
+            owner: nest
+            repo: nest-tutorials
+            workflow: nest-integration.yml
+            timeout: 20
+
+          # External organization repos
+          - name: external-models
+            owner: external-org
+            repo: pynest-models
+            workflow: nest-integration.yml
+            timeout: 60
+
+          - name: community-examples
+            owner: community
+            repo: nest-community-examples
+            workflow: ci.yml  # Different workflow name
+            timeout: 30
+
+    outputs:
+      # Outputs for result aggregation
+      result_nest-models: ${{ steps.trigger.outputs.conclusion }}
+      result_nest-examples: ${{ steps.trigger.outputs.conclusion }}
+      result_nest-tutorials: ${{ steps.trigger.outputs.conclusion }}
+      result_external-models: ${{ steps.trigger.outputs.conclusion }}
+      result_community-examples: ${{ steps.trigger.outputs.conclusion }}
+
+    steps:
+      - name: Filter repos (if specified)
+        id: filter
+        run: |
+          FILTER="${{ inputs.downstream_repos }}"
+          REPO="${{ matrix.repo.name }}"
+          if [[ -z "$FILTER" ]] || [[ ",$FILTER," == *",$REPO,"* ]]; then
+            echo "skip=false" >> $GITHUB_OUTPUT
+          else
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Skipping $REPO (not in filter list)"
+          fi
+
+      - name: Trigger and wait for ${{ matrix.repo.name }}
+        id: trigger
+        if: steps.filter.outputs.skip != 'true'
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: ${{ matrix.repo.owner }}
+          repo: ${{ matrix.repo.repo }}
+          github_token: ${{ secrets.DOWNSTREAM_TRIGGER_PAT }}
+          workflow_file_name: ${{ matrix.repo.workflow }}
+          ref: main  # or master, depending on downstream repo
+          wait_interval: 30  # seconds between status checks
+          client_payload: |
+            {
+              "nest_image": "${{ needs.build-image.outputs.image_tag }}",
+              "nest_version": "${{ needs.build-image.outputs.nest_version }}",
+              "trigger_repo": "${{ github.repository }}",
+              "trigger_run_id": "${{ github.run_id }}",
+              "trigger_sha": "${{ github.sha }}"
+            }
+          propagate_failure: false  # Don't fail this job if downstream fails
+          trigger_timeout: 120  # seconds to wait for workflow to start
+          wait_timeout: ${{ matrix.repo.timeout }}m  # converted to minutes
+
+      - name: Record result
+        if: always()
+        run: |
+          echo "## ${{ matrix.repo.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.filter.outputs.skip }}" == "true" ]]; then
+            echo "⏭️ **Skipped** (not in filter list)" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ steps.trigger.outputs.conclusion }}" == "success" ]]; then
+            echo "✅ **Passed**" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ steps.trigger.outputs.conclusion }}" == "failure" ]]; then
+            echo "❌ **Failed**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **${{ steps.trigger.outputs.conclusion }}**" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow Run: ${{ steps.trigger.outputs.workflow_url }}" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================================
+  # Job 3: Aggregate results and create summary
+  # ============================================================================
+  summarize:
+    name: Create Results Summary
+    needs: [build-image, trigger-downstream]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Aggregate results
+        id: aggregate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const results = {
+              'nest-models': '${{ needs.trigger-downstream.outputs.result_nest-models }}',
+              'nest-examples': '${{ needs.trigger-downstream.outputs.result_nest-examples }}',
+              'nest-tutorials': '${{ needs.trigger-downstream.outputs.result_nest-tutorials }}',
+              'external-models': '${{ needs.trigger-downstream.outputs.result_external-models }}',
+              'community-examples': '${{ needs.trigger-downstream.outputs.result_community-examples }}'
+            };
+
+            let passed = 0;
+            let failed = 0;
+            let skipped = 0;
+            let tableRows = [];
+
+            for (const [name, status] of Object.entries(results)) {
+              let icon, statusText;
+              if (!status || status === '') {
+                icon = '⏭️';
+                statusText = 'Skipped';
+                skipped++;
+              } else if (status === 'success') {
+                icon = '✅';
+                statusText = 'Passed';
+                passed++;
+              } else if (status === 'failure') {
+                icon = '❌';
+                statusText = 'Failed';
+                failed++;
+              } else {
+                icon = '⚠️';
+                statusText = status;
+                failed++;
+              }
+              tableRows.push(`| ${name} | ${icon} ${statusText} |`);
+            }
+
+            const total = passed + failed;
+            const summary = `## Integration Test Results
+
+            **NEST Version:** \`${{ needs.build-image.outputs.nest_version }}\`
+            **Image:** \`${{ needs.build-image.outputs.image_tag }}\`
+            **Triggered by:** ${{ github.event_name }} on \`${{ github.ref_name }}\`
+
+            ### Summary: ${passed}/${total} repositories passing
+
+            | Repository | Status |
+            |------------|--------|
+            ${tableRows.join('\n')}
+
+            ---
+            [View full workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+
+            core.setOutput('summary', summary);
+            core.setOutput('passed', passed);
+            core.setOutput('failed', failed);
+            core.setOutput('total', total);
+
+            // Set overall status
+            if (failed > 0) {
+              core.setOutput('overall_status', 'failure');
+            } else {
+              core.setOutput('overall_status', 'success');
+            }
+
+      - name: Write job summary
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+          ${{ steps.aggregate.outputs.summary }}
+          EOF
+
+      - name: Create or update results issue
+        if: github.event_name == 'push' || github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `Integration Test Results: ${{ github.ref_name }}`;
+            const label = 'integration-results';
+
+            // Find existing open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: label,
+              per_page: 1
+            });
+
+            const body = `${{ steps.aggregate.outputs.summary }}
+
+            ---
+            *Last updated: ${new Date().toISOString()}*
+            `;
+
+            if (issues.data.length > 0) {
+              // Update existing issue
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: body
+              });
+              console.log(`Updated issue #${issues.data[0].number}`);
+            } else {
+              // Create new issue
+              const newIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: [label]
+              });
+              console.log(`Created issue #${newIssue.data.number}`);
+            }
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `${{ steps.aggregate.outputs.summary }}`
+            });
+
+      - name: Fail if any downstream failed
+        if: steps.aggregate.outputs.overall_status == 'failure'
+        run: |
+          echo "❌ ${{ steps.aggregate.outputs.failed }} downstream repository(ies) failed"
+          exit 1
