@@ -51,19 +51,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-python-dev \
     libboost-program-options-dev \
     libboost-test-dev \
-    libhdf5-dev \
-    libopenmpi-dev \
-    openmpi-bin \
+    libhdf5-dev \ # for sonata
+    # libopenmpi-dev \
+    # openmpi-bin \
     libomp-dev \
     libltdl-dev \
-    libreadline-dev \
+    libreadline-dev \ # sli
     libncurses-dev \
     # Python
     python${PYTHON_VERSION} \
     python${PYTHON_VERSION}-dev \
     python${PYTHON_VERSION}-venv \
     python3-pip \
-    # LaTeX for figure generation
+    # LaTeX for figure generation - needed for some examples
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
@@ -130,12 +130,12 @@ WORKDIR /nest-build
 # Copy NEST source code
 COPY . /nest-src
 
-# Configure NEST with all features enabled
+# Configure NEST
 RUN cmake -S /nest-src -B /nest-build \
     -DCMAKE_INSTALL_PREFIX=/opt/nest \
     -Dwith-python=ON \
     -Dwith-openmp=ON \
-    -Dwith-mpi=ON \
+    -Dwith-mpi=OFF \
     -Dwith-gsl=ON \
     -Dwith-hdf5=ON \
     -Dwith-boost=ON \

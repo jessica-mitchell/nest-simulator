@@ -36,9 +36,15 @@ on:
   workflow_dispatch:
     inputs:
       nest_image:
-        description: 'Use existing NEST image (skip build)'
+        description: 'Docker Hub image to use (e.g., nest/nest-simulator:latest)'
         required: false
         type: string
+        default: 'nest/nest-simulator:latest'
+      nest_version:
+        description: 'Version label (e.g., 3.8, dev)'
+        required: false
+        type: string
+        default: 'latest'
       downstream_repos:
         description: 'Comma-separated list of repos to test (empty = all)'
         required: false
@@ -49,98 +55,74 @@ on:
     - cron: '0 2 * * *'  # 2 AM UTC daily
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # Docker Hub image (already published by NEST team)
+  # Format: nest/nest-simulator:tag
+  DOCKERHUB_IMAGE: nest/nest-simulator
+  # Set to true to build new image, false to use existing Docker Hub image
+  BUILD_NEW_IMAGE: false
 
 jobs:
   # ============================================================================
-  # Job 1: Build and publish NEST Docker image
+  # Job 1: Determine NEST Docker image to use
   # ============================================================================
-  build-image:
-    name: Build NEST Image
+  resolve-image:
+    name: Resolve NEST Image
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 10
     permissions:
       contents: read
-      packages: write
     outputs:
-      image_tag: ${{ steps.output.outputs.image_tag }}
-      image_digest: ${{ steps.build.outputs.digest }}
-      nest_version: ${{ steps.version.outputs.version }}
+      image_tag: ${{ steps.resolve.outputs.image_tag }}
+      nest_version: ${{ steps.resolve.outputs.nest_version }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Get NEST version
-        id: version
+      - name: Determine image tag
+        id: resolve
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          # Priority:
+          # 1. Explicit input from workflow_dispatch
+          # 2. Tag-based (v3.9 -> nest/nest-simulator:3.9)
+          # 3. Default to latest for master/scheduled
+
+          if [[ -n "${{ inputs.nest_image }}" ]]; then
+            # Use explicitly provided image
+            IMAGE="${{ inputs.nest_image }}"
+            VERSION="${{ inputs.nest_version }}"
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            # Release tag: v3.9 -> nest/nest-simulator:3.9
+            TAG_VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
+            IMAGE="${{ env.DOCKERHUB_IMAGE }}:${TAG_VERSION}"
+            VERSION="${TAG_VERSION}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            # Other tag (e.g., rc)
+            IMAGE="${{ env.DOCKERHUB_IMAGE }}:${{ github.ref_name }}"
+            VERSION="${{ github.ref_name }}"
           else
-            echo "version=${{ github.sha }}" >> $GITHUB_OUTPUT
+            # Default: use latest for master/scheduled runs
+            IMAGE="${{ env.DOCKERHUB_IMAGE }}:latest"
+            VERSION="latest"
           fi
 
-      # Skip build if image provided via workflow_dispatch
-      - name: Check for existing image
-        id: check
-        if: inputs.nest_image != ''
+          echo "image_tag=$IMAGE" >> $GITHUB_OUTPUT
+          echo "nest_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using image: $IMAGE (version: $VERSION)"
+
+      - name: Verify image exists on Docker Hub
         run: |
-          echo "skip_build=true" >> $GITHUB_OUTPUT
-          echo "image_tag=${{ inputs.nest_image }}" >> $GITHUB_OUTPUT
+          IMAGE="${{ steps.resolve.outputs.image_tag }}"
+          echo "Verifying image exists: $IMAGE"
 
-      - name: Set up Docker Buildx
-        if: steps.check.outputs.skip_build != 'true'
-        uses: docker/setup-buildx-action@v3
+          # Try to pull the image (this verifies it exists)
+          if docker pull "$IMAGE"; then
+            echo "✅ Image verified: $IMAGE"
 
-      - name: Log in to GitHub Container Registry
-        if: steps.check.outputs.skip_build != 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata for Docker
-        if: steps.check.outputs.skip_build != 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            # Branch name (e.g., master)
-            type=ref,event=branch
-            # Tag name (e.g., v3.9)
-            type=ref,event=tag
-            # Short SHA (e.g., sha-abc1234)
-            type=sha,prefix=sha-
-            # Semver (e.g., 3.9.0, 3.9)
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-
-      - name: Build and push Docker image
-        if: steps.check.outputs.skip_build != 'true'
-        id: build
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile  # Assumes Dockerfile exists in nest-simulator
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            NEST_VERSION=${{ steps.version.outputs.version }}
-
-      - name: Set output image tag
-        id: output
-        run: |
-          if [[ "${{ steps.check.outputs.skip_build }}" == "true" ]]; then
-            echo "image_tag=${{ steps.check.outputs.image_tag }}" >> $GITHUB_OUTPUT
+            # Extract actual NEST version from container
+            NEST_VERSION=$(docker run --rm "$IMAGE" python -c "import nest; print(nest.__version__)" 2>/dev/null || echo "unknown")
+            echo "NEST version in image: $NEST_VERSION"
           else
-            # Use the first tag (most specific)
-            echo "image_tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+            echo "::error::Image not found on Docker Hub: $IMAGE"
+            echo "Available tags can be found at: https://hub.docker.com/r/nest/nest-simulator/tags"
+            exit 1
           fi
 
   # ============================================================================
@@ -148,7 +130,7 @@ jobs:
   # ============================================================================
   trigger-downstream:
     name: Test ${{ matrix.repo.name }}
-    needs: build-image
+    needs: resolve-image
     runs-on: ubuntu-24.04
     timeout-minutes: 90  # Allow time for downstream tests
     # Don't fail fast - we want results from all repos
@@ -222,8 +204,8 @@ jobs:
           wait_interval: 30  # seconds between status checks
           client_payload: |
             {
-              "nest_image": "${{ needs.build-image.outputs.image_tag }}",
-              "nest_version": "${{ needs.build-image.outputs.nest_version }}",
+              "nest_image": "${{ needs.resolve-image.outputs.image_tag }}",
+              "nest_version": "${{ needs.resolve-image.outputs.nest_version }}",
               "trigger_repo": "${{ github.repository }}",
               "trigger_run_id": "${{ github.run_id }}",
               "trigger_sha": "${{ github.sha }}"
@@ -254,7 +236,7 @@ jobs:
   # ============================================================================
   summarize:
     name: Create Results Summary
-    needs: [build-image, trigger-downstream]
+    needs: [resolve-image, trigger-downstream]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -310,8 +292,8 @@ jobs:
             const total = passed + failed;
             const summary = `## Integration Test Results
 
-            **NEST Version:** \`${{ needs.build-image.outputs.nest_version }}\`
-            **Image:** \`${{ needs.build-image.outputs.image_tag }}\`
+            **NEST Version:** \`${{ needs.resolve-image.outputs.nest_version }}\`
+            **Image:** \`${{ needs.resolve-image.outputs.image_tag }}\`
             **Triggered by:** ${{ github.event_name }} on \`${{ github.ref_name }}\`
 
             ### Summary: ${passed}/${total} repositories passing
