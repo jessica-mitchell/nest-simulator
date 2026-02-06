@@ -849,6 +849,16 @@ jobs:
             cp -a "$CSA_DIR" "$INSTALL_DIR/extras-csa"
           fi
 
+          # Bundle system HDF5 libs so downstream consumers don't hit version mismatches
+          HDF5_LIB_DIR=$(pkg-config --variable=libdir hdf5 2>/dev/null || echo "/usr/lib/x86_64-linux-gnu/hdf5/serial")
+          if [ -d "$HDF5_LIB_DIR" ]; then
+            echo "Bundling HDF5 from $HDF5_LIB_DIR"
+            mkdir -p "$INSTALL_DIR/extras-hdf5/lib"
+            cp -P "$HDF5_LIB_DIR"/libhdf5*.so* "$INSTALL_DIR/extras-hdf5/lib/"
+          else
+            echo "Warning: HDF5 libs not found at $HDF5_LIB_DIR"
+          fi
+
           echo "Creating archive in workspace root..."
           tar -czf nest-installation.tar.gz -C "$INSTALL_DIR" .
           echo "Archive created, verifying:"
