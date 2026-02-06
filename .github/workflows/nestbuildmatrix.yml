@@ -830,6 +830,25 @@ jobs:
           echo "Checking installation directory contents:"
           ls -la "$INSTALL_DIR" || echo "Directory does not exist!"
           find "$INSTALL_DIR" -type f | head -20 || echo "No files found!"
+
+          # Bundle external dependencies built from source
+          for dep in sionlib libneurosim music; do
+            DEP_DIR="$HOME/.cache/${dep}.install"
+            if [ -d "$DEP_DIR" ]; then
+              echo "Bundling ${dep} from $DEP_DIR"
+              cp -a "$DEP_DIR" "$INSTALL_DIR/extras-${dep}"
+            else
+              echo "Warning: ${dep} not found at $DEP_DIR"
+            fi
+          done
+
+          # Also bundle CSA (installed alongside libneurosim)
+          CSA_DIR="$HOME/.cache/csa.install"
+          if [ -d "$CSA_DIR" ]; then
+            echo "Bundling csa from $CSA_DIR"
+            cp -a "$CSA_DIR" "$INSTALL_DIR/extras-csa"
+          fi
+
           echo "Creating archive in workspace root..."
           tar -czf nest-installation.tar.gz -C "$INSTALL_DIR" .
           echo "Archive created, verifying:"
