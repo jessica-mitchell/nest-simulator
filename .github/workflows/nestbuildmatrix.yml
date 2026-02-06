@@ -849,14 +849,22 @@ jobs:
             cp -a "$CSA_DIR" "$INSTALL_DIR/extras-csa"
           fi
 
-          # Bundle system HDF5 libs so downstream consumers don't hit version mismatches
-          HDF5_LIB_DIR=$(pkg-config --variable=libdir hdf5 2>/dev/null || echo "/usr/lib/x86_64-linux-gnu/hdf5/serial")
-          if [ -d "$HDF5_LIB_DIR" ]; then
-            echo "Bundling HDF5 from $HDF5_LIB_DIR"
-            mkdir -p "$INSTALL_DIR/extras-hdf5/lib"
-            cp -P "$HDF5_LIB_DIR"/libhdf5*.so* "$INSTALL_DIR/extras-hdf5/lib/"
-          else
-            echo "Warning: HDF5 libs not found at $HDF5_LIB_DIR"
+          # Bundle system HDF5 libs so downstream consumers don't hit version mismatches.
+          # On Ubuntu, the runtime libs (libhdf5_serial.so.103 etc.) are in the main
+          # multiarch lib dir, not the hdf5/serial/ subdir which only has dev symlinks.
+          mkdir -p "$INSTALL_DIR/extras-hdf5/lib"
+          HDF5_BUNDLED=false
+          for d in /usr/lib/x86_64-linux-gnu /usr/lib; do
+            if ls "$d"/libhdf5_serial*.so* 1>/dev/null 2>&1; then
+              echo "Bundling HDF5 from $d"
+              cp -P "$d"/libhdf5_serial*.so* "$INSTALL_DIR/extras-hdf5/lib/"
+              HDF5_BUNDLED=true
+              break
+            fi
+          done
+          if [ "$HDF5_BUNDLED" = false ]; then
+            echo "Warning: HDF5 serial libs not found"
+            rmdir "$INSTALL_DIR/extras-hdf5/lib" "$INSTALL_DIR/extras-hdf5" 2>/dev/null || true
           fi
 
           echo "Creating archive in workspace root..."
