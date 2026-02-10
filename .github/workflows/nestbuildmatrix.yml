@@ -849,52 +849,8 @@ jobs:
             cp -a "$CSA_DIR" "$INSTALL_DIR/extras-csa"
           fi
 
-          # Bundle HDF5 and its transitive dependencies (libsz, libaec, etc.)
-          # so downstream consumers don't need to install libhdf5-dev.
-          # Use ldd recursively to find all HDF5-related libs and their dependencies.
-          mkdir -p "$INSTALL_DIR/extras-hdf5/lib"
-          PYNESTKERNEL=$(find "$INSTALL_DIR" -name "pynestkernel*.so" | head -1)
-          if [ -n "$PYNESTKERNEL" ]; then
-            echo "Scanning $PYNESTKERNEL for HDF5-related dependencies"
-
-            # First pass: bundle direct dependencies of pynestkernel
-            ldd "$PYNESTKERNEL" 2>/dev/null | grep -E 'libhdf5|libsz|libaec' | awk '{print $3}' | while read lib; do
-              if [ -f "$lib" ]; then
-                echo "  Bundling: $lib"
-                cp -P "$lib"* "$INSTALL_DIR/extras-hdf5/lib/" 2>/dev/null || true
-                # Also copy any symlink targets
-                REAL=$(readlink -f "$lib" 2>/dev/null || echo "$lib")
-                if [ -f "$REAL" ] && [ "$REAL" != "$lib" ]; then
-                  cp -P "$REAL" "$INSTALL_DIR/extras-hdf5/lib/" 2>/dev/null || true
-                fi
-              fi
-            done
-
-            # Second pass: check dependencies of bundled HDF5 libraries for transitive deps
-            # This catches libsz/libaec which are loaded by libhdf5, not directly by pynestkernel
-            find "$INSTALL_DIR/extras-hdf5/lib" -name "libhdf5*.so*" -type f | while read hdf5_lib; do
-              ldd "$hdf5_lib" 2>/dev/null | grep -E 'libsz|libaec' | awk '{print $3}' | while read dep; do
-                if [ -f "$dep" ]; then
-                  # Check if already bundled
-                  depname=$(basename "$dep")
-                  if [ ! -f "$INSTALL_DIR/extras-hdf5/lib/$depname" ]; then
-                    echo "  Bundling transitive dependency: $dep"
-                    cp -P "$dep"* "$INSTALL_DIR/extras-hdf5/lib/" 2>/dev/null || true
-                    REAL=$(readlink -f "$dep" 2>/dev/null || echo "$dep")
-                    if [ -f "$REAL" ] && [ "$REAL" != "$dep" ]; then
-                      cp -P "$REAL" "$INSTALL_DIR/extras-hdf5/lib/" 2>/dev/null || true
-                    fi
-                  fi
-                fi
-              done
-            done
-
-            echo "Bundled HDF5 libs:"
-            ls -la "$INSTALL_DIR/extras-hdf5/lib/"
-          else
-            echo "Warning: pynestkernel not found, skipping HDF5 bundling"
-            rmdir "$INSTALL_DIR/extras-hdf5/lib" "$INSTALL_DIR/extras-hdf5" 2>/dev/null || true
-          fi
+          # HDF5 is not bundled — downstream consumers install libhdf5-dev from apt
+          # (same OS = same version) and build h5py from source to match.
 
           echo "Creating archive in workspace root..."
           tar -czf nest-installation.tar.gz -C "$INSTALL_DIR" .
