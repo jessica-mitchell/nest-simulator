@@ -3,25 +3,25 @@
 #
 # Docker image for NEST integration testing across downstream repositories.
 # This image contains:
-#   - NEST simulator with all optional features enabled
-#   - Python scientific stack (numpy, scipy, matplotlib, etc.)
-#   - LaTeX for figure generation
+#   - NEST simulator with features needed for examples (HDF5/SONATA, GSL, OpenMP)
+#   - Python scientific stack required by examples (numpy, scipy, matplotlib, etc.)
+#   - LaTeX for figure generation (required by ignore_and_fire examples)
 #   - Common testing tools
 #
 # Build:
-#   docker build -f Dockerfile.nest-ci -t ghcr.io/nest/nest-simulator:master .
+#   docker build -f Dockerfile.nest-ci -t nest/nest-simulator:master .
 #
 # Usage in GitHub Actions:
 #   jobs:
 #     test:
 #       container:
-#         image: ghcr.io/nest/nest-simulator:master
+#         image: nest/nest-simulator:master
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Build arguments
 ARG NEST_VERSION=master
-ARG PYTHON_VERSION=3.10
+ARG PYTHON_VERSION=3.12
 ARG JOBS=4
 
 # Prevent interactive prompts during package installation
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
     git \
-    # NEST dependencies
+    # NEST dependencies (needed for examples)
     libgsl-dev \
     libboost-dev \
     libboost-filesystem-dev \
@@ -51,76 +51,102 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libboost-python-dev \
     libboost-program-options-dev \
     libboost-test-dev \
-    libhdf5-dev \ # for sonata
-    # libopenmpi-dev \
-    # openmpi-bin \
+    libhdf5-dev \
     libomp-dev \
     libltdl-dev \
-    libreadline-dev \ # sli
+    libreadline-dev \
     libncurses-dev \
     # Python
     python${PYTHON_VERSION} \
     python${PYTHON_VERSION}-dev \
     python${PYTHON_VERSION}-venv \
     python3-pip \
-    # LaTeX for figure generation - needed for some examples
+    # LaTeX for figure generation (required by ignore_and_fire examples)
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
     texlive-fonts-extra \
     dvipng \
     cm-super \
+    # Graphviz (needed by nest.visualization / pydot)
+    graphviz \
+    # Autotools (needed to build libneurosim and CSA from source)
+    autoconf \
+    automake \
+    libtool \
     # Utilities
     wget \
     curl \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Set Python 3.10 as default
+# Set Python 3.12 as default
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VERSION} 1 \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1
 
 # =============================================================================
 # Python Dependencies
 # =============================================================================
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+# Build dependency for NEST (must be installed before cmake)
+RUN pip install --no-cache-dir --break-system-packages cython
 
-# Scientific Python stack
-RUN pip install --no-cache-dir \
+# Core dependencies required by most/all examples
+RUN pip install --no-cache-dir --break-system-packages \
     numpy \
     scipy \
-    matplotlib \
-    pandas \
-    h5py \
-    cython
+    matplotlib
 
-# Additional dependencies commonly used with NEST
-RUN pip install --no-cache-dir \
-    cycler \
+# Dependencies used by specific examples
+RUN pip install --no-cache-dir --break-system-packages \
+    pandas \
     imageio \
+    cycler \
     requests \
-    "pulp<2.8.0" \
-    snakemake \
-    ipython \
     psutil \
     pydot \
-    networkx \
-    scikit-learn \
-    seaborn \
-    tqdm
+    ipython \
+    snakemake
 
-# Testing tools
-RUN pip install --no-cache-dir \
+# Build h5py from source against system libhdf5 to avoid version mismatch
+RUN HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial HDF5_INCLUDEDIR=/usr/include/hdf5/serial \
+    pip install --no-cache-dir --break-system-packages --no-binary=h5py h5py
+
+# Testing tools (needed for CI)
+RUN pip install --no-cache-dir --break-system-packages \
     pytest \
     pytest-timeout \
     pytest-cov \
     pytest-xdist
 
-# Jupyter support (optional, useful for tutorials)
-RUN pip install --no-cache-dir \
-    jupyter \
-    jupyterlab \
-    nbconvert
+# =============================================================================
+# Build and Install libneurosim + CSA (required for CSA examples)
+# =============================================================================
+ENV NEUROSIM_INSTALL_DIR=/opt/libneurosim
+ENV CSA_INSTALL_DIR=/opt/csa
+
+# Build libneurosim
+RUN git clone --branch v1.2.0 --depth 1 https://github.com/INCF/libneurosim.git /tmp/libneurosim \
+    && cd /tmp/libneurosim \
+    && ./autogen.sh \
+    && ./configure --prefix=${NEUROSIM_INSTALL_DIR} --with-python=3 \
+    && make -j${JOBS} \
+    && make install \
+    && rm -rf /tmp/libneurosim
+
+# Build CSA
+RUN PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')" \
+    && git clone --branch v0.1.13 --depth 1 https://github.com/INCF/csa.git /tmp/csa \
+    && cd /tmp/csa \
+    && sed -i 's/lpyneurosim/lpy3neurosim/g' configure.ac \
+    && sed -i 's/print __version__/print\(__version__\)/g' Makefile.am \
+    && ./autogen.sh \
+    && LDFLAGS="${PYLIB_DIR:+-L${PYLIB_DIR}}" ./configure --with-libneurosim=${NEUROSIM_INSTALL_DIR} --prefix=${CSA_INSTALL_DIR} \
+    && make \
+    && make install \
+    && rm -rf /tmp/csa
+
+ENV LD_LIBRARY_PATH="${NEUROSIM_INSTALL_DIR}/lib:${CSA_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
+ENV PYTHONPATH="${CSA_INSTALL_DIR}/lib/python${PYTHON_VERSION}/site-packages/csa-0.1.13-py${PYTHON_VERSION}.egg:${PYTHONPATH}"
 
 # =============================================================================
 # Build and Install NEST
@@ -130,17 +156,21 @@ WORKDIR /nest-build
 # Copy NEST source code
 COPY . /nest-src
 
-# Configure NEST
+# Configure NEST with features needed for examples:
+# - HDF5: Required for SONATA example (sonata_example/sonata_network.py)
+# - GSL: Used by some examples for special functions
+# - OpenMP: Performance optimization (threading within single process)
+# - libneurosim: Required for CSA examples (csa_example.py, csa_spatial_example.py)
 RUN cmake -S /nest-src -B /nest-build \
     -DCMAKE_INSTALL_PREFIX=/opt/nest \
     -Dwith-python=ON \
     -Dwith-openmp=ON \
-    -Dwith-mpi=OFF \
     -Dwith-gsl=ON \
     -Dwith-hdf5=ON \
     -Dwith-boost=ON \
     -Dwith-ltdl=ON \
     -Dwith-readline=ON \
+    -Dwith-libneurosim=${NEUROSIM_INSTALL_DIR} \
     -DPYTHON_EXECUTABLE=/usr/bin/python${PYTHON_VERSION}
 
 # Build NEST
@@ -163,16 +193,12 @@ ENV LD_LIBRARY_PATH="${NEST_INSTALL_DIR}/lib:${LD_LIBRARY_PATH}"
 # Configure matplotlib to use non-interactive backend
 ENV MPLBACKEND=Agg
 
-# MPI configuration for running in containers
-ENV OMPI_MCA_btl_vader_single_copy_mechanism=none
-ENV OMPI_ALLOW_RUN_AS_ROOT=1
-ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-
 # =============================================================================
 # Verification
 # =============================================================================
 RUN python -c "import nest; print(f'NEST {nest.__version__} installed successfully')"
 RUN python -c "import numpy; import scipy; import matplotlib; print('Python stack OK')"
+RUN python -c "import csa; print('CSA OK')"
 
 # =============================================================================
 # Default Working Directory
