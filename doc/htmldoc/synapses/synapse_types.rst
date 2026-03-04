@@ -25,23 +25,23 @@ Types of synapses
 
      .. image:: /static/img/synapse_electrical.svg
 
-   .. grid-item-card::
-     :columns: 3
-     :class-item: sd-text-center
-     :link: astrocyte_synapses
-     :link-type: ref
+    .. grid-item-card::
+      :columns: 3
+      :class-item: sd-text-center
+      :link: astrocytic_coupling
+      :link-type: ref
 
 
-     .. image:: /static/img/synapse_astrocyte_title.svg
+      .. image:: /static/img/synapse_astrocyte_title.svg
 
-   .. grid-item-card::
-     :columns: 3
-     :class-item: sd-text-center
-     :link: abstract_synapses
-     :link-type: ref
+    .. grid-item-card::
+      :columns: 3
+      :class-item: sd-text-center
+      :link: rate_synapses
+      :link-type: ref
 
 
-     .. image:: /static/img/synapse_abstract_title1.svg
+      .. image:: /static/img/synapse_abstract_title1.svg
 
 
 .. grid::
@@ -50,9 +50,11 @@ Types of synapses
    .. grid-item::
      :columns: 12
 
-     In the following section, we introduce the different types of synapses implemented in NEST. This page focuses on the
-     type of signal transmission and plasticity for each synapse model. For details on the post-synaptic response
-     dynamics of synapses, see :ref:`synapse_dynamics`.
+      In the following section, we introduce the different types of synapse model implemented in NEST. This page focuses on the
+      type of signal transmission and plasticity for each synapse model. For details on the post-synaptic response
+      dynamics of synapses, see :ref:`synapse_dynamics`. Some synapse models require specific neuron types, which is indicated
+      in the model description. While various synapse types can theoretically be combined, implementation limitations exist
+      in NEST. For custom synapse models, consider using NESTML.
 
 .. _chemical_synapses:
 
@@ -124,34 +126,6 @@ Functional plasticity
 
           Connection weight changes over time.
 
-        .. tab-item:: **STDP**
-
-          .. grid::
-             :gutter: 1
-
-             .. grid-item::
-               :columns: 4
-
-                .. image:: /static/img/synapse_stdp_notitle.svg
-
-             .. grid-item::
-               :columns: 8
-
-               - Spike timing dependent plasticity (STDP)
-               - Depends on the relative timing of pre- and post-synaptic spikes. The effect can be either additive or
-                 multiplicative, depending on the specific implementation. Different window functions determine the
-                 temporal dependence of plasticity. The time scale is typically on the order of a few milliseconds.
-
-               .. dropdown:: STDP synapses
-
-                      {% for items in tag_dict %}
-                      {% if items.tag == "stdp" %}
-                      {% for item in items.models | sort %}
-                      * :doc:`/models/{{ item | replace(".html", "") }}`
-                      {% endfor %}
-                      {% endif %}
-                      {% endfor %}
-
         .. tab-item:: **STP**
 
            .. grid::
@@ -167,10 +141,11 @@ Functional plasticity
 
                - Short-term plasticity (STP)
 
-               - Depends on presynaptic neuron spiking activity. Can exhibit either facilitation (increased response) or
-                 depression (decreased response). The time scale is typically tens of milliseconds.
+               - Depends only on presynaptic neuron spiking activity
 
-               .. dropdown:: STP synapses
+               - Can exhibit either facilitation (increased response) or depression (decreased response)
+
+               .. dropdown:: STP synapse models
 
                     {% for items in tag_dict %}
                     {% if items.tag == "stp" %}
@@ -179,6 +154,37 @@ Functional plasticity
                     {% endfor %}
                     {% endif %}
                     {% endfor %}
+
+        .. tab-item:: **STDP**
+
+           .. grid::
+              :gutter: 1
+
+              .. grid-item::
+                :columns: 4
+
+                 .. image:: /static/img/synapse_stdp_notitle.svg
+
+              .. grid-item::
+                :columns: 8
+
+                - Spike timing dependent plasticity (STDP)
+
+                - Depends on the relative timing of pre- and post-synaptic spikes
+
+                - The effect can be either additive or multiplicative, depending on the specific implementation
+
+                - Different window functions determine the temporal dependence of plasticity
+
+                .. dropdown:: STDP synapse models
+
+                       {% for items in tag_dict %}
+                       {% if items.tag == "stdp" %}
+                       {% for item in items.models | sort %}
+                       * :doc:`/models/{{ item | replace(".html", "") }}`
+                       {% endfor %}
+                       {% endif %}
+                       {% endfor %}
 
         .. tab-item:: **3 factor rules**
 
@@ -194,12 +200,13 @@ Functional plasticity
                :columns: 8
 
                - Spike timing dependent plasticity and STDP-like models with third factors
-               - The third factor modulates the effectiveness of synaptic weight changes. This third factor can be a
-                 neuromodulation signal or a local signal from the postsynaptic neuron, such as membrane potential or
-                 dendritic voltage. The time scale is similar to standard STDP (a few milliseconds).
+
+               - The third factor modulates the effectiveness of synaptic weight changes
+
+               - This third factor can be a neuromodulation signal or a local signal from the postsynaptic neuron, such as membrane potential or dendritic voltage
 
 
-               .. dropdown:: Synapses with 3rd factors
+               .. dropdown:: Synapse models with 3rd factors
 
                   {% for items in tag_dict %}
                   {% if items.tag == "static" %}
@@ -263,38 +270,42 @@ Electrical Synapses
 
   .. tab-item:: Technical details
 
-    - Instantaneous coupling requires waveform relaxation
+    - Instantaneous coupling requires waveform relaxation (WFR)
+    - This is enabled by default (``use_wfr = True``)
+    - Most users don't need to change any settings
+    - For advanced configuration options, see the :doc:`/synapses/simulations_with_gap_junctions` documentation
 
 Available models: gap_junction - electrical
 
-Astrocytes
-----------
+.. _astrocytic_coupling:
+
+Astrocytic coupling
+-------------------
 
 **Signal transmission type:** Current
 
-Astrocytes modulate neuronal activity by producing slow inward currents to neurons, which in turn are affected by
+Astrocytic coupling modulates neuronal activity by producing slow inward currents to neurons, which in turn are affected by
 neuronal activity. This creates a recurrent interaction between astrocytes and neurons.
 
 **Available models:**
 
 - sic_connection - astrocyte
 
-.. _abstract_synapses:
+.. _rate_synapses:
 
-Abstract Synapses
------------------
+Rate neurons
+------------
+
+**Signal transmission type:** Firing rates
+
+Rate neurons transmit continuous signals representing firing rates between neurons.
 
 .. tab-set::
 
   .. tab-item:: General info
     :selected:
 
-    **Signal transmission type:** Firing rates, learning signals, and other continuous signals
-
-    Abstract synapses represent all synapses that do not fit into the other categories. These are auxiliary
-    models without direct biological counterparts, typically used with abstract neuron models like rate models or
-    complex plasticity models requiring learning signals between neurons (e.g., e-prop). They typically submit arrays
-    of continuous signals.
+    Rate neurons are used with rate-based neuron models for efficient population-level simulations.
 
   .. tab-item:: Technical details
 
@@ -305,16 +316,36 @@ Abstract Synapses
 
 - cont_delay_synapse - abstract, rate
 - diffusion_connection - abstract, rate
+- erate_connection_delayed - abstract, rate
+- rate_connection_instantaneous - abstract, rate
+
+.. _auxiliary_synapses:
+
+Auxiliary synapses
+-----------------
+
+.. tab-set::
+
+  .. tab-item:: General info
+    :selected:
+
+    **Signal transmission type:** Learning signals and other continuous signals
+
+    Auxiliary synapses are models without direct biological counterparts, typically used with
+    complex plasticity models requiring learning signals between neurons (e.g., e-prop). They typically submit arrays
+    of continuous signals.
+
+  .. tab-item:: Technical details
+
+    - Connections submit single values instantaneously
+
+**Available models:**
+
 - eprop_learning_signal_connection - abstract, learning
 - eprop_learning_signal_connection_bsshslm_2020 - abstract, learning
 - eprop_synapse - abstract, learning
-- erate_connection_delayed - abstract, rate
-- rate_connection_instantaneous - abstract, rate
 - prop_synapse_bsshslm_2020 - abstract, learning
 - weight_optimizer
-
-.. _astrocyte_synapses:
-
 
 ----
 
