@@ -293,8 +293,8 @@ neuronal activity. This creates a recurrent interaction between astrocytes and n
 
 .. _rate_synapses:
 
-Rate neurons
-------------
+Rate connections
+----------------
 
 **Signal transmission type:** Firing rates
 
@@ -316,7 +316,7 @@ Rate neurons transmit continuous signals representing firing rates between neuro
 
 - cont_delay_synapse - abstract, rate
 - diffusion_connection - abstract, rate
-- erate_connection_delayed - abstract, rate
+- rate_connection_delayed - abstract, rate
 - rate_connection_instantaneous - abstract, rate
 
 .. _auxiliary_synapses:
