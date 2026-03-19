@@ -345,15 +345,14 @@ Auxiliary synapses
 - eprop_learning_signal_connection_bsshslm_2020 - abstract, learning
 - eprop_synapse - abstract, learning
 - prop_synapse_bsshslm_2020 - abstract, learning
-- weight_optimizer
 
 ----
 
-* clopath_synapse - chemical, functional, stdp+3rd
-* ht_synapse -
-* jonke_synapse - chemical, functional, stdp+3rd
+* clopath_synapse - chemical, functional, stdp, 3-factor
+* ht_synapse - chemical, functional, stp
+* jonke_synapse - chemical, functional, stdp, 3-factor
 * quantal_stp_synapse - chemical, functional, stp
-* stdp_dopamine_synapse - chemical, functional, stdp+3rd
+* stdp_dopamine_synapse - chemical, functional, stdp, 3-factor
 * stdp_facetshw_synapse_hom - chemical, functional, stdp
 * stdp_nn_pre_centered_synapse - chemical, functional, stdp
 * stdp_nn_restr_synapse - chemical, functional, stdp
@@ -365,5 +364,5 @@ Auxiliary synapses
 * tsodyks2_synapse - chemical, functional, stp
 * tsodyks_synapse - chemical, functional, stp
 * tsodyks_synapse_hom - chemical, functional, stp
-* urbanczik_synapse - chemical, functional, stdp+3rd
-* vogels_sprekeler_synapse - chemical, functional, stdp+3rd
+* urbanczik_synapse - chemical, functional, stdp, 3-factor
+* vogels_sprekeler_synapse - chemical, functional, stdp, 3-factor
