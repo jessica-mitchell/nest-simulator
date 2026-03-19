@@ -322,7 +322,7 @@ Rate neurons transmit continuous signals representing firing rates between neuro
 .. _auxiliary_synapses:
 
 Auxiliary synapses
------------------
+------------------
 
 .. tab-set::
 
