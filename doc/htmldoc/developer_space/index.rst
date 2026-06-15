@@ -56,7 +56,7 @@ Please familiarize yourself with our guides and workflows:
     .. grid-item-card:: Contribute documentation
 
        * Review the :ref:`documentation style guide <doc_styleguide>`
-       * For making changes to the PyNEST APIs, see our :ref:`pyapi_template`
+       * For making changes to the PyNEST APIs, see our :ref:`pyapi_guide`
        * If you have a Python example network to contribute, please refer to our
          :ref:`pyexample_template`
        * Check that documentation renders properly: See the :ref:`build documentation <doc_workflow>` guide for developer and user documentation

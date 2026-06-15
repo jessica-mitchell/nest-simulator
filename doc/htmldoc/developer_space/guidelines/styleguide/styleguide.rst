@@ -16,7 +16,7 @@ Contribute to the docs
 
 If you want to add or modify documentation, make sure to read through this guide before writing a contribution.
 
-We have templates for :ref:`Python example scripts <pyapi_template>` and the :ref:`PyNEST API docstrings <pyexample_template>`.
+We have templates and guides for :ref:`Python API docstrings <pyapi_guide>` and the :ref:`PyNEST examples <pyexample_template>`.
 
 You will also need to know how to build the documentation locally on your machine: See
 :ref:`userdoc_workflow`.
