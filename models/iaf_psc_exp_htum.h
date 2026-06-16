@@ -35,7 +35,9 @@
 namespace nest
 {
 
-/* BeginUserDocs: neuron, integrate-and-fire, hard threshold
+// Disable clang-formatting for documentation due to over-wide tables.
+// clang-format off
+/* BeginUserDocs: neuron, integrate-and-fire, current-based, hard threshold
 
 Short description
 +++++++++++++++++
@@ -45,19 +47,48 @@ Leaky integrate-and-fire model with separate relative and absolute refractory pe
 Description
 +++++++++++
 
-``iaf_psc_exp_htum`` is an implementation of a leaky integrate-and-fire model
-with exponential shaped postsynaptic currents (PSCs) according to [1]_.
-The postsynaptic currents have an infinitely short rise time.
-In particular, this model allows setting an absolute and relative
-refractory time separately, as required by [1]_.
+``iaf_psc_exp_htum`` is a leaky integrate-and-fire neuron model with
 
-The threshold crossing is followed by an absolute refractory period
-(``t_ref_abs``) during which the membrane potential is clamped to the resting
-potential. During the total refractory period (``t_ref_tot``), the membrane
-potential evolves, but the neuron will not emit a spike, even if the
-membrane potential reaches threshold. The total refractory time must be
-larger or equal to the absolute refractory time. If equal, the
-refractoriness of the model if equivalent to the other models of NEST.
+* a hard threshold,
+* separate absolute and total refractory periods, as required by [1]_,
+* no adaptation mechanisms,
+* exponentially-shaped synaptic input currents (infinitely short rise time).
+
+Membrane potential evolution and spike emission
+...............................................
+
+The membrane potential evolves according to
+
+.. math::
+
+   \frac{dV_\text{m}}{dt} = -\frac{V_{\text{m}} - E_\text{L}}{\tau_{\text{m}}} + \frac{I_{\text{syn}} + I_\text{e}}{C_{\text{m}}}
+
+where the synaptic input current :math:`I_{\text{syn}}(t)` is discussed below and :math:`I_\text{e}` is
+a constant input current set as a model parameter. A spike is emitted when :math:`V_\text{m}` reaches
+the threshold :math:`V_\text{th}`, after which it is reset to :math:`V_{\text{reset}}`.
+
+Refractoriness
+..............
+
+The threshold crossing is followed by an absolute refractory period :math:`t_{\text{ref, abs}}`
+during which the membrane potential is clamped to :math:`V_{\text{reset}}`. During the total
+refractory period :math:`t_{\text{ref, tot}}`, the membrane potential evolves, but the neuron does
+not emit a spike even if :math:`V_\text{m}` reaches threshold. The total refractory time must be
+larger than or equal to the absolute refractory time; if they are equal, the refractoriness is
+equivalent to the other integrate-and-fire models of NEST.
+
+Synaptic input
+..............
+
+The synaptic input current has an excitatory and an inhibitory component,
+:math:`I_{\text{syn}}(t) = I_{\text{syn, ex}}(t) + I_{\text{syn, in}}(t)`, where the individual
+post-synaptic currents (PSCs) decay exponentially,
+
+.. math::
+
+   i_{\text{syn, X}}(t) = e^{-\frac{t}{\tau_{\text{syn, X}}}} \Theta(t) \;,
+
+with :math:`\Theta(x)` the Heaviside step function.
 
 The linear subthreshold dynamics is integrated by the Exact
 Integration scheme [2]_. The neuron dynamics is solved on the time
@@ -103,20 +134,30 @@ Parameters
 
 The following parameters can be set in the status dictionary.
 
-===========  ====== ========================================================
- E_L          mV     Resting membrane potenial
- C_m          pF     Capacity of the membrane
- tau_m        ms     Membrane time constant
- tau_syn_ex   ms     Time constant of postsynaptic excitatory currents
- tau_syn_in   ms     Time constant of postsynaptic inhibitory currents
- t_ref_abs    ms     Duration of absolute refractory period (V_m = V_reset)
- t_ref_tot    ms     Duration of total refractory period (no spiking)
- V_m          mV     Membrane potential
- V_th         mV     Spike threshold
- V_reset      mV     Reset membrane potential after a spike
- I_e          pA     Constant input current
- t_spike      ms     Point in time of last spike
-===========  ====== ========================================================
+============== =========== ============================= ====================================================
+**Parameter**  **Default** **Math equivalent**           **Description**
+============== =========== ============================= ====================================================
+``E_L``        -70 mV      :math:`E_\text{L}`            Resting membrane potential
+``C_m``        250 pF      :math:`C_{\text{m}}`          Capacity of the membrane
+``tau_m``      10 ms       :math:`\tau_{\text{m}}`       Membrane time constant
+``tau_syn_ex`` 2 ms        :math:`\tau_{\text{syn, ex}}` Time constant of excitatory synaptic current
+``tau_syn_in`` 2 ms        :math:`\tau_{\text{syn, in}}` Time constant of inhibitory synaptic current
+``t_ref_abs``  2 ms        :math:`t_{\text{ref, abs}}`   Duration of absolute refractory period (V_m clamped)
+``t_ref_tot``  2 ms        :math:`t_{\text{ref, tot}}`   Duration of total refractory period (no spiking)
+``V_th``       -55 mV      :math:`V_{\text{th}}`         Spike threshold
+``V_reset``    -70 mV      :math:`V_{\text{reset}}`      Reset potential of the membrane
+``I_e``        0 pA        :math:`I_\text{e}`            Constant input current
+============== =========== ============================= ====================================================
+
+The following state variables evolve during simulation and are available either as neuron properties or as recordables.
+
+================== ================= ========================== =================================
+**State variable** **Initial value** **Math equivalent**        **Description**
+================== ================= ========================== =================================
+``V_m``            -70 mV            :math:`V_{\text{m}}`       Membrane potential
+``I_syn_ex``       0 pA              :math:`I_{\text{syn, ex}}` Excitatory synaptic input current
+``I_syn_in``       0 pA              :math:`I_{\text{syn, in}}` Inhibitory synaptic input current
+================== ================= ========================== =================================
 
 References
 ++++++++++
@@ -152,6 +193,7 @@ Examples using this model
 .. listexamples:: iaf_psc_exp_htum
 
 EndUserDocs */
+// clang-format on
 
 void register_iaf_psc_exp_htum( const std::string& name );
 

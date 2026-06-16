@@ -36,7 +36,9 @@
 namespace nest
 {
 
-/* BeginUserDocs: neuron, integrate-and-fire, hard threshold
+// Disable clang-formatting for documentation due to over-wide tables.
+// clang-format off
+/* BeginUserDocs: neuron, integrate-and-fire, current-based, hard threshold
 
 Short description
 +++++++++++++++++
@@ -46,18 +48,39 @@ Spike-response model used in Carandini et al. 2007
 Description
 +++++++++++
 
-The membrane potential is the sum of stereotyped events: the postsynaptic
-potentials (``V_syn``), waveforms that include a spike and the subsequent
-after-hyperpolarization (``V_spike``) and Gaussian-distributed white noise.
+``iaf_chs_2007`` is a spike-response model [1]_ in which the membrane potential is the sum of
+stereotyped events: postsynaptic potentials, a spike-and-after-hyperpolarization waveform, and
+Gaussian-distributed white noise. All quantities are dimensionless (normalized).
 
-The postsynaptic potential is described by alpha function where
-``U_epsp`` is the maximal amplitude of the EPSP and ``tau_epsp`` is the time to
-peak of the EPSP.
+Membrane potential
+..................
 
-The spike waveform is described as a delta peak followed by a membrane
-potential reset and exponential decay. ``U_reset`` is the magnitude of the
-reset/after-hyperpolarization and ``tau_reset`` is the time constant of
-recovery from this hyperpolarization.
+The membrane potential is
+
+.. math::
+
+   V_\text{m}(t) = V_{\text{syn}}(t) + V_{\text{spike}}(t) + V_{\text{noise}}(t) \;,
+
+where :math:`V_{\text{syn}}` collects the post-synaptic potentials, :math:`V_{\text{spike}}` the
+spike-triggered reset and after-hyperpolarization, and :math:`V_{\text{noise}}` the noise. A spike
+is emitted when :math:`V_\text{m}` crosses the threshold :math:`V_\text{th} = 1`.
+
+Each incoming spike contributes an :math:`\alpha`-shaped post-synaptic potential with peak amplitude
+:math:`U_{\text{epsp}}` reached at time :math:`\tau_{\text{epsp}}`,
+
+.. math::
+
+   \epsilon(t) = U_{\text{epsp}} \, \frac{t}{\tau_{\text{epsp}}} \, e^{1 - \frac{t}{\tau_{\text{epsp}}}} \Theta(t) \;.
+
+The spike waveform is a delta peak followed by a reset and exponential recovery, where
+:math:`U_{\text{reset}}` is the magnitude of the reset / after-hyperpolarization and
+:math:`\tau_{\text{reset}}` is the recovery time constant.
+
+Noise
+.....
+
+Because the original noise term is unsuitable for simulation in NEST, the noise signal must be
+prepared externally and supplied through the ``noise`` parameter, scaled by :math:`U_{\text{noise}}`.
 
 The linear subthreshold dynamics is integrated by the Exact
 Integration scheme [1]_. The neuron dynamics is solved on the time
@@ -78,14 +101,24 @@ Parameters
 
 The following parameters can be set in the status dictionary.
 
-========== ============== ==================================================
- tau_epsp  ms             Membrane time constant
- tau_reset ms             Refractory time constant
- U_epsp    real           Maximum amplitude of the EPSP, normalized
- U_reset   real           Reset value of the membrane potential, normalized
- U_noise   real           Noise scale, normalized
- noise     list of real   Noise signal
-========== ============== ==================================================
+============= =========== =========================== =================================================================
+**Parameter** **Default** **Math equivalent**         **Description**
+============= =========== =========================== =================================================================
+``tau_epsp``  8.5 ms      :math:`\tau_{\text{epsp}}`  Time to peak of the EPSP
+``tau_reset`` 15.4 ms     :math:`\tau_{\text{reset}}` Time constant of the spike after-hyperpolarization
+``U_epsp``    0.77        :math:`U_{\text{epsp}}`     Maximum amplitude of the EPSP (normalized)
+``U_reset``   2.31        :math:`U_{\text{reset}}`    Magnitude of the reset / after-hyperpolarization (normalized)
+``U_noise``   0.0         :math:`U_{\text{noise}}`    Noise scale (normalized)
+``noise``     []                                      Noise signal (list of real, length :math:`\geq` simulation steps)
+============= =========== =========================== =================================================================
+
+The following state variables evolve during simulation and are available either as neuron properties or as recordables.
+
+================== ================= ==================== ===============================
+**State variable** **Initial value** **Math equivalent**  **Description**
+================== ================= ==================== ===============================
+``V_m``            0                 :math:`V_{\text{m}}` Membrane potential (normalized)
+================== ================= ==================== ===============================
 
 References
 ++++++++++
@@ -114,6 +147,7 @@ Examples using this model
 .. listexamples:: iaf_chs_2007
 
 EndUserDocs */
+// clang-format on
 
 void register_iaf_chs_2007( const std::string& name );
 

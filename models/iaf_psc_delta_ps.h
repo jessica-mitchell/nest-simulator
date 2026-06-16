@@ -38,6 +38,8 @@
 namespace nest
 {
 
+// Disable clang-formatting for documentation due to over-wide tables.
+// clang-format off
 /* BeginUserDocs: neuron, integrate-and-fire, current-based, precise, hard threshold
 
 Short description
@@ -49,18 +51,49 @@ postsynaptic currents - precise spike timing version
 Description
 +++++++++++
 
-``iaf_psc_delta_ps`` is an implementation of a leaky integrate-and-fire model
-where the potential jumps on each spike arrival.
+``iaf_psc_delta_ps`` is a leaky integrate-and-fire neuron model with
 
-The threshold crossing is followed by an absolute refractory period
-during which the membrane potential is clamped to the resting
-potential.
+* a hard threshold,
+* a fixed refractory period,
+* no adaptation mechanisms,
+* :math:`\delta`-shaped synaptic input currents (instantaneous potential jumps),
+* precise spike times.
 
-Spikes arriving while the neuron is refractory, are discarded by
-default. If the property "refractory_input" is set to true, such
-spikes are added to the membrane potential at the end of the
-refractory period, dampened according to the interval between
-arrival and end of refractoriness.
+Membrane potential evolution, spike emission, and refractoriness
+................................................................
+
+Between incoming spikes, the membrane potential evolves according to
+
+.. math::
+
+   \frac{dV_\text{m}}{dt} = -\frac{V_{\text{m}} - E_\text{L}}{\tau_{\text{m}}} + \frac{I_\text{e}}{C_{\text{m}}}
+
+where :math:`I_\text{e}` is a constant input current set as a model parameter.
+
+A spike is emitted when :math:`V_\text{m}` reaches the threshold :math:`V_\text{th}`. Subsequently,
+
+.. math::
+
+   V_\text{m}(t) = V_{\text{reset}} \quad\text{for}\quad t^* \leq t < t^* + t_{\text{ref}} \;,
+
+that is, the membrane potential is clamped to :math:`V_{\text{reset}}` during the refractory period.
+
+Synaptic input
+..............
+
+Synaptic input currents are :math:`\delta`-shaped: each incoming spike of weight :math:`w` arriving
+at time :math:`t` causes an instantaneous jump of the membrane potential,
+
+.. math::
+
+   V_\text{m}(t^+) = V_\text{m}(t^-) + w \;.
+
+Spikes arriving while the neuron is refractory are discarded by default. If ``refractory_input``
+is set to ``True``, such spikes are added to the membrane potential at the end of the refractory
+period, dampened according to the interval between arrival and end of refractoriness.
+
+Precise implementation
+......................
 
 The linear subthreshold dynamics is integrated by the Exact
 Integration scheme [1]_. The neuron dynamics are solved exactly in
@@ -107,18 +140,27 @@ Parameters
 
 The following parameters can be set in the status dictionary.
 
-=================  ======  ==============================================================
- V_m               mV      Membrane potential
- E_L               mV      Resting membrane potential
- C_m               pF      Capacitance of the membrane
- tau_m             ms      Membrane time constant
- t_ref             ms      Duration of refractory period
- V_th              ms      Spike threshold
- V_reset           mV      Reset potential of the membrane
- I_e               pA      Constant input current
- V_min             mV      Absolute lower value for the membrane potential
- refractory_input  (bool)  If true, keep input during refractory period (default: false)
-=================  ======  ==============================================================
+==================== ================== ======================== ====================================================
+**Parameter**        **Default**        **Math equivalent**      **Description**
+==================== ================== ======================== ====================================================
+``E_L``              -70 mV             :math:`E_\text{L}`       Resting membrane potential
+``C_m``              250 pF             :math:`C_{\text{m}}`     Capacity of the membrane
+``tau_m``            10 ms              :math:`\tau_{\text{m}}`  Membrane time constant
+``t_ref``            2 ms               :math:`t_{\text{ref}}`   Duration of refractory period
+``V_th``             -55 mV             :math:`V_{\text{th}}`    Spike threshold
+``V_reset``          -70 mV             :math:`V_{\text{reset}}` Reset potential of the membrane
+``I_e``              0 pA               :math:`I_\text{e}`       Constant input current
+``V_min``            :math:`-\infty` mV :math:`V_{\text{min}}`   Absolute lower value for the membrane potential
+``refractory_input`` False                                       If ``True``, keep input during the refractory period
+==================== ================== ======================== ====================================================
+
+The following state variables evolve during simulation and are available either as neuron properties or as recordables.
+
+================== ================= ==================== ==================
+**State variable** **Initial value** **Math equivalent**  **Description**
+================== ================= ==================== ==================
+``V_m``            -70 mV            :math:`V_{\text{m}}` Membrane potential
+================== ================= ==================== ==================
 
 References
 ++++++++++
@@ -157,6 +199,7 @@ Examples using this model
 .. listexamples:: iaf_psc_delta_ps
 
 EndUserDocs */
+// clang-format on
 
 void register_iaf_psc_delta_ps( const std::string& name );
 

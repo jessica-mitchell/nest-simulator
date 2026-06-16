@@ -45,6 +45,8 @@
 namespace nest
 {
 
+// Disable clang-formatting for documentation due to over-wide tables.
+// clang-format off
 /* BeginUserDocs: neuron, integrate-and-fire, conductance-based, precise, hard threshold
 
 Short description
@@ -56,14 +58,37 @@ precise spike times used in Casti et al. 2008
 Description
 +++++++++++
 
-``iaf_chxk_2008`` is an implementation of a spiking neuron using IAF dynamics with
-conductance-based synapses [1]_. A spike is emitted when the membrane potential
-is crossed from below. After a spike, an afterhyperpolarizing (AHP) conductance
-is activated which repolarizes the neuron over time. Membrane potential is not
-reset explicitly and the model also has no explicit refractory time.
+``iaf_chxk_2008`` is a conductance-based leaky integrate-and-fire neuron model [1]_ with
 
-The AHP conductance and excitatory and inhibitory synaptic input conductances
-follow alpha-function time courses as in the ``iaf_cond_alpha`` model.
+* a hard threshold,
+* no explicit reset and no explicit refractory period,
+* spike-triggered afterhyperpolarization (AHP) instead of a reset,
+* :math:`\alpha`-shaped synaptic and AHP conductances, as in ``iaf_cond_alpha``,
+* precise spike times.
+
+Membrane potential evolution and spike emission
+...............................................
+
+The membrane potential evolves according to
+
+.. math::
+
+   C_{\text{m}} \frac{dV_\text{m}}{dt} = -g_{\text{L}} (V_\text{m} - E_{\text{L}})
+   - g_{\text{ex}}(t) (V_\text{m} - E_{\text{ex}})
+   - g_{\text{in}}(t) (V_\text{m} - E_{\text{in}})
+   - g_{\text{ahp}}(t) (V_\text{m} - E_{\text{ahp}}) + I_\text{e}
+
+A spike is emitted when :math:`V_\text{m}` crosses the threshold :math:`V_\text{th}` from below. The
+membrane potential is not reset explicitly; instead, the spike activates an afterhyperpolarizing
+(AHP) conductance :math:`g_{\text{ahp}}` that repolarizes the neuron over time.
+
+Synaptic and AHP input
+......................
+
+The excitatory and inhibitory synaptic conductances and the AHP conductance follow
+:math:`\alpha`-function time courses, as in the ``iaf_cond_alpha`` model. The synaptic conductances
+are normalized such that an event of weight 1.0 results in a peak conductance of 1 nS, while the AHP
+conductance is triggered with peak :math:`g_{\text{ahp}}` on each spike.
 
 .. note::
    In accordance with the original Fortran implementation of the model used
@@ -84,25 +109,39 @@ follow alpha-function time courses as in the ``iaf_cond_alpha`` model.
 Parameters
 ++++++++++
 
-The following parameters can be set in the status Dictionary.
+The following parameters can be set in the status dictionary.
 
-========  ======= ===========================================================
- V_m      mV      Membrane potential
- E_L      mV      Leak reversal potential
- C_m      pF      Capacity of the membrane
- V_th     mV      Spike threshold
- E_ex     mV      Excitatory reversal potential
- E_in     mV      Inhibitory reversal potential
- g_L      nS      Leak conductance
- tau_ex   ms      Rise time of the excitatory synaptic alpha function
- tau_in   ms      Rise time of the inhibitory synaptic alpha function
- I_e      pA      Constant input current
- tau_ahp  ms      Afterhyperpolarization (AHP) time constant
- E_ahp    mV      AHP potential
- g_ahp    nS      AHP conductance
- ahp_bug  boolean Defaults to false. If true, behaves like original
-                  model implementation
-========  ======= ===========================================================
+============== =========== ============================= ===================================================================
+**Parameter**  **Default** **Math equivalent**           **Description**
+============== =========== ============================= ===================================================================
+``E_L``        -60 mV      :math:`E_\text{L}`            Leak reversal potential
+``C_m``        1000 pF     :math:`C_{\text{m}}`          Capacity of the membrane
+``V_th``       -45 mV      :math:`V_{\text{th}}`         Spike threshold
+``E_ex``       20 mV       :math:`E_\text{ex}`           Excitatory reversal potential
+``E_in``       -90 mV      :math:`E_\text{in}`           Inhibitory reversal potential
+``g_L``        100 nS      :math:`g_\text{L}`            Leak conductance
+``tau_syn_ex`` 1 ms        :math:`\tau_{\text{syn, ex}}` Rise time of the excitatory synaptic alpha function
+``tau_syn_in`` 1 ms        :math:`\tau_{\text{syn, in}}` Rise time of the inhibitory synaptic alpha function
+``tau_ahp``    0.5 ms      :math:`\tau_{\text{ahp}}`     Afterhyperpolarization (AHP) time constant
+``E_ahp``      -95 mV      :math:`E_{\text{ahp}}`        AHP reversal potential
+``g_ahp``      443.8 nS    :math:`g_{\text{ahp}}`        AHP peak conductance
+``I_e``        0 pA        :math:`I_\text{e}`            Constant input current
+``ahp_bug``    False                                     If ``True``, reproduce the AHP reset of the original implementation
+============== =========== ============================= ===================================================================
+
+The following state variables evolve during simulation and are available either as neuron properties or as recordables.
+
+================== ================= ========================== ==================================
+**State variable** **Initial value** **Math equivalent**        **Description**
+================== ================= ========================== ==================================
+``V_m``            -60 mV            :math:`V_{\text{m}}`       Membrane potential
+``g_ex``           0 nS              :math:`g_{\text{ex}}`      Excitatory synaptic conductance
+``g_in``           0 nS              :math:`g_{\text{in}}`      Inhibitory synaptic conductance
+``g_ahp``          0 nS              :math:`g_{\text{ahp}}`     Afterhyperpolarization conductance
+``I_syn_ex``       0 pA              :math:`I_{\text{syn, ex}}` Excitatory synaptic input current
+``I_syn_in``       0 pA              :math:`I_{\text{syn, in}}` Inhibitory synaptic input current
+``I_ahp``          0 pA              :math:`I_{\text{ahp}}`     Afterhyperpolarization current
+================== ================= ========================== ==================================
 
 References
 ++++++++++
@@ -132,6 +171,7 @@ Examples using this model
 .. listexamples:: iaf_chxk_2008
 
 EndUserDocs */
+// clang-format on
 
 /**
  * Function computing right-hand side of ODE for GSL solver.
