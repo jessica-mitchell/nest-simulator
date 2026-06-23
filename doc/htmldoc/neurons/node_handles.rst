@@ -43,8 +43,8 @@ NodeCollections support the following operations:
 Printing
    A compact representation of information about the NodeCollection can be printed
 
-   >>>  neurons = nest.Create('iaf_psc_alpha', 10)
-   >>>  print(neurons)
+   >>> neurons = nest.Create('iaf_psc_alpha', 10)
+   >>> print(neurons)
         NodeCollection(metadata=None, model=iaf_psc_alpha, size=10, first=1, last=10)
 
 .. _indexing:
@@ -52,14 +52,14 @@ Printing
 Indexing
    Indexing returns a new NodeCollection with a single node
 
-   >>>  print(neurons[3])
-        NodeCollection(metadata=None, model=iaf_psc_alpha, size=1, first=3)
+   >>> print(neurons[3])
+        NodeCollection(metadata=None, model=iaf_psc_alpha, size=1, first=4)
 
    NodeCollections support array indexing. Array indexing is done by passing a list or tuple of
    indices when indexing. A NodeCollection with the node IDs at the chosen indices is then returned.
    Note that all indices must be strictly ascending and unique because all node IDs in a NodeCollection must be unique.
 
-   >>>  print(neurons[[1, 2, 5, 6]])
+   >>> print(neurons[[1, 2, 5, 6]])
         NodeCollection(metadata=None,
                        model=iaf_psc_alpha, size=2, first=2, last=3;
                        model=iaf_psc_alpha, size=2, first=6, last=7)
@@ -68,7 +68,7 @@ Indexing
    One may also pass a list or tuple of Booleans, where the returned NodeCollection contains the ``True`` elements
    of the list or tuple. The length of the list of tuple of Booleans must be equal to the length of the NodeCollection.
 
-   >>>  print(neurons[[True, True, True, True, False, False, True, True, True, True]])
+   >>> print(neurons[[True, True, True, True, False, False, True, True, True, True]])
         NodeCollection(metadata=None,
                        model=iaf_psc_alpha, size=4, first=1, last=4;
                        model=iaf_psc_alpha, size=4, first=7, last=10)
@@ -78,8 +78,8 @@ Indexing
 Iteration
     You can iterate the nodes in a NodeCollection and receive a single element NodeCollection
 
-     >>>   for node in neurons:
-     >>>       print(node.global_id)
+     >>> for node in neurons:
+     ...     print(node.global_id)
            1
            2
            3
@@ -97,9 +97,9 @@ Slicing
     A NodeCollection can be sliced in the same way one would slice a list,
     with ``start:stop:step`` inside brackets
 
-    >>>  print(neurons[2:9:3])
+    >>> print(neurons[2:9:3])
          NodeCollection(metadata=None,
-                        model=iaf_psc_alpha, size=2, first=3, last=9, step=3)
+                        model=iaf_psc_alpha, size=3, first=3, last=9, step=3)
 
 
 .. _get_size:
@@ -107,7 +107,7 @@ Slicing
 Getting the size
     You can easily get the number of nodes in the NodeCollection with
 
-   >>>  len(neurons)
+   >>> len(neurons)
         10
 
 .. _converting_lists:
@@ -115,16 +115,16 @@ Getting the size
 Conversion to and from lists
     NodeCollections can be converted to lists of node IDs
 
-    >>>  neurons.tolist()
+    >>> neurons.tolist()
          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     And you can create a NodeCollection by providing a list, tuple, NumPy array or range of node IDs
 
-    >>>  print(nest.NodeCollection([2, 3, 4, 8]))
+    >>> print(nest.NodeCollection([2, 3, 4, 8]))
          NodeCollection(metadata=None,
                         model=iaf_psc_alpha, size=3, first=2, last=4;
                         model=iaf_psc_alpha, size=1, first=8)
-    >>>  print(nest.NodeCollection(range(1,4)))
+    >>> print(nest.NodeCollection(range(1,4)))
          NodeCollection(metadata=None, model=iaf_psc_alpha, size=3, first=1, last=3)
 
     Note however that the nodes have to be already created. If any
@@ -137,15 +137,16 @@ Composing
     When composing two NodeCollections, NEST tries to concatenate the
     two into a single NodeCollection.
 
-    >>>  neurons = nest.Create('iaf_psc_alpha', 10)
-    >>>  neurons_2 = nest.Create('iaf_psc_alpha', 3)
-    >>>  print(neurons + neurons_2)
+    >>> nest.ResetKernel()
+    >>> neurons = nest.Create('iaf_psc_alpha', 10)
+    >>> neurons_2 = nest.Create('iaf_psc_alpha', 3)
+    >>> print(neurons + neurons_2)
          NodeCollection(metadata=None, model=iaf_psc_alpha, size=13, first=1, last=13)
 
     If the node IDs are not continuous or the models are different, a composite will be created:
 
-    >>>  neurons_3 = nest.Create('iaf_psc_delta', 3)
-    >>>  print(neurons + neurons_3)
+    >>> neurons_3 = nest.Create('iaf_psc_delta', 3)
+    >>> print(neurons + neurons_3)
          NodeCollection(metadata=None,
                         model=iaf_psc_alpha, size=10, first=1, last=10;
                         model=iaf_psc_delta, size=3, first=14, last=16)
@@ -158,9 +159,9 @@ Composing
 Test of equality
     You can test if two NodeCollections are equal, i.e. that they contain the same node IDs and model(s)
 
-    >>>  neurons == neurons_2
+    >>> neurons == neurons_2
          False
-    >>>  neurons_2 == nest.NodeCollection([11, 12, 13])
+    >>> neurons_2 == nest.NodeCollection([11, 12, 13])
          True
 
 .. _testing_membership:
@@ -168,9 +169,9 @@ Test of equality
 Test of membership
     You can test if a NodeCollection contains a certain ID
 
-    >>>  2 in neurons
+    >>> 2 in neurons
          True
-    >>>  11 in neurons
+    >>> 11 in neurons
          False
 
 .. _direct_attributes:
@@ -188,12 +189,15 @@ Direct attributes
     If your nodes are spatially distributed (see :ref:`spatial_networks`),
     you can also get the spatial properties of the nodes
 
+    >>> positions = nest.spatial.grid(shape=[2, 2])
+    >>> spatial_nodes = nest.Create('iaf_psc_alpha', positions=positions)
+
     >>> spatial_nodes.spatial
-        {'center': (0.0, 0.0),
+        {'center': array([0., 0.]),
          'edge_wrap': False,
-         'extent': (1.0, 1.0),
+         'extent': array([1., 1.]),
          'network_size': 4,
-         'shape': (2, 2)}
+         'shape': array([2, 2])}
 
 
 .. _get_param:
@@ -208,27 +212,31 @@ To get all parameters in the collection, use ``get()`` without any function argu
 This returns a dictionary with tuples. If the NodeCollection is a single-element NodeCollection,
 ``get()`` returns a dictionary with single values.
 
->>>    nodes_exp = nest.Create('iaf_psc_exp', 5)
->>>    nodes_exp[:3].get()
-       {'archiver_length': (0, 0, 0),
-        'beta_Ca': (0.001, 0.001, 0.001),
-        'C_m': (250.0, 250.0, 250.0),
+>>> nest.ResetKernel()
+>>> nodes_exp = nest.Create('iaf_psc_exp', 5)
+>>> nodes_exp[:3].get()
+       {'C_m': (250.0, 250.0, 250.0),
         'Ca': (0.0, 0.0, 0.0),
-        'delta': (0.0, 0.0, 0.0),
         'E_L': (-70.0, -70.0, -70.0),
+        'I_e': (0.0, 0.0, 0.0),
+        'V_m': (-70.0, -70.0, -70.0),
+        'V_reset': (-70.0, -70.0, -70.0),
+        'V_th': (-55.0, -55.0, -55.0),
+        'archiver_length': (0, 0, 0),
+        'beta_Ca': (0.001, 0.001, 0.001),
+        'delta': (0.0, 0.0, 0.0),
         'element_type': ('neuron', 'neuron', 'neuron'),
         'frozen': (False, False, False),
-        'global_id': (11, 12, 13),
-        'I_e': (0.0, 0.0, 0.0),
+        'global_id': (1, 2, 3),
         'local': (True, True, True),
         'model': ('iaf_psc_exp', 'iaf_psc_exp', 'iaf_psc_exp'),
+        'model_id': (...),
         'node_uses_wfr': (False, False, False),
         'post_trace': (0.0, 0.0, 0.0),
-        'recordables': (('I_syn_ex', 'I_syn_in', 'V_m'),
-         ('I_syn_ex', 'I_syn_in', 'V_m'),
-         ('I_syn_ex', 'I_syn_in', 'V_m')),
+        'recordables': (['I_syn_ex', 'I_syn_in', 'V_m'],
+         ['I_syn_ex', 'I_syn_in', 'V_m'],
+         ['I_syn_ex', 'I_syn_in', 'V_m']),
         'rho': (0.01, 0.01, 0.01),
-        'supports_precise_spikes': (False, False, False),
         'synaptic_elements': ({}, {}, {}),
         't_ref': (2.0, 2.0, 2.0),
         't_spike': (-1.0, -1.0, -1.0),
@@ -240,9 +248,6 @@ This returns a dictionary with tuples. If the NodeCollection is a single-element
         'tau_syn_in': (2.0, 2.0, 2.0),
         'thread': (0, 0, 0),
         'thread_local_id': (-1, -1, -1),
-        'V_m': (-70.0, -70.0, -70.0),
-        'V_reset': (-70.0, -70.0, -70.0),
-        'V_th': (-55.0, -55.0, -55.0),
         'vp': (0, 0, 0)}
 
 To get specific parameters in the collection, use
@@ -250,8 +255,8 @@ To get specific parameters in the collection, use
 
 Get the parameters :hxt_ref:`V_m` and :hxt_ref:`V_reset` of all nodes
 
->>>    nodes = nest.Create('iaf_psc_alpha', 10, {'V_m': -55.})
->>>    nodes.get(['V_m', 'V_reset'])
+>>> nodes = nest.Create('iaf_psc_alpha', 10, {'V_m': -55.})
+>>> nodes.get(['V_m', 'V_reset'])
        {'V_m': (-55.0, -55.0, -55.0, -55.0, -55.0, -55.0, -55.0, -55.0, -55.0, -55.0),
         'V_reset': (-70.0,
          -70.0,
@@ -267,29 +272,29 @@ Get the parameters :hxt_ref:`V_m` and :hxt_ref:`V_reset` of all nodes
 To get a specific parameter from the collection, you can use ``get(parameter_name)``.
 This will return a tuple with the values of that parameter.
 
->>>    nodes.get('t_ref')
+>>> nodes.get('t_ref')
        (2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0)
 
 If you have a single-node NodeCollection, ``get()`` will return a dictionary with
 single values or a single value, depending on how it is called.
 
->>>    nodes[0].get(['V_m', 'V_reset'])
+>>> nodes[0].get(['V_m', 'V_reset'])
        {'V_m': -55.0, 'V_reset': -70.0}
->>>    nodes[0].get('t_ref')
+>>> nodes[0].get('t_ref')
        2.0
 
 To select fields at a deeper hierarchy level, use ``get(parameter_name, property_name)``,
 this will return an array. You can also use ``get(parameter_name, [property_name_1, ..., property_name_n])``
 and get a dictionary with arrays.
 
->>>    sr = nest.Create('spike_recorder')
->>>    sr.get('events', 'senders')
-       array([], dtype=int64)
+>>> sr = nest.Create('spike_recorder')
+>>> sr.get('events', 'senders')
+       array([], dtype=float64)
 
 Lastly, you can specify the output format (Pandas dataframes [`pandas`] and `JSON` [`json`] for now). The
 output format can be specified for all the different ``get()`` versions above.
 
->>>    nodes[0].get(['V_m', 'V_reset'], output='json')
+>>> nodes[0].get(['V_m', 'V_reset'], output='json')
        '{"V_m": -55.0, "V_reset": -70.0}'
 
 
