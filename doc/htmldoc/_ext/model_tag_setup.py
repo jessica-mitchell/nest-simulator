@@ -358,6 +358,12 @@ def template_renderer(app, docname, source):
     env = app.builder.env
     template_files = ["models/index", "neurons/index", "synapses/index", "devices/index", "neurons/neuron_types"]
 
+    # Only HTML-like builders provide ``builder.templates``. Other builders
+    # (e.g. the doctest builder) cannot render templates and do not need to, so
+    # skip rendering for them.
+    if not hasattr(app.builder, "templates"):
+        return
+
     # Render the document if it matches one of the specified templates
     if any(docname == template_file for template_file in template_files):
         html_context = {"tag_dict": env.tag_dict, "model_dict": env.model_dict}

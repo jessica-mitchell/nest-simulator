@@ -79,6 +79,14 @@ autodoc_mock_imports = [
     "flask_cors",
     "RestrictedPython",
 ]
+
+# -- Options for doctest (sphinx.ext.doctest) -----------------------------
+# Code run before every doctest block/group. Makes ``nest`` available to all
+# ``>>>`` examples without an explicit import in each file. Note: this only
+# works where NEST is actually importable (e.g. a local build environment);
+# the CI docs build mocks the compiled kernel, so run doctests locally with
+# ``sphinx-build -b doctest . _build/doctest``.
+doctest_global_setup = "import nest"
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]

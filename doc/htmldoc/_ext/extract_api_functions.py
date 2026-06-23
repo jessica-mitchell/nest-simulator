@@ -117,6 +117,10 @@ def get_pynest_list(app, env, docname):
 
 def api_customizer(app, docname, source):
     env = app.builder.env
+    # Only HTML-like builders provide ``builder.templates``; skip for others
+    # (e.g. the doctest builder) which cannot and need not render templates.
+    if not hasattr(app.builder, "templates"):
+        return
     if docname == "ref_material/pynest_api/index":
         get_apis = env.pynest_dict
         html_context = {"api_dict": get_apis}
