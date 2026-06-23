@@ -531,7 +531,7 @@ prints ID ranges and model names of the nodes in the network.
   | NEST 2.x                                     | NEST 3.0                              |
   +==============================================+=======================================+
   |                                              |                                       |
-  | >>>  nest.PrintNetwork(depth=2, subnet=None) | >>>  nest.PrintNodes()                |
+  |      nest.PrintNetwork(depth=2, subnet=None) |      nest.PrintNodes()                |
   |      [0] root dim=[15]                       |      1 .. 10 iaf_psc_alpha            |
   |      [1]...[10] iaf_psc_alpha                |      11 .. 15 iaf_psc_exp             |
   |      [11]...[15] iaf_psc_exp                 |                                       |

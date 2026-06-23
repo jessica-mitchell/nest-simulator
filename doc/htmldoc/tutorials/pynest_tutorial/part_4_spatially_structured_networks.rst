@@ -384,9 +384,10 @@ was built correctly:
 It may also be useful to look at the ``.spatial`` property of the
 NodeCollection, which describes the spatial properties.
 
->>>  ex_pop.spatial
-     {'center': (0.0, 0.0),
-      'edge_wrap': False,
-      'extent': (1.0, 1.0),
-      'network_size': 20,
-      'shape': (4, 5)}
+>>> ex_pop = nest.Create('iaf_psc_alpha', positions=nest.spatial.grid(shape=[4, 5]))
+>>> ex_pop.spatial
+{'center': array([0., 0.]),
+ 'edge_wrap': False,
+ 'extent': array([1., 1.]),
+ 'network_size': 20,
+ 'shape': array([4, 5])}

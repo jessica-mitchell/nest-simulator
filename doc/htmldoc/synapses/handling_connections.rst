@@ -29,8 +29,8 @@ as NodeCollections.
   Most importantly, this will change your ``Connect`` call, where instead of passing the synapse
   model with the ``model`` key, you should now use the ``synapse_model`` key.
 
-    >>>  nrns = nest.Create('iaf_psc_alpha', 3)
-    >>>  nest.Connect(nrns, nrns, 'one_to_one', syn_spec={'synapse_model': 'stdp_synapse'})
+    >>> nrns = nest.Create('iaf_psc_alpha', 3)
+    >>> nest.Connect(nrns, nrns, 'one_to_one', syn_spec={'synapse_model': 'stdp_synapse'})
 
   Similarly, the dictionary ``GetDefaults`` returns an entry called ``synapsemodel``, which is now called
   ``synapse_model``.
@@ -45,9 +45,11 @@ Printing
     If your SynapseCollection has more than 36 elements, only the first and last 15 connections are displayed.
     To print all, first set ``print_full = True`` on your SynapseCollection.
 
-    >>>  nest.Connect(nodes[:2], nodes[:2])
-    >>>  synapses = nest.GetConnections()
-    >>>  print(synapses)
+    >>> nest.ResetKernel()
+    >>> nodes = nest.Create('iaf_psc_alpha', 3)
+    >>> nest.Connect(nodes[:2], nodes[:2])
+    >>> synapses = nest.GetConnections()
+    >>> print(synapses)
           source   target   synapse model   weight   delay
          -------- -------- --------------- -------- -------
                1        1  static_synapse    1.000   1.000
@@ -63,7 +65,7 @@ Printing
 Indexing
     Indexing returns a single connection SynapseCollection.
 
-    >>>  print(synapses[1])
+    >>> print(synapses[1])
           source   target   synapse model   weight   delay
          -------- -------- --------------- -------- -------
                1        2  static_synapse    1.000   1.000
@@ -73,8 +75,8 @@ Indexing
 Iteration
     A SynapseCollection can be iterated, yielding a single connection SynapseCollection per iteration.
 
-    >>>  for conn in synapses:
-    >>>      print(conn.source)
+    >>> for conn in synapses:
+    ...     print(conn.source)
          1
          1
          2
@@ -86,7 +88,7 @@ Iterator of sources and targets
     Calling ``SynapseCollection.sources()`` or ``SynapseCollection.targets()`` returns an
     iterator over the source IDs or target IDs, respectively.
 
-    >>>  print([s for s in synapses.sources()])
+    >>> print([s for s in synapses.sources()])
          [1, 1, 2, 2]
 
 
@@ -95,7 +97,7 @@ Iterator of sources and targets
 Slicing
     A SynapseCollection can be sliced with ``start:stop:step`` inside brackets
 
-    >>>  print(synapses[0:3:2])
+    >>> print(synapses[0:3:2])
          source   target   synapse model   weight   delay
         -------- -------- --------------- -------- -------
               1        1  static_synapse    1.000   1.000
@@ -106,7 +108,7 @@ Slicing
 Getting the size
     We can get the number of connections in the SynapseCollection with
 
-    >>>  len(synapses)
+    >>> len(synapses)
          4
 
 .. _conn_testing_equality:
@@ -114,9 +116,9 @@ Getting the size
 Test of equality
     Two SynapseCollections can be tested for equality, i.e. that they contain the same connections.
 
-    >>>  synapses == synapses
+    >>> synapses == synapses
          True
-    >>>  synapses[:2] == synapses[2:]
+    >>> synapses[:2] == synapses[2:]
          False
 
 .. _conn_direct_attributes:
@@ -124,12 +126,12 @@ Test of equality
 Setting and getting attributes directly
     You can also directly get and set parameters of your SynapseCollection
 
-    >>>  synapses.weight = 5.0
-    >>>  synapses.weight
+    >>> synapses.weight = 5.0
+    >>> synapses.weight
          [5.0, 5.0, 5.0, 5.0]
-    >>>  synapses.delay = [5.1, 5.2, 5.3, 5.4]
-    >>>  synapses.delay
-         [5.1, 5.2, 5.3, 5.4]
+    >>> synapses.delay = [2.0, 3.0, 4.0, 5.0]
+    >>> synapses.delay
+         [2.0, 3.0, 4.0, 5.0]
 
     If you use a list to set the parameter, the list needs to be the same length
     as the SynapseCollection.
@@ -137,16 +139,19 @@ Setting and getting attributes directly
     For :ref:`spatially distributed <tbl_parameters>` sources and targets, you can access the distance between
     the source-target pairs by calling ``distance`` on your SynapseCollection.
 
-    >>>  synapses.distance
-         (0.47140452079103173,
+    >>> spatial_nodes = nest.Create('iaf_psc_alpha', positions=nest.spatial.grid(shape=[3, 1]))
+    >>> nest.Connect(spatial_nodes, spatial_nodes)
+    >>> spatial_synapses = nest.GetConnections(spatial_nodes, spatial_nodes)
+    >>> spatial_synapses.distance
+         [0.0,
           0.33333333333333337,
-          0.4714045207910317,
+          0.6666666666666666,
           0.33333333333333337,
-          3.925231146709438e-17,
+          0.0,
           0.33333333333333326,
-          0.4714045207910317,
+          0.6666666666666666,
           0.33333333333333326,
-          0.47140452079103157)
+          0.0]
 
 
 .. _conn_get:
@@ -160,26 +165,26 @@ Getting connection parameters
     returned. If there is only a single connection in the SynapseCollection, the dictionary contains plain values,
     whereas if there is more than one connection, the dictionary contains lists of values.
 
-    >>>  synapses.get()
-         {'delay': [1.0, 1.0, 1.0, 1.0],
+    >>> synapses.get()
+         {'delay': [2.0, 3.0, 4.0, 5.0],
           'port': [0, 1, 2, 3],
           'receptor': [0, 0, 0, 0],
-          'sizeof': [32, 32, 32, 32],
+          'sizeof': [...],
           'source': [1, 1, 2, 2],
-          'synapse_id': [0, 0, 0, 0],
-          'synapse_model': ['static_synapse','static_synapse','static_synapse','static_synapse'],
+          'synapse_id': [...],
+          'synapse_model': ['static_synapse', 'static_synapse', 'static_synapse', 'static_synapse'],
           'target': [1, 2, 1, 2],
           'target_thread': [0, 0, 0, 0],
-          'weight': [1.0, 1.0, 1.0, 1.0]}
+          'weight': [5.0, 5.0, 5.0, 5.0]}
 
     Calling ``get(parameter_name)`` will return a list of parameter values, while
     ``get([parameter_name_1, ... , parameter_name_n])`` returns a dictionary with
     the values.
 
-    >>>  synapses.get('weight')
-         [1.0, 1.0, 1.0, 1.0]
+    >>> synapses.get('weight')
+         [5.0, 5.0, 5.0, 5.0]
 
-    >>>  synapses[2].get(['source', 'target'])
+    >>> synapses[2].get(['source', 'target'])
          {'source': 2, 'target': 1}
 
     It is also possible to select an alternative output format with the
@@ -197,14 +202,14 @@ Setting connection parameters
     You can use a single value, a list, or a ``nest.Parameter`` as values. If a single value is given,
     the value is set on all connections.
 
-    >>>  synapses.set({'weight': [1.5, 2.0, 2.5, 3.0], 'delay': 2.0})
+    >>> synapses.set({'weight': [1.5, 2.0, 2.5, 3.0], 'delay': 2.0})
 
     Updating a single parameter is done by calling ``set(parameter_name=parameter_value)``.
     Again you can use a single value, a list, or a ``nest.Parameter`` as value.
 
-    >>>  synapses.set(weight=3.7)
+    >>> synapses.set(weight=3.7)
 
-    >>>  synapses.set(weight=[4.0, 4.5, 5.0, 5.5])
+    >>> synapses.set(weight=[4.0, 4.5, 5.0, 5.5])
 
     Note that some parameters, like ``source`` and ``target``, cannot be set.  The documentation of a specific
     model will point out which parameters can be set and which are read-only.
@@ -219,16 +224,15 @@ then be applied to each source-target pair. To create these collocated synapses,
 as the ``syn_spec`` argument of :py:func:`.Connect`, instead of the usual syn_spec dictionary argument. The constructor
 ``CollocatedSynapses()`` takes dictionaries as arguments.
 
-::
-
-  nodes = nest.Create('iaf_psc_alpha', 3)
-  syn_spec = nest.CollocatedSynapses({'weight': 4., 'delay': 1.5},
-                                     {'synapse_model': 'stdp_synapse'},
-                                     {'synapse_model': 'stdp_synapse', 'alpha': 3.})
-  nest.Connect(nodes, nodes, conn_spec='one_to_one', syn_spec=syn_spec)
-
-  conns = nest.GetConnections()
-  print(conns.alpha)
+  >>> nest.ResetKernel()
+  >>> nodes = nest.Create('iaf_psc_alpha', 3)
+  >>> syn_spec = nest.CollocatedSynapses({'weight': 4., 'delay': 1.5},
+  ...                                    {'synapse_model': 'stdp_synapse'},
+  ...                                    {'synapse_model': 'stdp_synapse', 'alpha': 3.})
+  >>> nest.Connect(nodes, nodes, conn_spec='one_to_one', syn_spec=syn_spec)
+  >>> conns = nest.GetConnections()
+  >>> print(conns.alpha)
+  [None, None, None, 1.0, 3.0, 1.0, 3.0, 1.0, 3.0]
 
 This will create 9 connections: 3 using :hxt_ref:`static_synapse` with a ``weight`` of `4` and ``delay`` of `1.5`, and 6 using
 the :hxt_ref:`stdp_synapse`. Of the 6 using ``stdp_synapse``, 3 will have the default alpha value, and 3 will have an alpha of
@@ -239,18 +243,27 @@ the :hxt_ref:`stdp_synapse`. Of the 6 using ``stdp_synapse``, 3 will have the de
 
 If you want to connect with different receptor types, you can do the following:
 
-::
-
-  src = nest.Create('iaf_psc_exp_multisynapse', 7)
-  trgt = nest.Create('iaf_psc_exp_multisynapse', 7, {'tau_syn': [0.1 + i for i in range(7)]})
-
-  syn_spec = nest.CollocatedSynapses({'weight': 5.0, 'receptor_type': 2},
-                                     {'weight': 1.5, 'receptor_type': 7})
-
-  nest.Connect(src, trgt, 'one_to_one', syn_spec=syn_spec)
-
-  conns = nest.GetConnections()
-  print(conns.get())
+  >>> nest.ResetKernel()
+  >>> src = nest.Create('iaf_psc_exp_multisynapse', 7)
+  >>> trgt = nest.Create('iaf_psc_exp_multisynapse', 7, {'tau_syn': [0.1 + i for i in range(7)]})
+  >>> syn_spec = nest.CollocatedSynapses({'weight': 5.0, 'receptor_type': 2},
+  ...                                    {'weight': 1.5, 'receptor_type': 7})
+  >>> nest.Connect(src, trgt, 'one_to_one', syn_spec=syn_spec)
+  >>> conns = nest.GetConnections()
+  >>> print(conns.get())
+  {'delay': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+   'port': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+   'receptor': [2, 7, 2, 7, 2, 7, 2, 7, 2, 7, 2, 7, 2, 7],
+   'sizeof': [...],
+   'source': [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7],
+   'synapse_id': [...],
+   'synapse_model': ['static_synapse', 'static_synapse', 'static_synapse', 'static_synapse',
+                     'static_synapse', 'static_synapse', 'static_synapse', 'static_synapse',
+                     'static_synapse', 'static_synapse', 'static_synapse', 'static_synapse',
+                     'static_synapse', 'static_synapse'],
+   'target': [8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14],
+   'target_thread': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+   'weight': [5.0, 1.5, 5.0, 1.5, 5.0, 1.5, 5.0, 1.5, 5.0, 1.5, 5.0, 1.5, 5.0, 1.5]}
 
 You can see how many synapse parameters you have by calling ``len()`` on your ``CollocatedSynapses`` object:
 
