@@ -20,6 +20,7 @@
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import doctest
 import json
 import os
 
@@ -43,6 +44,23 @@ sys.path.append(pynest_dir)
 # values, producing nonsensical output like
 # "Version: nest.nestkernel_api.llapi_get_kernel_status.build_info.version".
 os.environ.setdefault("PYNEST_QUIET", "1")
+
+
+def _builder_is(name):
+    """Return True if Sphinx was invoked with builder ``name`` (``-b name``)."""
+    argv = sys.argv
+    for i, arg in enumerate(argv):
+        if arg in ("-b", "--builder") and i + 1 < len(argv):
+            return argv[i + 1] == name
+        if arg == f"--builder={name}":
+            return True
+    return False
+
+
+# The doctest builder must execute the *real* NEST kernel so that examples
+# produce genuine output. Every other builder runs where the compiled kernel is
+# unavailable (HTML/CI), so there the kernel is mocked (see autodoc_mock_imports).
+building_doctest = _builder_is("doctest")
 
 # -- General configuration ------------------------------------------------
 
@@ -74,11 +92,14 @@ extensions = [
 ]
 
 autodoc_mock_imports = [
-    "nest.nestkernel_api",  # compiled binary
     "flask",  # optional server dependencies not present during docs build
     "flask_cors",
     "RestrictedPython",
 ]
+if not building_doctest:
+    # Mock the compiled kernel for HTML/CI builds where it isn't available. The
+    # doctest builder instead uses a real NEST installation so examples run.
+    autodoc_mock_imports.insert(0, "nest.nestkernel_api")  # compiled binary
 
 # -- Options for doctest (sphinx.ext.doctest) -----------------------------
 # Code run before every doctest block/group. Makes ``nest`` available to all
@@ -86,7 +107,12 @@ autodoc_mock_imports = [
 # works where NEST is actually importable (e.g. a local build environment);
 # the CI docs build mocks the compiled kernel, so run doctests locally with
 # ``sphinx-build -b doctest . _build/doctest``.
-doctest_global_setup = "import nest"
+doctest_global_setup = "import nest\nimport numpy as np"
+# NORMALIZE_WHITESPACE lets the documented output keep reader-friendly indentation
+# and line wrapping (e.g. pretty-printed dicts and multi-line NodeCollection reprs)
+# while still matching NEST's actual single-line/compact output. ELLIPSIS allows
+# ``...`` to stand in for volatile fragments.
+doctest_default_flags = doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
 mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
