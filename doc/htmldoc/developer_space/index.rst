@@ -6,16 +6,23 @@ Developer space
 Here is all documentation pertaining to the development of NEST.
 It is documentation for anyone needing to touch the code or documentation.
 
+If you want to contribute changes back to NEST, start with the Git workflow: it
+walks you through forking the repository and preparing a pull request.
+
 .. grid:: 3
 
   .. grid-item-card::
        :link-type: ref
-       :link: dev_install
+       :link: git_workflow
        :class-card: sd-bg-success sd-text-white
 
-       Install NEST from source
+       NEST Git workflow
 
+.. note::
 
+   Just want to *build and run* NEST from source (for example to tune compiler
+   settings or link a specific MPI library)? See :ref:`Install NEST from source
+   <dev_install>`.
 
 .. _contribute:
 

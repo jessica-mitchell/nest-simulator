@@ -4,6 +4,11 @@ Install NEST from source
 =========================
 
 
+This page describes how to build NEST from source in order to *run* it, for example
+to tune compiler settings for a specific CPU or to link against a particular MPI
+library. If you intend to **contribute** changes back to NEST, start with the
+:ref:`git_workflow` instead: it has you create your own fork of the repository first.
+
 .. note::
 
     Please see our :ref:`development workflows and guidelines <developer_space>`, if you need
@@ -11,22 +16,32 @@ Install NEST from source
 
 
 
-* Clone nest-simulator from Github `<https://github.com/nest/nest-simulator>`_:
+* Clone nest-simulator from the central repository on GitHub
+  `<https://github.com/nest/nest-simulator>`_:
 
-.. code-block:: sh
+  .. code-block:: sh
 
-   git clone git@github.com:<your-username>/nest-simulator.git
+     git clone git@github.com:nest/nest-simulator.git
+
+  This clones the latest development version. To build a specific release
+  instead, check out its tag after cloning (see the
+  `list of releases <https://github.com/nest/nest-simulator/releases>`_ for
+  available versions):
+
+  .. code-block:: sh
+
+     cd nest-simulator
+     git checkout v3.10
+
+* or download the tarball for a release `here <https://github.com/nest/nest-simulator/releases>`_ and unpack it:
+
+  .. code-block:: sh
+
+     tar -xzvf nest-simulator-x.y.tar.gz
 
 
-* or download the tarball `here <https://github.com/nest/nest-simulator/releases>`_ and unpack it:
 
-.. code-block:: sh
-
-    tar -xzvf nest-simulator-x.y.tar.gz
-
-
-
-We have provided an `environment.yml <https://github.com/nest/nest-simulator/blob/master/environment.yml>`_
+We have provided an `environment.yml <https://github.com/nest/nest-simulator/blob/main/environment.yml>`_
 file that contains all possible packages needed for NEST development.
 
 .. grid:: 3
