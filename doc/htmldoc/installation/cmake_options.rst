@@ -174,12 +174,6 @@ External libraries
 ~~~~~~~~~~~~~~~~~~
 
 +--------------------------------------------------------+------------------------------------------------------------------------------------------------+
-| ``-Dwith-libneurosim=[OFF|ON|</path/to/libneurosim>]`` | Build with `libneurosim <https://github.com/INCF/libneurosim>`_ [default=OFF]. Optionally      |
-|                                                        | give the directory where libneurosim is installed.                                             |
-|                                                        | libneurosim provides the Connection Generator Interface, which allows                          |
-|                                                        | external libraries to generate network connections. See                                        |
-|                                                        | :ref:`connection_generator`.                                                                   |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------+
 | ``-Dwith-music=[OFF|ON|</path/to/music>]``             | Build with `MUSIC <https://github.com/INCF/MUSIC>`_ [default=OFF]. Optionally give the         |
 |                                                        | directory where MUSIC is installed.                                                            |
 |                                                        | MUSIC enables multi-simulator coupling, allowing NEST to exchange spikes, continuous data,     |
@@ -336,22 +330,6 @@ see the `CMake documentation
 
 See the :ref:`parallel_computing` to learn how to execute threaded and
 distributed simulations with NEST.
-
-.. _compile_with_libneurosim:
-
-Support for libneurosim
------------------------
-
-In order to allow NEST to create connections using external libraries,
-it provides support for the Connection Generator Interface from
-*libneurosim*. To request the use of libneurosim, you have to use the
-following switch for the invocation of ``cmake``. It expects either
-*ON* or *OFF*, or the directory where libneurosim is installed::
-
-    -Dwith-libneurosim=[OFF|ON|</path/to/libneurosim>]
-
-For details on how to use the Connection Generator Interface, see the
-:ref:`guide on connection generation <connection_generator>`.
 
 .. _compile_with_python:
 
