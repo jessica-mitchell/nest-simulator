@@ -462,7 +462,7 @@ jobs:
           cd build
           #  with-gsl and ltdl defaults to ON,
           # which would make the configure step fail.
-          cmake -Dwith-userdoc=ON -Dwith-ltdl=OFF -Dwith-gsl=OFF -DCMAKE_INSTALL_PREFIX=../install ..
+          cmake -Dwith-userdoc=ON -Dwith-ltdl=OFF -Dwith-gsl=OFF -Dwith-boost=OFF -DCMAKE_INSTALL_PREFIX=../install ..
           make docs |& tee sphinx-output.log
 
       - name: Upload artifacts
