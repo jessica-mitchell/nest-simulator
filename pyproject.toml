@@ -64,7 +64,7 @@ test = [
   "black",
   "isort",
   "mypy",
-  "scipy != 1.18.0",
+  "scipy < 1.18",
   "pandas"
 ]
 docs = [
@@ -293,7 +293,7 @@ test-requires = [
   "pytest-cov",
   "pytest-timeout",
   "pytest-xdist",
-  "scipy != 1.18.0",
+  "scipy < 1.18",
 ]
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

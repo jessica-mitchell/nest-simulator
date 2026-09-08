@@ -19,9 +19,8 @@ MUSIC Tutorials
    :maxdepth: 1
    :hidden:
 
-   music_tutorial/music_tutorial_1
-   music_tutorial/music_tutorial_2
-   music_tutorial/music_tutorial_3
-   music_tutorial/music_tutorial_4
-   music_tutorial/music_tutorial_tips
-   videos/index
+   music_tutorial_1
+   music_tutorial_2
+   music_tutorial_3
+   music_tutorial_4
+   music_tutorial_tips
