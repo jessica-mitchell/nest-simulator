@@ -442,7 +442,10 @@ jobs:
         run: |
           mkdir -pv build
           cd build
-          cmake -Dwith-userdoc=ON -DCMAKE_INSTALL_PREFIX=../install ..
+          # GSL is not needed to build the documentation and is not available on
+          # the runner image; with-gsl defaults to ON and GSL is now REQUIRED,
+          # which would make the configure step fail.
+          cmake -Dwith-userdoc=ON -Dwith-gsl=OFF -DCMAKE_INSTALL_PREFIX=../install ..
           make docs |& tee sphinx-output.log
 
       - name: Upload artifacts
