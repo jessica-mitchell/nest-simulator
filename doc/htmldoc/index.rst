@@ -90,7 +90,7 @@ Welcome to the NEST Simulator documentation!
                  </div>
                  <div class="carousel-item">
                    <a href="auto_examples/eprop_plasticity/index.html">
-                     <img src="_static/img/eprop_supervised_regression_sine-waves.png" class="d-block w-100" alt="Explore eligibility propagation plasticity">
+                     <img src="_images/eprop_supervised_regression_sine-waves.png" class="d-block w-100" alt="Explore eligibility propagation plasticity">
                    </a>
                    <div class="carousel-caption d-none d-md-block">
                      <h5>Explore eligibility propagation plasticity</h5>
