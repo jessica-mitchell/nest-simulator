@@ -19,9 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-import glob
 import logging
-import os
 
 from docutils import nodes
 from docutils.parsers.rst import Directive, Parser
@@ -57,9 +55,8 @@ def ProcessExamples(app, doctree, docname):
                         break
 
                     list_of_examples = models_to_examples_map[requested_list["model_name"]]
-                    for value in list_of_examples:
-                        mydocname = os.path.splitext(value)[0]
-                        examples_titles_map[mydocname] = str(env.titles[mydocname].children[0])
+                    for example_docname in list_of_examples:
+                        examples_titles_map[example_docname] = str(env.titles[example_docname].children[0])
                 sorted_examples = dict(sorted(examples_titles_map.items(), key=lambda kv: kv[1]))
                 bullet_list = nodes.bullet_list()
 
@@ -88,30 +85,26 @@ def ProcessExamples(app, doctree, docname):
 def ModelMatchExamples(app):
     # Get list of models and search the examples directory for matches
 
-    filepath_models = os.path.join(app.srcdir, "..", "..", "models")
-    filepath_examples = os.path.join(app.srcdir, "auto_examples")
+    # ``app.srcdir`` is ``<repo>/doc/htmldoc``, so its second parent is the repo root.
+    filepath_models = app.srcdir.parents[1] / "models"
+    filepath_examples = app.srcdir / "auto_examples"
 
-    model_files = []
-    for filename in os.listdir(filepath_models):
-        if filename.endswith(".h"):
-            model_files.append(os.path.splitext(filename)[0])
+    model_files = [path.stem for path in filepath_models.glob("*.h")]
 
     matches = {}
-    files = glob.glob(os.path.join(filepath_examples, "**/*.rst"), recursive=True)
-    for filename in files:
+    for path in sorted(filepath_examples.rglob("*.rst")):
         # Docname (e.g. "auto_examples/foo/bar"), used as the key into
-        # `env.titles` and passed to `get_relative_uri()` below.
-        relpath = os.path.relpath(filename, app.srcdir)
-        if "auto_examples/index" in relpath:
+        # `env.titles` and passed to `get_relative_uri()` below. Sphinx docnames
+        # are always relative to the source directory, extensionless and
+        # separated by forward slashes, hence `as_posix()` rather than `str()`.
+        docname = path.relative_to(app.srcdir).with_suffix("").as_posix()
+        if "auto_examples/index" in docname:
             continue
-        with open(filename, "r", errors="ignore") as file:
-            content = file.read()
-            if "AUTOMATICALLY GENERATED" in content:
-                for model_file in model_files:
-                    if model_file in content:
-                        matches.setdefault(model_file, []).append(relpath)
-            else:
-                continue
+        content = path.read_text(errors="ignore")
+        if "AUTOMATICALLY GENERATED" in content:
+            for model_file in model_files:
+                if model_file in content:
+                    matches.setdefault(model_file, []).append(docname)
     return matches
 
 

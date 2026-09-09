@@ -19,10 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-import glob
 import json
 import logging
-import os
 import re
 from pathlib import Path
 from pprint import pformat
@@ -55,9 +53,11 @@ def extract_model_text(app):
     Documentation text
     EndUserDocs
     """
-    model_paths = Path(app.srcdir, "..", "..", "models").glob("*.h")
-    nestkernel_paths = Path(app.srcdir, "..", "..", "nestkernel").glob("*.h")
-    file_paths = list(model_paths) + list(nestkernel_paths)
+    # ``app.srcdir`` is ``<repo>/doc/htmldoc``, so its second parent is the repo root.
+    repo_root = app.srcdir.parents[1]
+    model_paths = sorted((repo_root / "models").glob("*.h"))
+    nestkernel_paths = sorted((repo_root / "nestkernel").glob("*.h"))
+    file_paths = model_paths + nestkernel_paths
 
     userdoc_re = re.compile(
         r"""
@@ -71,8 +71,7 @@ def extract_model_text(app):
     )
 
     for file_path in file_paths:
-        with open(file_path, "r", encoding="utf8") as file:
-            match = userdoc_re.search(file.read())
+        match = userdoc_re.search(file_path.read_text(encoding="utf-8"))
         if not match:
             log.info("No user documentation found in %s", str(file_path))
             continue
@@ -100,10 +99,10 @@ def create_rst_files(app, config):
 
     """
 
-    outdir = os.path.join(app.srcdir, "models")
-    if not os.path.exists(outdir):
+    outdir = app.srcdir / "models"
+    if not outdir.exists():
         log.info("creating output directory %s", outdir)
-        os.mkdir(outdir)
+        outdir.mkdir()
     outnames = []
     for match, file_path in extract_model_text(app):
         doc = match.group("doc")
@@ -191,8 +190,7 @@ def write_rst_files(doc, outdir, outname):
     """
     Write raw rst to a file and generate a wrapper with index
     """
-    with open(os.path.join(outdir, outname), "w") as outfile:
-        outfile.write(doc)
+    (outdir / outname).write_text(doc, encoding="utf-8")
 
 
 # The following block of functions are called at Sphinx core event
@@ -235,11 +233,10 @@ def get_model_tags(app, env, docname):
     env.model_dict = prepare_model_dict(app)
     env.tag_dict = find_models_in_tag_combinations(env.model_dict)
 
-    json_output = Path(app.srcdir, "static", "data", "filter_model.json")
+    json_output = app.srcdir / "static" / "data" / "filter_model.json"
     json_output.parent.mkdir(exist_ok=True, parents=True)
     # Write the JSON output directly to a file used for dynamically loading data client-side
-    with open(json_output, "w+") as json_file:
-        json.dump(env.tag_dict, json_file, indent=2)
+    json_output.write_text(json.dumps(env.tag_dict, indent=2), encoding="utf-8")
 
 
 def prepare_model_dict(app):
