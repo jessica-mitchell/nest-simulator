@@ -119,6 +119,15 @@ Gap Junctions are implemented by a gap current of the form
    Traub and Miles used :math:`t_{ref} = 3` ms ([1]_, p 118), while we used
    :math:`t_{ref} = 2` ms in [1]_.
 
+.. note::
+
+   Incoming spikes are routed to the excitatory or inhibitory synapse by the **sign of the
+   connection weight**. A positive weight targets the excitatory synapse, a negative weight
+   the inhibitory one. Only the absolute value of the weight sets the conductance
+   amplitude. Spike connections must use the default ``receptor_type`` of 0.
+
+   See :ref:`synapse_selection` for the conventions used by other models.
+
 Parameters
 ++++++++++
 

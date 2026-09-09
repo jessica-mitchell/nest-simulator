@@ -137,15 +137,12 @@ where :math:`w` is a weight (excitatory if :math:`w > 0` or inhibitory if :math:
 
 .. note::
 
-   The **sign of the synaptic weight** determines which synapse receives the input: a positive
-   weight routes the spike to the excitatory synapse (governed by ``E_ex`` and ``tau_syn_ex``),
-   while a negative weight routes it to the inhibitory synapse (governed by ``E_in`` and
-   ``tau_syn_in``). Only the absolute value of the weight determines the conductance amplitude.
-   This convention mirrors the ``iaf_psc_*`` current-based models to simplify migration between
-   the two model families.
+   Incoming spikes are routed to the excitatory or inhibitory synapse by the **sign of the
+   connection weight**. A positive weight targets the excitatory synapse, a negative weight
+   the inhibitory one. Only the absolute value of the weight sets the conductance
+   amplitude. Spike connections must use the default ``receptor_type`` of 0.
 
-   ``receptor_type`` is not used in this model; setting it to any value other than 0 raises an
-   ``UnknownReceptorType`` error.
+   See :ref:`synapse_selection` for the conventions used by other models.
 
 Parameters
 ++++++++++
