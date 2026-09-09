@@ -65,78 +65,82 @@ namespace nest
  * The following parameters are available in the kernel status dictionary:
  *
  * @par Time and resolution
- * @param biological_time The current simulation time (in ms).
- * @param max_delay The maximum delay in the network, defaults to 0.1 (in ms).
- * @param min_delay The minimum delay in the network, defaults to 0.1 (in ms).
- * @param max_update_time Longest wall-clock time measured so far for a full update step (in s; read only).
- * @param min_update_time Shortest wall-clock time measured so far for a full update step (in s; read only).
- * @param ms_per_tic The number of milliseconds per tic, calculated by ms_per_tic = 1 / tics_per_ms (read only).
- * @param resolution The resolution of the simulation (in ms), defaults to 0.1.
- * @param tics_per_ms The number of tics per millisecond, defaults to 1000.0.
- * @param tics_per_step The number of tics per simulation time step, calculated by tics_per_step = resolution *
- * tics_per_ms (read only).
- * @param to_do The number of steps yet to be simulated (read only).
- * @param T_max The largest representable time value (in ms; read only).
- * @param T_min The smallest representable time value (in ms; read only).
- * @param update_time_limit Maximum wall-clock time for one full update step (in s; default +infinity).
+ * @param biological_time    The current simulation time (in ms).
+ * @param max_delay          The maximum delay in the network, defaults to 0.1 (in ms).
+ * @param min_delay          The minimum delay in the network, defaults to 0.1 (in ms).
+ * @param max_update_time    Longest wall-clock time measured so far for a full update step (in s; read only).
+ * @param min_update_time    Shortest wall-clock time measured so far for a full update step (in s; read only).
+ * @param ms_per_tic         The number of milliseconds per tic, calculated by ms_per_tic = 1 / tics_per_ms (read only).
+ * @param resolution         The resolution of the simulation (in ms), defaults to 0.1.
+ * @param tics_per_ms        The number of tics per millisecond, defaults to 1000.0.
+ * @param tics_per_step      The number of tics per simulation time step, calculated by tics_per_step = resolution *
+ *                           tics_per_ms (read only).
+ * @param to_do              The number of steps yet to be simulated (read only).
+ * @param T_max              The largest representable time value (in ms; read only).
+ * @param T_min              The smallest representable time value (in ms; read only).
+ * @param update_time_limit  Maximum wall-clock time for one full update step (in s; default +infinity).
  *
  * @par Parallel processing
- * @param adaptive_target_buffers Whether MPI buffers for communication of connections resize on the fly, defaults to
- * true.
- * @param buffer_size_spike_data Total size of MPI buffer for communication of spikes, defaults to 2.
- * @param buffer_size_target_data Total size of MPI buffer for communication of connections, defaults to 2.
- * @param local_num_threads The local number of threads, defaults to 1.
- * @param num_processes The number of MPI processes (read only).
- * @param off_grid_spiking Whether to transmit precise spike times in MPI communication (read only).
- * @param total_num_virtual_procs The total number of virtual processes, defaults to 1.
- * @param use_compressed_spikes Whether to use spike compression, defaults to true.
+ * @param adaptive_target_buffers  Whether MPI buffers for communication of connections resize on the fly, defaults to
+ *                                 true.
+ * @param buffer_size_spike_data   Total size of MPI buffer for communication of spikes, defaults to 2.
+ * @param buffer_size_target_data  Total size of MPI buffer for communication of connections, defaults to 2.
+ * @param local_num_threads        The local number of threads, defaults to 1.
+ * @param num_processes            The number of MPI processes (read only).
+ * @param off_grid_spiking         Whether to transmit precise spike times in MPI communication (read only).
+ * @param total_num_virtual_procs  The total number of virtual processes, defaults to 1.
+ * @param use_compressed_spikes    Whether to use spike compression, defaults to true.
  *
  * @par Random number generators
- * @param rng_seed Seed value used as basis of seeding of all random number generators managed by the kernel.
- * @param rng_type Name of random number generator type used by NEST, defaults to mt19937_64.
- * @param rng_types List of available random number generator types (read only).
+ * @param rng_seed   Seed value used as basis of seeding of all random number generators managed by the kernel.
+ * @param rng_type   Name of random number generator type used by NEST, defaults to mt19937_64.
+ * @param rng_types  List of available random number generator types (read only).
  *
  * @par Output
- * @param data_path A path where all data is written to, defaults to current directory.
- * @param data_prefix A common prefix for all data files.
- * @param overwrite_files Whether to overwrite existing data files, defaults to false.
- * @param print_time Whether to print progress information during the simulation, defaults to false.
- * @param recording_backends List of available backends for recording devices (read only).
+ * @param data_path           A path where all data is written to, defaults to current directory.
+ * @param data_prefix         A common prefix for all data files.
+ * @param overwrite_files     Whether to overwrite existing data files, defaults to false.
+ * @param print_time          Whether to print progress information during the simulation, defaults to false.
+ * @param recording_backends  List of available backends for recording devices (read only).
  *
  * @par Network information
- * @param connection_rules The list of available connection rules (read only).
- * @param growth_curves The list of the available structural plasticity growth curves (read only).
- * @param growth_factor_buffer_target_data If MPI buffers for communication of connections resize on the fly, grow them
- * by this factor each round, defaults to 1.5.
- * @param spike_buffer_grow_extra When spike exchange buffer is expanded, resize it to (1 + spike_buffer_grow_extra) *
- * required_buffer_size, defaults to 0.5.
- * @param spike_buffer_shrink_limit If largest number of spikes sent from any rank to any rank is less than
- * spike_buffer_shrink_limit * buffer_size, then reduce buffer size. Defaults to 0.2.
- * @param spike_buffer_resize_log Information on spike buffer resizing as dictionary (read only).
- * @param keep_source_table Whether to keep source table after connection setup is complete, defaults to true.
- * @param local_spike_counter Number of spikes fired by neurons on a given MPI rank during the most recent call to
- * Simulate() (read only).
- * @param max_num_syn_models Maximal number of synapse models supported (read only).
- * @param network_size The number of nodes in the network (read only).
- * @param node_models The list of available node models (neurons and devices; read only).
- * @param num_connections The number of connections in the network (read only; local only).
- * @param stimulation_backends List of available backends for stimulation devices (read only).
- * @param structural_plasticity_synapses Defines all synapses which are plastic for the structural plasticity algorithm.
- * @param structural_plasticity_update_interval Defines the time interval in ms at which the structural plasticity
- * manager will make changes, defaults to 10000.
- * @param synapse_models The list of the available synapse models (read only).
+ * @param connection_rules                       The list of available connection rules (read only).
+ * @param growth_curves                          The list of the available structural plasticity growth curves (read
+ *                                               only).
+ * @param growth_factor_buffer_target_data       If MPI buffers for communication of connections resize on the fly, grow
+ *                                               them by this factor each round, defaults to 1.5.
+ * @param spike_buffer_grow_extra                When spike exchange buffer is expanded, resize it to (1 +
+ *                                               spike_buffer_grow_extra) * required_buffer_size, defaults to 0.5.
+ * @param spike_buffer_shrink_limit              If largest number of spikes sent from any rank to any rank is less than
+ *                                               spike_buffer_shrink_limit * buffer_size, then reduce buffer size.
+ *                                               Defaults to 0.2.
+ * @param spike_buffer_resize_log                Information on spike buffer resizing as dictionary (read only).
+ * @param keep_source_table                      Whether to keep source table after connection setup is complete,
+ *                                               defaults to true.
+ * @param local_spike_counter                    Number of spikes fired by neurons on a given MPI rank during the most
+ *                                               recent call to Simulate() (read only).
+ * @param max_num_syn_models                     Maximal number of synapse models supported (read only).
+ * @param network_size                           The number of nodes in the network (read only).
+ * @param node_models                            The list of available node models (neurons and devices; read only).
+ * @param num_connections                        The number of connections in the network (read only; local only).
+ * @param stimulation_backends                   List of available backends for stimulation devices (read only).
+ * @param structural_plasticity_synapses         Defines all synapses which are plastic for the structural plasticity
+ *                                               algorithm.
+ * @param structural_plasticity_update_interval  Defines the time interval in ms at which the structural plasticity
+ *                                               manager will make changes, defaults to 10000.
+ * @param synapse_models                         The list of the available synapse models (read only).
  *
  * @par Waveform relaxation method (wfr)
- * @param use_wfr Whether to use waveform relaxation method, defaults to true.
- * @param wfr_comm_interval Desired waveform relaxation communication interval, defaults to 1.0.
- * @param wfr_interpolation_order Interpolation order of polynomial used in wfr iterations, defaults to 3.
- * @param wfr_max_iterations Maximal number of iterations used for waveform relaxation, defaults to 15.
- * @param wfr_tol Convergence tolerance of waveform relaxation method, defaults to 0.0001.
+ * @param use_wfr                  Whether to use waveform relaxation method, defaults to true.
+ * @param wfr_comm_interval        Desired waveform relaxation communication interval, defaults to 1.0.
+ * @param wfr_interpolation_order  Interpolation order of polynomial used in wfr iterations, defaults to 3.
+ * @param wfr_max_iterations       Maximal number of iterations used for waveform relaxation, defaults to 15.
+ * @param wfr_tol                  Convergence tolerance of waveform relaxation method, defaults to 0.0001.
  *
  * @par Miscellaneous
- * @param dict_miss_is_error Whether missed dictionary entries are treated as errors.
- * @param build_info Various information about the NEST build.
- * @param memory_size Memory occupied by NEST process in kB (-1 if not available for OS).
+ * @param dict_miss_is_error  Whether missed dictionary entries are treated as errors.
+ * @param build_info          Various information about the NEST build.
+ * @param memory_size         Memory occupied by NEST process in kB (-1 if not available for OS).
  *
  * @see Simulate, Node
  */
