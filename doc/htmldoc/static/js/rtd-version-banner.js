@@ -184,7 +184,7 @@
       "font-family:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;" +
       "font-size:0.875rem;line-height:1.4;" +
       "box-shadow:0 -2px 6px rgba(0,0,0,0.15);}" +
-      ".rtd-version-banner--development{background-color:#2196f3;color:#fff;}" +
+      ".rtd-version-banner--development{background-color:#16c8ff;color:#fff;}" +
       ".rtd-version-banner--outdated,.rtd-version-banner--prerelease" +
       "{background-color:#ff9800;color:#212121;}" +
       ".rtd-version-banner__text{max-width:60rem;}" +
