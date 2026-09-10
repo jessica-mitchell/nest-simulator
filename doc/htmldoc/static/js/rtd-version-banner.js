@@ -300,7 +300,7 @@
   }
 
   getLatestRelease(function (latest) {
-    if (normalizeVersion(slug) === normalizeVersion(slug)) {
+    if (normalizeVersion(slug) === normalizeVersion(latest)) {
       return;
     }
     render();
