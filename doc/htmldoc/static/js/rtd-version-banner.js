@@ -188,7 +188,7 @@
       "box-shadow:0 -2px 6px rgba(0,0,0,0.15);}" +
       ".rtd-version-banner--development{background-color:#16c8ff;color:#fff;}" +
       ".rtd-version-banner--outdated,.rtd-version-banner--prerelease" +
-      "{background-color:#ff9800;color:#212121;}" +
+      "{background-color:#ffdd27;color:#212121;}" +
       ".rtd-version-banner__text{max-width:60rem;}" +
       ".rtd-version-banner__text a{color:inherit;text-decoration:underline;font-weight:600;}" +
       ".rtd-version-banner__text code{background:rgba(0,0,0,0.12);padding:0.1em 0.35em;" +
