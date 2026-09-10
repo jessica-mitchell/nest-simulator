@@ -17,6 +17,11 @@
  * Script setting only accepts a single script URL -- there is nowhere to
  * also register a separate stylesheet.
  *
+ * The newest release is exempt from the banner. Which version that is comes
+ * from the GitHub releases API at run time, so no code change is needed when
+ * a new version is released; LATEST_KNOWN_RELEASE below is only the fallback
+ * for when that lookup fails.
+ *
  * See: https://docs.readthedocs.com/platform/latest/custom-script.html
  */
 (function () {
@@ -27,7 +32,23 @@
   }
 
   var STABLE_DOCS_URL = "https://nest-simulator.readthedocs.io/en/stable/";
-  var MAIN_DOCS_URL = "https://nest-simulator.readthedocs.io/en/main/";
+
+  // Fallback for when the releases API is unreachable, rate-limited or slow.
+  // Bump this when tagging a release: it keeps the banner correct offline and
+  // covers the cases the API cannot (a tag with no published GitHub release,
+  // or a patch for an older line published after a newer minor, either of
+  // which would make releases/latest point at the wrong version).
+  var LATEST_KNOWN_RELEASE = "v3.10";
+
+  var RELEASE_API_URL = "https://api.github.com/repos/nest/nest-simulator/releases/latest";
+  var RELEASE_CACHE_KEY = "rtd-banner-latest-release";
+  // GitHub allows 60 unauthenticated requests per hour and IP, which a shared
+  // institute network would exhaust in one browsing session if every page view
+  // hit the API. Caching keeps it to a handful of requests per browser per day;
+  // the trade-off is that a freshly released version may keep showing the
+  // banner until the cached answer expires.
+  var RELEASE_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+  var RELEASE_FETCH_TIMEOUT_MS = 4000;
 
   // Read the Docs URLs always follow /en/<version>/..., so the version slug
   // is read straight from the path. This avoids depending on any RTD
@@ -49,15 +70,108 @@
   }
 
   var isDevelopment = slug === "main" || slug === "latest";
-  var bannerType = isDevelopment ? "development" : "outdated";
+  // Release candidates stay published on Read the Docs (v3.10_rc1 etc.). They
+  // are never the current release, but during a release cycle they are ahead
+  // of it rather than behind, so they get their own wording.
+  var isPreRelease = /[._-]rc\d*$/i.test(slug);
+  var bannerType = isDevelopment ? "development" : isPreRelease ? "prerelease" : "outdated";
   var dismissKey = "rtd-banner-dismissed-" + bannerType;
 
-  try {
-    if (window.localStorage && window.localStorage.getItem(dismissKey) === "true") {
+  function isDismissed() {
+    try {
+      return !!window.localStorage && window.localStorage.getItem(dismissKey) === "true";
+    } catch (e) {
+      // localStorage unavailable (e.g. privacy mode) -- show the banner.
+      return false;
+    }
+  }
+
+  // RTD version slugs and git tags are both "v3.10" today, but normalise both
+  // sides so the comparison survives either one dropping the "v".
+  function normalizeVersion(version) {
+    return String(version).trim().toLowerCase().replace(/^v/, "");
+  }
+
+  function readCachedRelease() {
+    try {
+      var raw = window.localStorage.getItem(RELEASE_CACHE_KEY);
+      if (!raw) {
+        return null;
+      }
+      var entry = JSON.parse(raw);
+      if (!entry || typeof entry.tag !== "string" || typeof entry.time !== "number") {
+        return null;
+      }
+      if (Date.now() - entry.time > RELEASE_CACHE_TTL_MS) {
+        return null;
+      }
+      return entry.tag;
+    } catch (e) {
+      // Unreadable or malformed cache -- fall through to the API.
+      return null;
+    }
+  }
+
+  function writeCachedRelease(tag) {
+    try {
+      window.localStorage.setItem(
+        RELEASE_CACHE_KEY,
+        JSON.stringify({ tag: tag, time: Date.now() })
+      );
+    } catch (e) {
+      // The cache is an optimisation only -- ignore failures.
+    }
+  }
+
+  function fetchLatestRelease() {
+    var options = {
+      headers: {
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    };
+    // Without a timeout a hanging request would leave the banner decision
+    // pending forever.
+    if (typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function") {
+      options.signal = AbortSignal.timeout(RELEASE_FETCH_TIMEOUT_MS);
+    }
+
+    return fetch(RELEASE_API_URL, options)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("GitHub API error " + response.status);
+        }
+        return response.json();
+      })
+      .then(function (release) {
+        if (!release || typeof release.tag_name !== "string" || !release.tag_name) {
+          throw new Error("GitHub API response has no tag_name");
+        }
+        return release.tag_name;
+      });
+  }
+
+  // Always calls back, with LATEST_KNOWN_RELEASE if the lookup fails, so a
+  // GitHub outage never leaves genuinely outdated versions unmarked.
+  function getLatestRelease(callback) {
+    var cached = readCachedRelease();
+    if (cached) {
+      callback(cached);
       return;
     }
-  } catch (e) {
-    // localStorage unavailable (e.g. privacy mode) -- fall through and show the banner.
+    if (typeof fetch !== "function") {
+      callback(LATEST_KNOWN_RELEASE);
+      return;
+    }
+    fetchLatestRelease().then(
+      function (tag) {
+        writeCachedRelease(tag);
+        callback(tag);
+      },
+      function () {
+        callback(LATEST_KNOWN_RELEASE);
+      }
+    );
   }
 
   function injectStyles() {
@@ -71,7 +185,8 @@
       "font-size:0.875rem;line-height:1.4;" +
       "box-shadow:0 -2px 6px rgba(0,0,0,0.15);}" +
       ".rtd-version-banner--development{background-color:#2196f3;color:#fff;}" +
-      ".rtd-version-banner--outdated{background-color:#ff9800;color:#212121;}" +
+      ".rtd-version-banner--outdated,.rtd-version-banner--prerelease" +
+      "{background-color:#ff9800;color:#212121;}" +
       ".rtd-version-banner__text{max-width:60rem;}" +
       ".rtd-version-banner__text a{color:inherit;text-decoration:underline;font-weight:600;}" +
       ".rtd-version-banner__text code{background:rgba(0,0,0,0.12);padding:0.1em 0.35em;" +
@@ -120,9 +235,16 @@
       text.appendChild(document.createTextNode(" branch. It may describe unreleased or unstable features. "));
       appendLink(text, STABLE_DOCS_URL, "View the stable release docs");
       text.appendChild(document.createTextNode("."));
+    } else if (isPreRelease) {
+      text.appendChild(document.createTextNode("You are viewing a "));
+      appendStrong(text, "release candidate");
+      text.appendChild(document.createTextNode(" version of the NEST documentation ("));
+      appendCode(text, slug);
+      text.appendChild(document.createTextNode("). "));
+      appendLink(text, STABLE_DOCS_URL, "View the latest stable release");
     } else {
       text.appendChild(document.createTextNode("You are viewing an "));
-      appendStrong(text, "outdated or non-stable");
+      appendStrong(text, "outdated");
       text.appendChild(document.createTextNode(" version of the NEST documentation ("));
       appendCode(text, slug);
       text.appendChild(document.createTextNode("). "));
@@ -149,13 +271,38 @@
   }
 
   function show() {
+    // The release lookup is asynchronous, so re-check: another copy of the
+    // script may have injected a banner while the request was in flight.
+    if (document.querySelector(".rtd-version-banner")) {
+      return;
+    }
     injectStyles();
     document.body.appendChild(buildBanner());
   }
 
-  if (document.body) {
-    show();
-  } else {
-    document.addEventListener("DOMContentLoaded", show);
+  function render() {
+    if (document.body) {
+      show();
+    } else {
+      document.addEventListener("DOMContentLoaded", show);
+    }
   }
+
+  // Checked before the release lookup so a dismissed banner costs no request.
+  if (isDismissed()) {
+    return;
+  }
+
+  if (isDevelopment || isPreRelease) {
+    // Neither can ever be the current release, so never wait on the network.
+    render();
+    return;
+  }
+
+  getLatestRelease(function (latest) {
+    if (normalizeVersion(slug) === normalizeVersion(latest)) {
+      return;
+    }
+    render();
+  });
 })();
