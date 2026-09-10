@@ -154,8 +154,6 @@
   // Always calls back, with LATEST_KNOWN_RELEASE if the lookup fails, so a
   // GitHub outage never leaves genuinely outdated versions unmarked.
   function getLatestRelease(callback) {
-    console.log("in get latest release");
-    callback("doc-warning-banner");
     var cached = readCachedRelease();
     if (cached) {
       callback(cached);
@@ -302,7 +300,7 @@
   }
 
   getLatestRelease(function (latest) {
-    if (normalizeVersion(slug) === normalizeVersion(latest)) {
+    if (normalizeVersion(slug) === normalizeVersion(slug)) {
       return;
     }
     render();
