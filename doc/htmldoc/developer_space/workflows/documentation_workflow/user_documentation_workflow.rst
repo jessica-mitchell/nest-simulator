@@ -184,22 +184,20 @@ If you want to edit Model docs, PyNEST API files, or PyNEST examples, you will n
 
    **Adding or renaming a PyNEST example?**
    Update ``pynest/examples/examples.yml`` to register it.
-   This file is the single source of truth for example metadata: it controls
-   which examples are run in CI (``run_in_ci``), how they are run
-   (``runner``), which are converted to Jupyter notebooks for EBRAINS
-   (``convert_to_notebook``), and which model documentation pages link to
-   them (``models``).
+   This file is the single source of truth for example metadata: which files make
+   up the example, which NEST models it demonstrates (``models``), and whether it
+   is exercised by automation (``skip``).
    See the comments at the top of ``examples.yml`` for a description of every field.
 
    To verify your changes are consistent with the files on disk, run from the repo root:
 
    .. code-block:: bash
 
-      python .github/scripts/check_examples_registry.py --examples-dir pynest/examples
+      python .github/scripts/check_examples_registry.py
 
-   The script exits with a summary of any missing or orphaned entries and prints
-   copy-paste–ready YAML stubs for anything that needs to be added.
-   It requires only ``pyyaml`` (``pip install pyyaml``).
+   The script exits with a summary of any missing or orphaned entries, along with
+   any entry whose metadata or supporting file paths do not hold up.
+   Its only dependency is ``PyYAML``, which is part of ``doc/requirements.txt``.
 
 
 
