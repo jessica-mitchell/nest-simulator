@@ -19,8 +19,8 @@
  *
  * The newest release is exempt from the banner. Which version that is comes
  * from the GitHub releases API at run time, so no code change is needed when
- * a new version is released; LATEST_KNOWN_RELEASE below is only the fallback
- * for when that lookup fails.
+ * a new version is released. When that lookup fails there is no way to tell
+ * the current release from an outdated one, so no banner is shown at all.
  *
  * See: https://docs.readthedocs.com/platform/latest/custom-script.html
  */
@@ -32,13 +32,6 @@
   }
 
   var STABLE_DOCS_URL = "https://nest-simulator.readthedocs.io/en/stable/";
-
-  // Fallback for when the releases API is unreachable, rate-limited or slow.
-  // Bump this when tagging a release: it keeps the banner correct offline and
-  // covers the cases the API cannot (a tag with no published GitHub release,
-  // or a patch for an older line published after a newer minor, either of
-  // which would make releases/latest point at the wrong version).
-  var LATEST_KNOWN_RELEASE = "v3.10";
 
   var RELEASE_API_URL = "https://api.github.com/repos/nest/nest-simulator/releases/latest";
   var RELEASE_CACHE_KEY = "rtd-banner-latest-release";
@@ -151,8 +144,10 @@
       });
   }
 
-  // Always calls back, with LATEST_KNOWN_RELEASE if the lookup fails, so a
-  // GitHub outage never leaves genuinely outdated versions unmarked.
+  // Only calls back when the current release is known. Without that version
+  // an outdated slug cannot be told apart from the current one, so a failed
+  // lookup silently skips the banner rather than risk marking the current
+  // release outdated.
   function getLatestRelease(callback) {
     var cached = readCachedRelease();
     if (cached) {
@@ -160,7 +155,6 @@
       return;
     }
     if (typeof fetch !== "function") {
-      callback(LATEST_KNOWN_RELEASE);
       return;
     }
     fetchLatestRelease().then(
@@ -169,7 +163,7 @@
         callback(tag);
       },
       function () {
-        callback(LATEST_KNOWN_RELEASE);
+        // Unreachable, rate-limited or malformed -- leave the banner off.
       }
     );
   }
